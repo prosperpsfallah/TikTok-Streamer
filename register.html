@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Create Account — TikTok Streamers</title>
 
@@ -12,32 +17,67 @@
     >
 
     <link rel="stylesheet" href="style.css">
+
     <link rel="manifest" href="manifest.json">
 
     <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
 </head>
 
+
 <body>
+
 
 <header class="site-header">
 
     <div class="header-inner">
 
         <a href="index.html" class="logo">
-            <span class="logo-icon">TS</span>
-            <span>TikTok Streamers</span>
+
+            <span class="logo-icon">
+                TS
+            </span>
+
+            <span>
+                TikTok Streamers
+            </span>
+
         </a>
 
+
         <nav class="desktop-nav">
-            <a href="index.html">Home</a>
-            <a href="live.html">LIVE</a>
-            <a href="streamer.html">Streamers</a>
-            <a href="leaderboard.html">Leaderboard</a>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="live.html">
+                LIVE
+            </a>
+
+            <a href="streamer.html">
+                Streamers
+            </a>
+
+            <a href="leaderboard.html">
+                Leaderboard
+            </a>
+
         </nav>
 
+
         <div class="header-actions">
-            <a href="login.html" class="btn btn-outline">Login</a>
+
+            <a
+                href="login.html"
+                class="btn btn-outline"
+            >
+                Login
+            </a>
+
 
             <button
                 class="mobile-menu-btn"
@@ -46,360 +86,652 @@
             >
                 ☰
             </button>
+
         </div>
 
     </div>
 
-    <div id="mobileMenu" class="mobile-menu">
-        <a href="index.html">Home</a>
-        <a href="live.html">LIVE</a>
-        <a href="streamer.html">Streamers</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="login.html">Login</a>
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="live.html">
+            LIVE
+        </a>
+
+        <a href="streamer.html">
+            Streamers
+        </a>
+
+        <a href="leaderboard.html">
+            Leaderboard
+        </a>
+
+        <a href="login.html">
+            Login
+        </a>
+
     </div>
 
 </header>
 
 
-<main style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
 
-    <section style="
+<main style="
+    min-height:80vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+">
+
+
+<section style="
+    width:100%;
+    max-width:520px;
+    background:#fff;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 15px 45px rgba(0,0,0,.08);
+">
+
+
+<div style="
+    text-align:center;
+    margin-bottom:30px;
+">
+
+
+<div style="
+    width:70px;
+    height:70px;
+    margin:0 auto 15px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#111;
+    color:#fff;
+    font-size:22px;
+    font-weight:800;
+">
+    TS
+</div>
+
+
+<h1 style="
+    margin:0 0 8px;
+">
+    Create Account
+</h1>
+
+
+<p style="
+    margin:0;
+    color:#777;
+">
+    Join TikTok Streamers today.
+</p>
+
+
+</div>
+
+
+
+<form id="registerForm">
+
+
+<label style="
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+">
+    Full Name
+</label>
+
+
+<input
+    type="text"
+    id="fullName"
+    placeholder="Enter your full name"
+    autocomplete="name"
+    required
+    style="
         width:100%;
-        max-width:520px;
+        padding:14px;
+        margin-bottom:18px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        box-sizing:border-box;
+    "
+>
+
+
+
+<label style="
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+">
+    Username
+</label>
+
+
+<input
+    type="text"
+    id="username"
+    placeholder="Choose a username"
+    autocomplete="username"
+    required
+    minlength="3"
+    maxlength="30"
+    pattern="[A-Za-z0-9_]+"
+    style="
+        width:100%;
+        padding:14px;
+        margin-bottom:18px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        box-sizing:border-box;
+    "
+>
+
+
+<small style="
+    display:block;
+    margin-top:-10px;
+    margin-bottom:18px;
+    color:#888;
+">
+    Use letters, numbers and underscores only.
+</small>
+
+
+
+<label style="
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+">
+    Email
+</label>
+
+
+<input
+    type="email"
+    id="email"
+    placeholder="Enter your email"
+    autocomplete="email"
+    required
+    style="
+        width:100%;
+        padding:14px;
+        margin-bottom:18px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        box-sizing:border-box;
+    "
+>
+
+
+
+<label style="
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+">
+    Account Type
+</label>
+
+
+<select
+    id="accountType"
+    required
+    style="
+        width:100%;
+        padding:14px;
+        margin-bottom:18px;
+        border:1px solid #ddd;
+        border-radius:10px;
         background:#fff;
-        padding:35px;
-        border-radius:20px;
-        box-shadow:0 15px 45px rgba(0,0,0,.08);
-    ">
+        box-sizing:border-box;
+    "
+>
 
-        <div style="text-align:center;margin-bottom:30px;">
+    <option value="viewer">
+        Viewer
+    </option>
 
-            <div style="
-                width:70px;
-                height:70px;
-                margin:0 auto 15px;
-                border-radius:20px;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                background:#111;
-                color:#fff;
-                font-size:22px;
-                font-weight:800;
-            ">
-                TS
-            </div>
+    <option value="streamer">
+        Streamer
+    </option>
 
-            <h1 style="margin:0 0 8px;">
-                Create Account
-            </h1>
-
-            <p style="margin:0;color:#777;">
-                Join TikTok Streamers today.
-            </p>
-
-        </div>
+</select>
 
 
-        <form id="registerForm">
 
-            <label style="display:block;margin-bottom:7px;font-weight:700;">
-                Full Name
-            </label>
-
-            <input
-                type="text"
-                id="fullName"
-                placeholder="Enter your full name"
-                required
-                style="width:100%;padding:14px;margin-bottom:18px;border:1px solid #ddd;border-radius:10px;"
-            >
+<label style="
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+">
+    Password
+</label>
 
 
-            <label style="display:block;margin-bottom:7px;font-weight:700;">
-                Username
-            </label>
-
-            <input
-                type="text"
-                id="username"
-                placeholder="Choose a username"
-                required
-                minlength="3"
-                maxlength="30"
-                style="width:100%;padding:14px;margin-bottom:18px;border:1px solid #ddd;border-radius:10px;"
-            >
+<div style="
+    position:relative;
+    margin-bottom:18px;
+">
 
 
-            <label style="display:block;margin-bottom:7px;font-weight:700;">
-                Email
-            </label>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                required
-                style="width:100%;padding:14px;margin-bottom:18px;border:1px solid #ddd;border-radius:10px;"
-            >
-
-
-            <label style="display:block;margin-bottom:7px;font-weight:700;">
-                Account Type
-            </label>
-
-            <select
-                id="accountType"
-                required
-                style="width:100%;padding:14px;margin-bottom:18px;border:1px solid #ddd;border-radius:10px;background:#fff;"
-            >
-                <option value="viewer">Viewer</option>
-                <option value="streamer">Streamer</option>
-            </select>
+<input
+    type="password"
+    id="password"
+    placeholder="Create a password"
+    autocomplete="new-password"
+    minlength="6"
+    required
+    style="
+        width:100%;
+        padding:14px 50px 14px 14px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        box-sizing:border-box;
+    "
+>
 
 
-            <label style="display:block;margin-bottom:7px;font-weight:700;">
-                Password
-            </label>
-
-            <div style="position:relative;margin-bottom:18px;">
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Create a password"
-                    required
-                    minlength="6"
-                    style="width:100%;padding:14px 50px 14px 14px;border:1px solid #ddd;border-radius:10px;"
-                >
-
-                <button
-                    type="button"
-                    onclick="togglePassword('password', this)"
-                    style="
-                        position:absolute;
-                        right:10px;
-                        top:50%;
-                        transform:translateY(-50%);
-                        border:0;
-                        background:none;
-                        cursor:pointer;
-                    "
-                >
-                    👁
-                </button>
-
-            </div>
+<button
+    type="button"
+    onclick="togglePassword('password', this)"
+    style="
+        position:absolute;
+        right:10px;
+        top:50%;
+        transform:translateY(-50%);
+        border:0;
+        background:none;
+        cursor:pointer;
+        font-size:18px;
+    "
+>
+    👁
+</button>
 
 
-            <label style="display:block;margin-bottom:7px;font-weight:700;">
-                Confirm Password
-            </label>
-
-            <div style="position:relative;margin-bottom:18px;">
-
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Confirm your password"
-                    required
-                    minlength="6"
-                    style="width:100%;padding:14px 50px 14px 14px;border:1px solid #ddd;border-radius:10px;"
-                >
-
-                <button
-                    type="button"
-                    onclick="togglePassword('confirmPassword', this)"
-                    style="
-                        position:absolute;
-                        right:10px;
-                        top:50%;
-                        transform:translateY(-50%);
-                        border:0;
-                        background:none;
-                        cursor:pointer;
-                    "
-                >
-                    👁
-                </button>
-
-            </div>
+</div>
 
 
-            <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:22px;font-size:14px;color:#555;">
 
-                <input
-                    type="checkbox"
-                    id="terms"
-                    required
-                    style="margin-top:4px;"
-                >
-
-                <span>
-                    I agree to the TikTok Streamers terms and conditions.
-                </span>
-
-            </label>
+<label style="
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+">
+    Confirm Password
+</label>
 
 
-            <button
-                type="submit"
-                id="registerButton"
-                class="btn btn-primary"
-                style="width:100%;padding:15px;border:0;border-radius:10px;cursor:pointer;font-size:16px;"
-            >
-                Create Account
-            </button>
-
-        </form>
+<div style="
+    position:relative;
+    margin-bottom:18px;
+">
 
 
-        <div
-            id="registerMessage"
-            style="
-                display:none;
-                margin-top:18px;
-                padding:13px;
-                border-radius:10px;
-                font-size:14px;
-                text-align:center;
-            "
-        ></div>
+<input
+    type="password"
+    id="confirmPassword"
+    placeholder="Confirm your password"
+    autocomplete="new-password"
+    minlength="6"
+    required
+    style="
+        width:100%;
+        padding:14px 50px 14px 14px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        box-sizing:border-box;
+    "
+>
 
 
-        <p style="text-align:center;margin-top:25px;color:#777;">
+<button
+    type="button"
+    onclick="togglePassword('confirmPassword', this)"
+    style="
+        position:absolute;
+        right:10px;
+        top:50%;
+        transform:translateY(-50%);
+        border:0;
+        background:none;
+        cursor:pointer;
+        font-size:18px;
+    "
+>
+    👁
+</button>
 
-            Already have an account?
 
-            <a
-                href="login.html"
-                style="color:#fe2c55;font-weight:700;text-decoration:none;"
-            >
-                Login
-            </a>
+</div>
 
-        </p>
 
-    </section>
+
+<label style="
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-bottom:22px;
+    font-size:14px;
+    color:#555;
+">
+
+
+<input
+    type="checkbox"
+    id="terms"
+    required
+    style="margin-top:4px;"
+>
+
+
+<span>
+    I agree to the TikTok Streamers terms and conditions.
+</span>
+
+
+</label>
+
+
+
+<button
+    type="submit"
+    id="registerButton"
+    class="btn btn-primary"
+    style="
+        width:100%;
+        padding:15px;
+        border:0;
+        border-radius:10px;
+        cursor:pointer;
+        font-size:16px;
+    "
+>
+    Create Account
+</button>
+
+
+</form>
+
+
+
+<div
+    id="registerMessage"
+    style="
+        display:none;
+        margin-top:18px;
+        padding:13px;
+        border-radius:10px;
+        font-size:14px;
+        text-align:center;
+    "
+>
+</div>
+
+
+
+<p style="
+    text-align:center;
+    margin-top:25px;
+    color:#777;
+">
+
+    Already have an account?
+
+    <a
+        href="login.html"
+        style="
+            color:#fe2c55;
+            font-weight:700;
+            text-decoration:none;
+        "
+    >
+        Login
+    </a>
+
+</p>
+
+
+</section>
 
 </main>
 
 
+
 <footer class="site-footer">
 
-    <div class="footer-inner">
 
-        <div>
-            <strong>TikTok Streamers</strong>
+<div class="footer-inner">
 
-            <p>
-                Discover streamers, LIVE creators,
-                and communities.
-            </p>
-        </div>
 
-        <div class="footer-links">
-            <a href="index.html">Home</a>
-            <a href="live.html">LIVE</a>
-            <a href="leaderboard.html">Leaderboard</a>
-        </div>
+<div>
 
-    </div>
+<strong>
+    TikTok Streamers
+</strong>
 
-    <div class="footer-bottom">
-        © 2026 TikTok Streamers. All rights reserved.
-    </div>
+<p>
+    Discover streamers, LIVE creators,
+    and communities.
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="index.html">
+    Home
+</a>
+
+<a href="live.html">
+    LIVE
+</a>
+
+<a href="leaderboard.html">
+    Leaderboard
+</a>
+
+</div>
+
+
+</div>
+
+
+<div class="footer-bottom">
+
+    © 2026 TikTok Streamers.
+    All rights reserved.
+
+</div>
+
 
 </footer>
 
 
+
 <script src="script.js"></script>
+
 
 <script>
 
-    /*
-     * ==========================================
-     * SUPABASE CONFIGURATION
-     * ==========================================
-     *
-     * Replace these two values with the
-     * Project URL and anon/public key from:
-     *
-     * Supabase
-     * → Project Settings
-     * → API
-     *
-     */
 
-    const SUPABASE_URL = "YOUR_SUPABASE_URL";
-    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+// ==========================================
+// SUPABASE
+// ==========================================
 
-    const supabaseClient = window.supabase.createClient(
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraXoAUburIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWlJ4R3s11dRo2rfP82lxWjBWU2DM0eEM";
+
+
+const supabaseClient =
+    window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY
     );
 
 
-    function togglePassword(inputId, button) {
+// ==========================================
+// MESSAGE
+// ==========================================
 
-        const input = document.getElementById(inputId);
+function showRegisterMessage(
+    message,
+    success = false
+) {
 
-        if (input.type === "password") {
-            input.type = "text";
-            button.textContent = "🙈";
-        } else {
-            input.type = "password";
-            button.textContent = "👁";
-        }
+    const box =
+        document.getElementById(
+            "registerMessage"
+        );
+
+
+    box.style.display = "block";
+
+    box.textContent = message;
+
+
+    if (success) {
+
+        box.style.background =
+            "#e9fff3";
+
+        box.style.color =
+            "#087443";
+
+    } else {
+
+        box.style.background =
+            "#fff0f3";
+
+        box.style.color =
+            "#c9184a";
+
     }
 
+}
 
-    function showRegisterMessage(message, success = false) {
 
-        const box = document.getElementById("registerMessage");
+// ==========================================
+// PASSWORD VISIBILITY
+// ==========================================
 
-        box.style.display = "block";
-        box.textContent = message;
+function togglePassword(
+    inputId,
+    button
+) {
 
-        if (success) {
-            box.style.background = "#e9fff3";
-            box.style.color = "#087443";
-        } else {
-            box.style.background = "#fff0f3";
-            box.style.color = "#c9184a";
-        }
+    const input =
+        document.getElementById(
+            inputId
+        );
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "🙈";
+
+    } else {
+
+        input.type = "password";
+
+        button.textContent = "👁";
+
     }
 
+}
 
-    document
-        .getElementById("registerForm")
-        .addEventListener("submit", async function(event) {
+
+// ==========================================
+// REGISTRATION
+// ==========================================
+
+document
+    .getElementById("registerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
 
             event.preventDefault();
 
+
             const button =
-                document.getElementById("registerButton");
+                document.getElementById(
+                    "registerButton"
+                );
+
 
             const fullName =
-                document.getElementById("fullName").value.trim();
+                document
+                    .getElementById("fullName")
+                    .value
+                    .trim();
+
 
             const username =
-                document.getElementById("username").value.trim();
+                document
+                    .getElementById("username")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
 
             const email =
-                document.getElementById("email").value.trim();
+                document
+                    .getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
 
             const accountType =
-                document.getElementById("accountType").value;
+                document
+                    .getElementById("accountType")
+                    .value;
+
 
             const password =
-                document.getElementById("password").value;
+                document
+                    .getElementById("password")
+                    .value;
+
 
             const confirmPassword =
-                document.getElementById("confirmPassword").value;
+                document
+                    .getElementById("confirmPassword")
+                    .value;
 
 
-            if (password !== confirmPassword) {
+
+            // PASSWORD CHECK
+
+            if (
+                password !==
+                confirmPassword
+            ) {
 
                 showRegisterMessage(
                     "Passwords do not match."
@@ -409,38 +741,101 @@
             }
 
 
-            if (username.length < 3) {
+
+            // USERNAME CHECK
+
+            if (
+                !/^[a-zA-Z0-9_]+$/.test(
+                    username
+                )
+            ) {
 
                 showRegisterMessage(
-                    "Username must be at least 3 characters."
+                    "Username can only contain letters, numbers and underscores."
                 );
 
                 return;
             }
 
 
+
             button.disabled = true;
-            button.textContent = "Creating account...";
+
+            button.textContent =
+                "Creating account...";
+
 
 
             try {
 
-                const { data, error } =
-                    await supabaseClient.auth.signUp({
 
-                        email: email,
+                // ==================================
+                // CHECK USERNAME
+                // ==================================
 
-                        password: password,
+                const {
+                    data: existingProfile,
+                    error: usernameError
+                } =
+                    await supabaseClient
+                        .from("profiles")
+                        .select("id")
+                        .eq(
+                            "username",
+                            username
+                        )
+                        .maybeSingle();
 
-                        options: {
-                            data: {
-                                full_name: fullName,
-                                username: username,
-                                account_type: accountType
+
+                if (usernameError) {
+                    throw usernameError;
+                }
+
+
+                if (existingProfile) {
+
+                    throw new Error(
+                        "That username is already taken."
+                    );
+
+                }
+
+
+
+                // ==================================
+                // CREATE AUTH ACCOUNT
+                // ==================================
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .auth
+                        .signUp({
+
+                            email: email,
+
+                            password: password,
+
+                            options: {
+
+                                data: {
+
+                                    full_name:
+                                        fullName,
+
+                                    username:
+                                        username,
+
+                                    account_type:
+                                        accountType
+
+                                }
+
                             }
-                        }
 
-                    });
+                        });
 
 
                 if (error) {
@@ -448,52 +843,146 @@
                 }
 
 
-                if (data.user) {
+                if (!data.user) {
 
-                    showRegisterMessage(
-                        "Account created successfully. Check your email if verification is required.",
-                        true
+                    throw new Error(
+                        "The account could not be created."
                     );
-
-                    document
-                        .getElementById("registerForm")
-                        .reset();
 
                 }
 
+
+
+                // ==================================
+                // CREATE PROFILE
+                // ==================================
+
+                const {
+                    error: profileError
+                } =
+                    await supabaseClient
+                        .from("profiles")
+                        .insert({
+
+                            id: data.user.id,
+
+                            full_name:
+                                fullName,
+
+                            username:
+                                username,
+
+                            account_type:
+                                accountType
+
+                        });
+
+
+                if (profileError) {
+
+                    console.error(
+                        "Profile creation error:",
+                        profileError
+                    );
+
+                    /*
+                     * The Auth account exists,
+                     * but the profile failed.
+                     *
+                     * Do not expose sensitive
+                     * database information.
+                     */
+
+                    throw new Error(
+                        "Your account was created, but your profile could not be completed. Please contact support."
+                    );
+
+                }
+
+
+
+                // ==================================
+                // SUCCESS
+                // ==================================
+
+                showRegisterMessage(
+                    "Account created successfully. Check your email if verification is required.",
+                    true
+                );
+
+
+                document
+                    .getElementById(
+                        "registerForm"
+                    )
+                    .reset();
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    },
+                    1200
+                );
+
+
             } catch (error) {
+
 
                 console.error(
                     "Registration error:",
                     error
                 );
 
+
                 showRegisterMessage(
+
                     error.message ||
                     "Unable to create your account."
+
                 );
+
 
             } finally {
 
+
                 button.disabled = false;
-                button.textContent = "Create Account";
+
+                button.textContent =
+                    "Create Account";
 
             }
 
-        });
+        }
+    );
 
 
-    function toggleMobileMenu() {
+// ==========================================
+// MOBILE MENU
+// ==========================================
 
-        const menu =
-            document.getElementById("mobileMenu");
+function toggleMobileMenu() {
 
-        if (!menu) return;
+    const menu =
+        document.getElementById(
+            "mobileMenu"
+        );
 
-        menu.classList.toggle("active");
-    }
+
+    if (!menu) return;
+
+
+    menu.classList.toggle(
+        "active"
+    );
+
+}
 
 </script>
+
 
 </body>
 </html>
