@@ -1,228 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#111111"
-    >
-
-    <meta
-        name="description"
-        content="TikTok Streamers creator profile."
-    >
-
-    <link
-        rel="manifest"
-        href="manifest.json"
-    >
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
-    <title>Streamer Profile — TikTok Streamers</title>
-
+    <title>Streamer | TikTok Streamers</title>
 
     <style>
-
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             background: #f7f8fa;
             color: #111;
         }
 
-
-        /* =========================================
-           HEADER
-        ========================================== */
-
-        .profile-header {
+        header {
+            height: 64px;
             background: #111;
-            color: #fff;
-            padding: 16px 0;
-        }
-
-        .profile-header-inner {
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 20px;
-
+            color: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .profile-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
+            color: white;
             text-decoration: none;
-            color: #fff;
-
-            font-weight: 900;
         }
 
-        .profile-logo {
-            width: 40px;
-            height: 40px;
+        .logo span {
+            color: #25f4ee;
+        }
 
-            border-radius: 12px;
-
+        nav {
             display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: linear-gradient(
-                135deg,
-                #fe2c55,
-                #111,
-                #25f4ee
-            );
-
-            font-weight: 900;
+            gap: 20px;
         }
 
-        .back-button {
+        nav a {
+            color: #ddd;
             text-decoration: none;
-            color: #fff;
-
-            border: 1px solid #444;
-            padding: 9px 14px;
-
-            border-radius: 10px;
-
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 14px;
         }
 
-
-        /* =========================================
-           PROFILE HERO
-        ========================================== */
-
-        .profile-page {
-            min-height: 100vh;
+        nav a:hover {
+            color: #25f4ee;
         }
 
-        .profile-cover {
-            height: 250px;
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px 18px 60px;
+        }
 
+        .cover {
+            height: 220px;
+            border-radius: 18px;
             background:
-                linear-gradient(
-                    135deg,
-                    #111,
-                    #252525,
-                    #111
-                );
-
+                linear-gradient(135deg, #111, #222, #111);
             position: relative;
-        }
-
-        .profile-cover-pattern {
-            position: absolute;
-            inset: 0;
-
-            background:
-                radial-gradient(
-                    circle at 20% 50%,
-                    rgba(254, 44, 85, .3),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 80% 50%,
-                    rgba(37, 244, 238, .25),
-                    transparent 30%
-                );
-        }
-
-
-        /* =========================================
-           PROFILE CARD
-        ========================================== */
-
-        .profile-container {
-            max-width: 1100px;
-            margin: -80px auto 0;
-
-            padding: 0 20px 60px;
-
-            position: relative;
-            z-index: 2;
-        }
-
-        .profile-card {
-            background: #fff;
-
-            border: 1px solid #e5e5e5;
-
-            border-radius: 22px;
-
-            padding: 30px;
-
-            box-shadow:
-                0 15px 45px rgba(0, 0, 0, .08);
-        }
-
-
-        /* =========================================
-           PROFILE TOP
-        ========================================== */
-
-        .profile-top {
-            display: flex;
-            align-items: flex-start;
-            gap: 25px;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-
-            min-width: 120px;
-
-            border-radius: 50%;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #fe2c55,
-                    #111,
-                    #25f4ee
-                );
-
-            border: 6px solid #fff;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: #fff;
-
-            font-size: 42px;
-            font-weight: 900;
-
-            box-shadow:
-                0 5px 20px rgba(0, 0, 0, .15);
-
             overflow: hidden;
         }
 
-        .profile-avatar img {
+        .cover::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(254, 44, 85, .25),
+                transparent 45%,
+                rgba(37, 244, 238, .18)
+            );
+        }
+
+        .profile-card {
+            background: white;
+            margin-top: -55px;
+            position: relative;
+            z-index: 2;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
+        }
+
+        .profile-top {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #111;
+            border: 5px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 34px;
+            font-weight: 800;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -232,125 +127,56 @@
             flex: 1;
         }
 
-        .profile-name-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
+        .profile-info h1 {
+            font-size: 25px;
             margin-bottom: 5px;
         }
 
-        .profile-name {
-            margin: 0;
-            font-size: 30px;
-        }
-
-        .verified {
-            width: 20px;
-            height: 20px;
-
-            border-radius: 50%;
-
-            background: #25a9f4;
-            color: #fff;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 12px;
-            font-weight: 900;
-        }
-
-        .streamer-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-
-            margin-top: 6px;
-
-            padding: 6px 10px;
-
-            border-radius: 20px;
-
-            background: #fff0f3;
-            color: #fe2c55;
-
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .profile-username {
-            margin: 0 0 12px;
-
+        .username {
             color: #777;
-
-            font-size: 15px;
+            margin-bottom: 8px;
         }
 
-        .profile-bio {
-            color: #666;
-
-            max-width: 650px;
-
-            line-height: 1.6;
-
-            margin: 0;
+        .bio {
+            color: #555;
+            line-height: 1.5;
         }
 
-
-        /* =========================================
-           ACTIONS
-        ========================================== */
-
-        .profile-actions {
+        .actions {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
-
+            flex-wrap: wrap;
             margin-top: 20px;
         }
 
-        .follow-button,
-        .message-button,
-        .streamer-button,
-        .live-button,
-        .end-live-button {
-
-            border: 0;
-
-            border-radius: 11px;
-
-            padding: 12px 22px;
-
+        button {
+            border: none;
             cursor: pointer;
-
-            font-weight: 800;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-weight: 700;
+            font-size: 14px;
         }
 
-        .follow-button {
+        .primary {
             background: #fe2c55;
-            color: #fff;
+            color: white;
         }
 
-        .message-button {
+        .secondary {
             background: #111;
-            color: #fff;
+            color: white;
         }
 
-        .streamer-button {
-            background: #25f4ee;
+        .danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .outline {
+            background: white;
             color: #111;
-        }
-
-        .live-button {
-            background: #fe2c55;
-            color: #fff;
-        }
-
-        .end-live-button {
-            background: #111;
-            color: #fff;
+            border: 1px solid #ddd;
         }
 
         button:disabled {
@@ -358,695 +184,425 @@
             cursor: not-allowed;
         }
 
-
-        /* =========================================
-           STREAMER CONTROL
-        ========================================== */
-
-        .streamer-control {
-
-            display: none;
-
-            margin-top: 20px;
-
-            padding: 18px;
-
-            border-radius: 15px;
-
-            background: #f7f8fa;
-
-            border: 1px solid #e5e5e5;
-        }
-
-        .streamer-control h3 {
-            margin: 0 0 7px;
-            font-size: 16px;
-        }
-
-        .streamer-control p {
-            margin: 0 0 15px;
-            color: #777;
-            font-size: 13px;
-        }
-
-        .live-room {
-            display: none;
-
-            margin-top: 12px;
-
-            padding: 10px 12px;
-
-            background: #fff;
-
-            border: 1px solid #ddd;
-
-            border-radius: 10px;
-
-            font-size: 12px;
-
-            word-break: break-all;
-        }
-
-
-        /* =========================================
-           STATS
-        ========================================== */
-
-        .profile-stats {
-
+        .stats {
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
-
-            margin-top: 28px;
-
-            padding-top: 25px;
-
-            border-top: 1px solid #eee;
+            margin-top: 24px;
         }
 
-        .profile-stat {
+        .stat {
+            background: #f7f8fa;
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
         }
 
-        .profile-stat strong {
+        .stat strong {
             display: block;
-
-            font-size: 23px;
-
+            font-size: 22px;
             margin-bottom: 5px;
         }
 
-        .profile-stat span {
-            color: #888;
-
-            font-size: 12px;
+        .stat span {
+            color: #777;
+            font-size: 13px;
         }
 
-
-        /* =========================================
-           CONTENT
-        ========================================== */
-
-        .profile-content {
-            max-width: 1100px;
-
-            margin: 25px auto 0;
-
-            padding: 0 20px 60px;
+        .section {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.05);
         }
 
-        .content-card {
-            background: #fff;
+        .section h2 {
+            margin-bottom: 8px;
+        }
 
-            border: 1px solid #e5e5e5;
+        .section-description {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
 
-            border-radius: 20px;
+        .camera-box {
+            background: #050505;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            padding: 25px;
+        #cameraPreview {
+            width: 100%;
+            max-height: 520px;
+            display: none;
+            object-fit: cover;
+            background: #000;
+        }
 
+        .camera-placeholder {
+            color: #aaa;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .camera-placeholder .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .status {
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .status.live {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status.ready {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px 20px;
+            color: #777;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #111;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            display: none;
+            z-index: 999;
+            max-width: 320px;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .login-required {
+            text-align: center;
+            background: white;
+            padding: 60px 20px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.05);
+        }
+
+        .login-required h2 {
+            margin-bottom: 10px;
+        }
+
+        .login-required p {
+            color: #777;
             margin-bottom: 20px;
         }
 
-        .content-card h2 {
-            margin: 0 0 18px;
-
-            font-size: 20px;
-        }
-
-
-        /* =========================================
-           EMPTY CONTENT
-        ========================================== */
-
-        .empty-profile {
-
-            min-height: 240px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-direction: column;
-
-            text-align: center;
-
-            padding: 30px;
-        }
-
-        .empty-profile-icon {
-
-            width: 70px;
-            height: 70px;
-
-            border-radius: 20px;
-
-            background: #f1f1f1;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 30px;
-
-            margin-bottom: 15px;
-        }
-
-        .empty-profile h3 {
-            margin: 0 0 8px;
-        }
-
-        .empty-profile p {
-
-            color: #888;
-
-            max-width: 450px;
-
-            line-height: 1.6;
-
-            margin: 0;
-        }
-
-
-        /* =========================================
-           LIVE AREA
-        ========================================== */
-
-        .live-status {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            padding: 7px 11px;
-
-            background: #f3f3f3;
-
-            border-radius: 20px;
-
-            color: #777;
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-        .live-status.online {
-            background: #fff0f3;
-            color: #fe2c55;
-        }
-
-        .live-dot {
-
-            width: 8px;
-            height: 8px;
-
-            border-radius: 50%;
-
-            background: #888;
-        }
-
-        .live-status.online .live-dot {
-            background: #fe2c55;
-        }
-
-
-        /* =========================================
-           TOAST
-        ========================================== */
-
-        .toast {
-
-            position: fixed;
-
-            left: 50%;
-            bottom: 25px;
-
-            transform: translateX(-50%);
-
-            background: #111;
-
-            color: #fff;
-
-            padding: 12px 18px;
-
-            border-radius: 12px;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            opacity: 0;
-
-            pointer-events: none;
-
-            transition: .25s;
-
-            z-index: 9999;
-        }
-
-        .toast.show {
-            opacity: 1;
-        }
-
-
-        /* =========================================
-           RESPONSIVE
-        ========================================== */
-
         @media (max-width: 700px) {
-
-            .profile-cover {
-                height: 200px;
-            }
-
-            .profile-container {
-                margin-top: -60px;
-            }
-
-            .profile-card {
-                padding: 22px;
-            }
-
-            .profile-top {
-                flex-direction: column;
-                align-items: center;
-
-                text-align: center;
-            }
-
-            .profile-info {
-                width: 100%;
-            }
-
-            .profile-name-row {
-                justify-content: center;
-            }
-
-            .profile-actions {
-                justify-content: center;
-            }
-
-            .profile-bio {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .profile-stats {
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-                row-gap: 22px;
-            }
-
-        }
-
-
-        @media (max-width: 430px) {
-
-            .profile-header-inner {
+            header {
                 padding: 0 15px;
             }
 
-            .profile-brand span {
+            nav {
                 display: none;
             }
 
-            .profile-container,
-            .profile-content {
-                padding-left: 12px;
-                padding-right: 12px;
+            main {
+                padding: 18px 12px 40px;
             }
 
-            .profile-name {
-                font-size: 25px;
+            .cover {
+                height: 160px;
             }
 
+            .profile-top {
+                align-items: flex-start;
+            }
+
+            .avatar {
+                width: 78px;
+                height: 78px;
+                font-size: 26px;
+            }
+
+            .profile-info h1 {
+                font-size: 20px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section {
+                padding: 18px;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+<header>
+    <a href="index.html" class="logo">
+        TikTok <span>Streamers</span>
+    </a>
 
-<div class="profile-page">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="live.html">LIVE</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="profile.html">Profile</a>
+    </nav>
+</header>
 
+<main id="mainContent">
 
-    <header class="profile-header">
-
-        <div class="profile-header-inner">
-
-            <a
-                href="index.html"
-                class="profile-brand"
-            >
-
-                <div class="profile-logo">
-                    TS
-                </div>
-
-                <span>
-                    TikTok Streamers
-                </span>
-
-            </a>
-
-
-            <a
-                href="index.html"
-                class="back-button"
-            >
-                ← Back
-            </a>
-
-        </div>
-
-    </header>
-
-
-    <div class="profile-cover">
-
-        <div class="profile-cover-pattern"></div>
-
+    <div class="login-required" id="loginRequired" style="display:none;">
+        <h2>Login Required</h2>
+        <p>You need to log in before accessing your streamer dashboard.</p>
+        <a href="login.html">
+            <button class="primary">Login</button>
+        </a>
     </div>
 
+    <div id="streamerContent" style="display:none;">
 
-    <div class="profile-container">
+        <div class="cover"></div>
 
         <section class="profile-card">
 
-
             <div class="profile-top">
 
-
-                <div
-                    class="profile-avatar"
-                    id="profileAvatar"
-                >
+                <div class="avatar" id="avatar">
                     ?
                 </div>
 
-
                 <div class="profile-info">
-
-                    <div class="profile-name-row">
-
-                        <h1
-                            class="profile-name"
-                            id="profileName"
-                        >
-                            Loading...
-                        </h1>
-
+                    <h1 id="fullName">Loading...</h1>
+                    <div class="username" id="username">@loading</div>
+                    <div class="bio" id="bio">
+                        No bio yet.
                     </div>
-
-
-                    <p
-                        class="profile-username"
-                        id="profileUsername"
-                    >
-                        Loading profile...
-                    </p>
-
-
-                    <div
-                        id="streamerBadge"
-                        class="streamer-badge"
-                        style="display:none;"
-                    >
-                        🎥 Streamer
-                    </div>
-
-
-                    <p
-                        class="profile-bio"
-                        id="profileBio"
-                        style="margin-top:10px;"
-                    >
-                        Loading profile information...
-                    </p>
-
-
-                    <div
-                        class="profile-actions"
-                        id="profileActions"
-                    >
-
-                    </div>
-
-
-                    <div
-                        class="streamer-control"
-                        id="streamerControl"
-                    >
-
-                        <h3>
-                            Streamer Controls
-                        </h3>
-
-                        <p id="streamerControlText">
-                            Your streaming controls will appear here.
-                        </p>
-
-                        <button
-                            class="live-button"
-                            id="goLiveButton"
-                            onclick="goLive()"
-                        >
-                            🔴 Go LIVE
-                        </button>
-
-                        <button
-                            class="end-live-button"
-                            id="endLiveButton"
-                            onclick="endLive()"
-                            style="display:none;"
-                        >
-                            End LIVE
-                        </button>
-
-                        <div
-                            class="live-room"
-                            id="liveRoom"
-                        ></div>
-
-                    </div>
-
                 </div>
 
             </div>
 
+            <div class="actions">
 
-            <div class="profile-stats">
+                <button
+                    class="primary"
+                    id="becomeStreamerBtn"
+                    onclick="becomeStreamer()"
+                >
+                    Become a Streamer
+                </button>
 
+                <button
+                    class="secondary"
+                    id="startLiveBtn"
+                    onclick="startCameraAndLive()"
+                    style="display:none;"
+                >
+                    🎥 Start LIVE
+                </button>
 
-                <div class="profile-stat">
+                <button
+                    class="danger"
+                    id="endLiveBtn"
+                    onclick="endLive()"
+                    style="display:none;"
+                >
+                    ⛔ End LIVE
+                </button>
 
-                    <strong id="followersCount">
-                        0
-                    </strong>
+            </div>
 
-                    <span>
-                        Followers
-                    </span>
+            <div class="stats">
 
+                <div class="stat">
+                    <strong id="followers">0</strong>
+                    <span>Followers</span>
                 </div>
 
-
-                <div class="profile-stat">
-
-                    <strong id="followingCount">
-                        0
-                    </strong>
-
-                    <span>
-                        Following
-                    </span>
-
+                <div class="stat">
+                    <strong id="following">0</strong>
+                    <span>Following</span>
                 </div>
 
-
-                <div class="profile-stat">
-
-                    <strong>
-                        0
-                    </strong>
-
-                    <span>
-                        Likes
-                    </span>
-
+                <div class="stat">
+                    <strong id="likes">0</strong>
+                    <span>Likes</span>
                 </div>
 
-
-                <div class="profile-stat">
-
-                    <strong>
-                        0
-                    </strong>
-
-                    <span>
-                        Gifts
-                    </span>
-
+                <div class="stat">
+                    <strong id="views">0</strong>
+                    <span>Views</span>
                 </div>
 
             </div>
 
         </section>
 
-    </div>
+        <!-- CAMERA / MICROPHONE -->
+        <section class="section">
 
+            <h2>LIVE Studio</h2>
 
-    <div class="profile-content">
+            <p class="section-description">
+                Test your camera and microphone before starting your LIVE stream.
+            </p>
 
+            <div class="camera-box">
 
-        <section class="content-card">
+                <video
+                    id="cameraPreview"
+                    autoplay
+                    muted
+                    playsinline
+                ></video>
 
-            <div
-                style="
-                    display:flex;
-                    align-items:center;
-                    justify-content:space-between;
-                    gap:10px;
-                    margin-bottom:18px;
-                "
-            >
-
-                <h2>
-                    LIVE
-                </h2>
-
-                <span
-                    class="live-status"
-                    id="liveStatus"
+                <div
+                    class="camera-placeholder"
+                    id="cameraPlaceholder"
                 >
-
-                    <span class="live-dot"></span>
-
-                    OFFLINE
-
-                </span>
+                    <div class="icon">🎥</div>
+                    <div>Camera preview is off.</div>
+                </div>
 
             </div>
 
+            <div class="camera-controls">
+
+                <button
+                    class="secondary"
+                    id="cameraBtn"
+                    onclick="toggleCamera()"
+                >
+                    🎥 Turn On Camera
+                </button>
+
+                <button
+                    class="secondary"
+                    id="micBtn"
+                    onclick="toggleMicrophone()"
+                >
+                    🎙️ Turn On Microphone
+                </button>
+
+            </div>
 
             <div
-                class="empty-profile"
+                class="status"
+                id="cameraStatus"
+            >
+                Camera and microphone are not active.
+            </div>
+
+        </section>
+
+        <!-- LIVE STATUS -->
+        <section class="section">
+
+            <h2>LIVE Status</h2>
+
+            <div
+                class="status"
+                id="liveStatus"
+            >
+                You are currently offline.
+            </div>
+
+            <div
+                class="status"
+                id="roomStatus"
+                style="display:none;"
+            ></div>
+
+        </section>
+
+        <!-- LIVE CONTENT -->
+        <section class="section">
+
+            <h2>LIVE</h2>
+
+            <div
+                class="empty"
                 id="liveContent"
             >
-
-                <div class="empty-profile-icon">
-                    🔴
-                </div>
-
-                <h3>
-                    Not LIVE
-                </h3>
-
-                <p>
-                    This streamer is not currently
-                    broadcasting.
-                </p>
-
+                <div class="empty-icon">📺</div>
+                <div>No LIVE sessions yet.</div>
             </div>
 
         </section>
 
+        <!-- VIDEOS -->
+        <section class="section">
 
-        <section class="content-card">
+            <h2>Videos</h2>
 
-            <h2>
-                Videos
-            </h2>
-
-
-            <div class="empty-profile">
-
-                <div class="empty-profile-icon">
-                    🎬
-                </div>
-
-                <h3>
-                    No videos yet
-                </h3>
-
-                <p>
-                    Videos uploaded by this streamer
-                    will appear here.
-                </p>
-
+            <div class="empty">
+                <div class="empty-icon">🎬</div>
+                <div>No videos yet.</div>
             </div>
 
         </section>
 
+        <!-- BATTLES -->
+        <section class="section">
 
-        <section class="content-card">
+            <h2>Battles</h2>
 
-            <h2>
-                Battles
-            </h2>
-
-
-            <div class="empty-profile">
-
-                <div class="empty-profile-icon">
-                    ⚔️
-                </div>
-
-                <h3>
-                    No battles yet
-                </h3>
-
-                <p>
-                    Streamer battles and results will
-                    appear here after real activity.
-                </p>
-
+            <div class="empty">
+                <div class="empty-icon">⚔️</div>
+                <div>No battles yet.</div>
             </div>
 
         </section>
 
     </div>
 
-</div>
+</main>
 
-
-<div
-    class="toast"
-    id="toast"
-></div>
-
-
-<!-- SUPABASE -->
+<div class="message" id="message"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
-
-
-/* =========================================
-   SUPABASE
-========================================= */
-
 const SUPABASE_URL =
     "https://malrwexkhekripoaubur.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb3F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -1061,129 +617,62 @@ const supabaseClient =
         }
     );
 
+let currentUser = null;
+let currentProfile = null;
+let currentStream = null;
 
-/* =========================================
-   HELPERS
-========================================= */
+let mediaStream = null;
+let cameraEnabled = false;
+let microphoneEnabled = false;
 
-function showToast(message) {
 
-    const toast =
-        document.getElementById("toast");
+/* =========================
+   MESSAGE
+========================= */
 
-    toast.textContent = message;
+function showMessage(text) {
 
-    toast.classList.add("show");
+    const box = document.getElementById("message");
+
+    box.textContent = text;
+    box.classList.add("show");
 
     setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    }, 3000);
+        box.classList.remove("show");
+    }, 3500);
 }
 
 
-function getInitials(name) {
+/* =========================
+   INITIALIZE
+========================= */
 
-    if (!name) return "?";
-
-    const parts =
-        name.trim().split(/\s+/);
-
-    if (parts.length === 1) {
-        return parts[0]
-            .substring(0, 2)
-            .toUpperCase();
-    }
-
-    return (
-        parts[0][0] +
-        parts[parts.length - 1][0]
-    ).toUpperCase();
-}
-
-
-function generateRoomId() {
-
-    if (
-        window.crypto &&
-        crypto.randomUUID
-    ) {
-        return crypto.randomUUID();
-    }
-
-    return (
-        "room-" +
-        Date.now() +
-        "-" +
-        Math.random()
-            .toString(36)
-            .substring(2, 10)
-    );
-}
-
-
-/* =========================================
-   GLOBAL STATE
-========================================= */
-
-let currentUser = null;
-let profileUser = null;
-let activeLiveStream = null;
-
-
-/* =========================================
-   LOAD PROFILE
-========================================= */
-
-async function loadProfile() {
+async function initialize() {
 
     const {
         data: {
-            user
+            session
         }
-    } = await supabaseClient
-        .auth
-        .getUser();
+    } = await supabaseClient.auth.getSession();
 
-    currentUser = user;
+    if (!session || !session.user) {
 
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-    const requestedId =
-        params.get("id");
-
-    let profileId =
-        requestedId || (
-            currentUser
-                ? currentUser.id
-                : null
-        );
-
-
-    if (!profileId) {
-
-        document.getElementById(
-            "profileName"
-        ).textContent =
-            "No Streamer";
-
-        document.getElementById(
-            "profileUsername"
-        ).textContent =
-            "No profile selected";
-
-        document.getElementById(
-            "profileBio"
-        ).textContent =
-            "Log in to view your profile.";
+        document.getElementById("loginRequired").style.display = "block";
 
         return;
     }
 
+    currentUser = session.user;
+
+    await loadProfile();
+}
+
+
+/* =========================
+   LOAD PROFILE
+========================= */
+
+async function loadProfile() {
 
     const {
         data,
@@ -1201,718 +690,469 @@ async function loadProfile() {
             following_count,
             is_live
         `)
-        .eq("id", profileId)
-        .maybeSingle();
-
+        .eq("id", currentUser.id)
+        .single();
 
     if (error) {
 
         console.error(error);
 
-        showToast(
-            "Unable to load profile."
+        showMessage(
+            "Unable to load your profile."
         );
 
         return;
     }
 
+    currentProfile = data;
 
-    if (!data) {
+    document.getElementById("streamerContent")
+        .style.display = "block";
 
-        document.getElementById(
-            "profileName"
-        ).textContent =
-            "Profile not found";
+    displayProfile();
 
-        document.getElementById(
-            "profileUsername"
-        ).textContent =
-            "No profile available";
+    updateStreamerControls();
 
-        document.getElementById(
-            "profileBio"
-        ).textContent =
-            "This profile does not exist.";
-
-        return;
-    }
-
-
-    profileUser = data;
-
-    renderProfile();
-
-    await loadFollowCounts();
-
-    await loadLiveStatus();
-
-    if (
-        currentUser &&
-        currentUser.id === profileUser.id
-    ) {
-
-        setupOwnProfile();
-
-    } else {
-
-        setupPublicProfile();
-
-    }
+    await loadCurrentLiveStream();
 }
 
 
-/* =========================================
-   RENDER PROFILE
-========================================= */
+/* =========================
+   DISPLAY PROFILE
+========================= */
 
-function renderProfile() {
+function displayProfile() {
 
     const name =
-        profileUser.full_name ||
-        "Unnamed User";
+        currentProfile.full_name ||
+        "User";
 
     const username =
-        profileUser.username
-            ? "@" + profileUser.username
-            : "No username";
+        currentProfile.username ||
+        "user";
 
-    document.getElementById(
-        "profileName"
-    ).textContent = name;
+    document.getElementById("fullName")
+        .textContent = name;
 
-    document.getElementById(
-        "profileUsername"
-    ).textContent = username;
+    document.getElementById("username")
+        .textContent = "@" + username;
 
+    document.getElementById("bio")
+        .textContent =
+            currentProfile.bio ||
+            "No bio yet.";
 
-    document.getElementById(
-        "profileBio"
-    ).textContent =
-        profileUser.bio ||
-        "No bio has been added yet.";
+    document.getElementById("followers")
+        .textContent =
+            currentProfile.followers_count || 0;
 
+    document.getElementById("following")
+        .textContent =
+            currentProfile.following_count || 0;
 
     const avatar =
-        document.getElementById(
-            "profileAvatar"
-        );
+        document.getElementById("avatar");
 
-
-    if (profileUser.avatar_url) {
+    if (currentProfile.avatar_url) {
 
         avatar.innerHTML =
-            `<img src="${profileUser.avatar_url}" alt="Profile photo">`;
+            `<img src="${escapeHtml(currentProfile.avatar_url)}"
+                  alt="Profile photo">`;
 
     } else {
 
-        avatar.textContent =
-            getInitials(name);
+        const letter =
+            name.charAt(0).toUpperCase() || "?";
 
+        avatar.textContent = letter;
     }
+}
 
+
+/* =========================
+   STREAMER CONTROLS
+========================= */
+
+function updateStreamerControls() {
+
+    const becomeButton =
+        document.getElementById(
+            "becomeStreamerBtn"
+        );
+
+    const startButton =
+        document.getElementById(
+            "startLiveBtn"
+        );
+
+    const endButton =
+        document.getElementById(
+            "endLiveBtn"
+        );
 
     if (
-        profileUser.account_type ===
+        currentProfile.account_type ===
         "streamer"
     ) {
 
-        document.getElementById(
-            "streamerBadge"
-        ).style.display =
-            "inline-flex";
+        becomeButton.style.display = "none";
 
-    }
+        if (currentProfile.is_live) {
 
-}
-
-
-/* =========================================
-   FOLLOW COUNTS
-========================================= */
-
-async function loadFollowCounts() {
-
-    if (!profileUser) return;
-
-
-    const {
-        count: followers,
-        error: followersError
-    } = await supabaseClient
-        .from("follows")
-        .select("*", {
-            count: "exact",
-            head: true
-        })
-        .eq(
-            "following_id",
-            profileUser.id
-        );
-
-
-    if (!followersError) {
-
-        document.getElementById(
-            "followersCount"
-        ).textContent =
-            followers || 0;
-
-    }
-
-
-    const {
-        count: following,
-        error: followingError
-    } = await supabaseClient
-        .from("follows")
-        .select("*", {
-            count: "exact",
-            head: true
-        })
-        .eq(
-            "follower_id",
-            profileUser.id
-        );
-
-
-    if (!followingError) {
-
-        document.getElementById(
-            "followingCount"
-        ).textContent =
-            following || 0;
-
-    }
-}
-
-
-/* =========================================
-   OWN PROFILE
-========================================= */
-
-function setupOwnProfile() {
-
-    const actions =
-        document.getElementById(
-            "profileActions"
-        );
-
-    actions.innerHTML = "";
-
-
-    const settingsButton =
-        document.createElement("button");
-
-    settingsButton.className =
-        "message-button";
-
-    settingsButton.textContent =
-        "⚙ Settings";
-
-    settingsButton.onclick = () => {
-
-        window.location.href =
-            "settings.html";
-
-    };
-
-    actions.appendChild(
-        settingsButton
-    );
-
-
-    const logoutButton =
-        document.createElement("button");
-
-    logoutButton.className =
-        "follow-button";
-
-    logoutButton.textContent =
-        "Logout";
-
-    logoutButton.onclick =
-        logoutUser;
-
-    actions.appendChild(
-        logoutButton
-    );
-
-
-    const control =
-        document.getElementById(
-            "streamerControl"
-        );
-
-
-    if (
-        profileUser.account_type ===
-        "streamer"
-    ) {
-
-        control.style.display =
-            "block";
-
-        document.getElementById(
-            "streamerControlText"
-        ).textContent =
-            "You are registered as a streamer. You can start or end a LIVE stream.";
-
-    } else {
-
-        control.style.display =
-            "block";
-
-        document.getElementById(
-            "streamerControlText"
-        ).textContent =
-            "Become a streamer to start broadcasting LIVE.";
-
-        document.getElementById(
-            "goLiveButton"
-        ).textContent =
-            "🎥 Become a Streamer";
-
-        document.getElementById(
-            "goLiveButton"
-        ).onclick =
-            becomeStreamer;
-
-    }
-
-}
-
-
-/* =========================================
-   PUBLIC PROFILE
-========================================= */
-
-async function setupPublicProfile() {
-
-    const actions =
-        document.getElementById(
-            "profileActions"
-        );
-
-    actions.innerHTML = "";
-
-
-    if (!currentUser) {
-
-        const loginButton =
-            document.createElement("button");
-
-        loginButton.className =
-            "follow-button";
-
-        loginButton.textContent =
-            "Login to Follow";
-
-        loginButton.onclick = () => {
-
-            window.location.href =
-                "login.html";
-
-        };
-
-        actions.appendChild(
-            loginButton
-        );
-
-        return;
-    }
-
-
-    const followButton =
-        document.createElement("button");
-
-    followButton.className =
-        "follow-button";
-
-    followButton.textContent =
-        "Checking...";
-
-    followButton.disabled =
-        true;
-
-    actions.appendChild(
-        followButton
-    );
-
-
-    const messageButton =
-        document.createElement("button");
-
-    messageButton.className =
-        "message-button";
-
-    messageButton.textContent =
-        "Message";
-
-    messageButton.onclick =
-        messageStreamer;
-
-    actions.appendChild(
-        messageButton
-    );
-
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .from("follows")
-        .select("follower_id")
-        .eq(
-            "follower_id",
-            currentUser.id
-        )
-        .eq(
-            "following_id",
-            profileUser.id
-        )
-        .maybeSingle();
-
-
-    if (error) {
-
-        console.error(error);
-
-        followButton.textContent =
-            "Follow";
-
-        followButton.disabled =
-            false;
-
-        followButton.onclick =
-            followStreamer;
-
-        return;
-    }
-
-
-    if (data) {
-
-        followButton.textContent =
-            "Following";
-
-        followButton.disabled =
-            false;
-
-        followButton.onclick =
-            unfollowStreamer;
-
-    } else {
-
-        followButton.textContent =
-            "Follow";
-
-        followButton.disabled =
-            false;
-
-        followButton.onclick =
-            followStreamer;
-
-    }
-
-}
-
-
-/* =========================================
-   FOLLOW
-========================================= */
-
-async function followStreamer() {
-
-    if (!currentUser) {
-
-        window.location.href =
-            "login.html";
-
-        return;
-    }
-
-
-    if (!profileUser) return;
-
-
-    const {
-        error
-    } = await supabaseClient
-        .from("follows")
-        .insert({
-            follower_id:
-                currentUser.id,
-
-            following_id:
-                profileUser.id
-        });
-
-
-    if (error) {
-
-        if (
-            error.code === "23505"
-        ) {
-
-            showToast(
-                "You are already following this user."
-            );
+            startButton.style.display = "none";
+            endButton.style.display = "inline-block";
 
         } else {
 
-            console.error(error);
-
-            showToast(
-                "Unable to follow this user."
-            );
-
+            startButton.style.display = "inline-block";
+            endButton.style.display = "none";
         }
 
-        return;
+    } else {
+
+        becomeButton.style.display = "inline-block";
+
+        startButton.style.display = "none";
+        endButton.style.display = "none";
     }
-
-
-    showToast(
-        "Following successfully."
-    );
-
-    await loadFollowCounts();
-
-    await setupPublicProfile();
 }
 
 
-/* =========================================
-   UNFOLLOW
-========================================= */
-
-async function unfollowStreamer() {
-
-    if (!currentUser ||
-        !profileUser) {
-        return;
-    }
-
-
-    const {
-        error
-    } = await supabaseClient
-        .from("follows")
-        .delete()
-        .eq(
-            "follower_id",
-            currentUser.id
-        )
-        .eq(
-            "following_id",
-            profileUser.id
-        );
-
-
-    if (error) {
-
-        console.error(error);
-
-        showToast(
-            "Unable to unfollow."
-        );
-
-        return;
-    }
-
-
-    showToast(
-        "Unfollowed."
-    );
-
-    await loadFollowCounts();
-
-    await setupPublicProfile();
-}
-
-
-/* =========================================
-   MESSAGE
-========================================= */
-
-async function messageStreamer() {
-
-    if (!currentUser) {
-
-        window.location.href =
-            "login.html";
-
-        return;
-    }
-
-
-    if (!profileUser) return;
-
-
-    if (
-        currentUser.id ===
-        profileUser.id
-    ) {
-
-        showToast(
-            "You cannot message yourself."
-        );
-
-        return;
-    }
-
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .rpc(
-            "get_or_create_conversation",
-            {
-                other_user_id:
-                    profileUser.id
-            }
-        );
-
-
-    if (error) {
-
-        console.error(error);
-
-        showToast(
-            "Unable to open conversation."
-        );
-
-        return;
-    }
-
-
-    window.location.href =
-        "messages.html?conversation=" +
-        encodeURIComponent(data);
-}
-
-
-/* =========================================
-   BECOME A STREAMER
-========================================= */
+/* =========================
+   BECOME STREAMER
+========================= */
 
 async function becomeStreamer() {
 
     if (!currentUser) {
 
-        window.location.href =
-            "login.html";
+        showMessage("Please log in first.");
 
         return;
     }
 
-
     const button =
         document.getElementById(
-            "goLiveButton"
+            "becomeStreamerBtn"
         );
 
     button.disabled = true;
 
     button.textContent =
-        "Creating streamer account...";
-
+        "Setting up...";
 
     const {
         error
-    } = await supabaseClient
-        .rpc(
-            "become_streamer"
-        );
-
+    } = await supabaseClient.rpc(
+        "become_streamer"
+    );
 
     if (error) {
 
         console.error(error);
 
-        button.disabled =
-            false;
-
-        button.textContent =
-            "🎥 Become a Streamer";
-
-        showToast(
+        showMessage(
+            error.message ||
             "Unable to become a streamer."
         );
 
+        button.disabled = false;
+
+        button.textContent =
+            "Become a Streamer";
+
         return;
     }
 
+    currentProfile.account_type =
+        "streamer";
 
-    showToast(
+    showMessage(
         "You are now a streamer!"
     );
 
-
-    setTimeout(() => {
-
-        window.location.reload();
-
-    }, 800);
+    updateStreamerControls();
 }
 
 
-/* =========================================
-   GO LIVE
-========================================= */
+/* =========================
+   CAMERA
+========================= */
 
-async function goLive() {
+async function toggleCamera() {
 
-    if (!currentUser) {
+    if (cameraEnabled) {
 
-        window.location.href =
-            "login.html";
+        stopCamera();
 
         return;
     }
 
+    try {
 
-    if (
-        !profileUser ||
-        profileUser.id !== currentUser.id
-    ) {
+        await startMediaStream(true);
 
-        showToast(
-            "Only your own account can start LIVE."
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Camera permission was not granted."
+        );
+    }
+}
+
+
+/* =========================
+   MICROPHONE
+========================= */
+
+async function toggleMicrophone() {
+
+    if (microphoneEnabled) {
+
+        if (mediaStream) {
+
+            mediaStream
+                .getAudioTracks()
+                .forEach(track => {
+                    track.stop();
+                });
+        }
+
+        microphoneEnabled = false;
+
+        updateMediaUI();
+
+        return;
+    }
+
+    try {
+
+        await startMediaStream(
+            cameraEnabled
         );
 
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Microphone permission was not granted."
+        );
+    }
+}
+
+
+/* =========================
+   START MEDIA STREAM
+========================= */
+
+async function startMediaStream(
+    wantCamera
+) {
+
+    if (mediaStream) {
+
+        mediaStream
+            .getTracks()
+            .forEach(track => track.stop());
+    }
+
+    mediaStream =
+        await navigator.mediaDevices
+            .getUserMedia({
+                video: wantCamera,
+                audio: true
+            });
+
+    const videoTrack =
+        mediaStream.getVideoTracks()[0];
+
+    const audioTrack =
+        mediaStream.getAudioTracks()[0];
+
+    cameraEnabled =
+        !!videoTrack;
+
+    microphoneEnabled =
+        !!audioTrack;
+
+    const video =
+        document.getElementById(
+            "cameraPreview"
+        );
+
+    if (cameraEnabled) {
+
+        video.srcObject = mediaStream;
+
+        video.style.display = "block";
+
+        document.getElementById(
+            "cameraPlaceholder"
+        ).style.display = "none";
+    }
+
+    updateMediaUI();
+}
+
+
+/* =========================
+   STOP CAMERA
+========================= */
+
+function stopCamera() {
+
+    if (!mediaStream) {
+
         return;
     }
 
+    mediaStream
+        .getVideoTracks()
+        .forEach(track => {
+            track.stop();
+        });
+
+    cameraEnabled = false;
+
+    const video =
+        document.getElementById(
+            "cameraPreview"
+        );
+
+    video.srcObject = null;
+
+    video.style.display = "none";
+
+    document.getElementById(
+        "cameraPlaceholder"
+    ).style.display = "block";
+
+    updateMediaUI();
+}
+
+
+/* =========================
+   MEDIA UI
+========================= */
+
+function updateMediaUI() {
+
+    const cameraButton =
+        document.getElementById(
+            "cameraBtn"
+        );
+
+    const micButton =
+        document.getElementById(
+            "micBtn"
+        );
+
+    const status =
+        document.getElementById(
+            "cameraStatus"
+        );
+
+    cameraButton.textContent =
+        cameraEnabled
+            ? "⛔ Turn Off Camera"
+            : "🎥 Turn On Camera";
+
+    micButton.textContent =
+        microphoneEnabled
+            ? "⛔ Turn Off Microphone"
+            : "🎙️ Turn On Microphone";
 
     if (
-        profileUser.account_type !==
+        cameraEnabled &&
+        microphoneEnabled
+    ) {
+
+        status.textContent =
+            "Camera and microphone are active.";
+
+        status.className =
+            "status ready";
+
+    } else if (cameraEnabled) {
+
+        status.textContent =
+            "Camera is active. Microphone is off.";
+
+        status.className =
+            "status ready";
+
+    } else if (microphoneEnabled) {
+
+        status.textContent =
+            "Microphone is active. Camera is off.";
+
+        status.className =
+            "status ready";
+
+    } else {
+
+        status.textContent =
+            "Camera and microphone are not active.";
+
+        status.className =
+            "status";
+    }
+}
+
+
+/* =========================
+   START LIVE
+========================= */
+
+async function startCameraAndLive() {
+
+    if (
+        currentProfile.account_type !==
         "streamer"
     ) {
 
-        showToast(
+        showMessage(
             "Become a streamer first."
         );
 
         return;
     }
 
+    if (!cameraEnabled || !microphoneEnabled) {
 
-    const button =
-        document.getElementById(
-            "goLiveButton"
+        try {
+
+            await startMediaStream(true);
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Please allow camera and microphone access first."
+            );
+
+            return;
+        }
+    }
+
+    if (
+        !cameraEnabled ||
+        !microphoneEnabled
+    ) {
+
+        showMessage(
+            "Camera and microphone are required."
         );
 
-    button.disabled = true;
-
-    button.textContent =
-        "Starting LIVE...";
-
+        return;
+    }
 
     const roomId =
         generateRoomId();
-
 
     const {
         data,
@@ -1920,266 +1160,62 @@ async function goLive() {
     } = await supabaseClient
         .from("live_streams")
         .insert({
-            streamer_id:
-                currentUser.id,
-
-            title:
-                "LIVE Stream",
-
-            room_id:
-                roomId,
-
-            is_live:
-                true,
-
-            viewer_count:
-                0,
-
-            started_at:
-                new Date().toISOString()
+            streamer_id: currentUser.id,
+            title: "LIVE Stream",
+            room_id: roomId,
+            is_live: true,
+            viewer_count: 0,
+            started_at: new Date().toISOString()
         })
         .select()
         .single();
-
 
     if (error) {
 
         console.error(error);
 
-        button.disabled =
-            false;
-
-        button.textContent =
-            "🔴 Go LIVE";
-
-        showToast(
+        showMessage(
+            error.message ||
             "Unable to start LIVE."
         );
 
         return;
     }
 
-
-    activeLiveStream =
-        data;
-
+    currentStream = data;
 
     const {
         error: profileError
     } = await supabaseClient
         .from("profiles")
         .update({
-            is_live: true
+            is_live: true,
+            updated_at: new Date().toISOString()
         })
-        .eq(
-            "id",
-            currentUser.id
-        );
-
+        .eq("id", currentUser.id);
 
     if (profileError) {
 
         console.error(profileError);
-
     }
 
+    currentProfile.is_live = true;
 
-    document.getElementById(
-        "goLiveButton"
-    ).style.display =
-        "none";
+    updateStreamerControls();
 
+    updateLiveStatus();
 
-    document.getElementById(
-        "endLiveButton"
-    ).style.display =
-        "inline-block";
-
-
-    document.getElementById(
-        "liveRoom"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "liveRoom"
-    ).textContent =
-        "Room ID: " + roomId;
-
-
-    updateLiveUI(true);
-
-
-    showToast(
-        "You are LIVE!"
+    showMessage(
+        "Your LIVE session has started."
     );
 }
 
 
-/* =========================================
-   END LIVE
-========================================= */
+/* =========================
+   LOAD CURRENT LIVE
+========================= */
 
-async function endLive() {
-
-    if (!currentUser) return;
-
-
-    if (!activeLiveStream) {
-
-        const {
-            data
-        } = await supabaseClient
-            .from("live_streams")
-            .select("*")
-            .eq(
-                "streamer_id",
-                currentUser.id
-            )
-            .eq(
-                "is_live",
-                true
-            )
-            .order(
-                "started_at",
-                {
-                    ascending: false
-                }
-            )
-            .limit(1)
-            .maybeSingle();
-
-        activeLiveStream =
-            data;
-    }
-
-
-    if (!activeLiveStream) {
-
-        showToast(
-            "You are not currently LIVE."
-        );
-
-        return;
-    }
-
-
-    const button =
-        document.getElementById(
-            "endLiveButton"
-        );
-
-    button.disabled =
-        true;
-
-    button.textContent =
-        "Ending LIVE...";
-
-
-    const {
-        error
-    } = await supabaseClient
-        .from("live_streams")
-        .update({
-            is_live: false,
-
-            ended_at:
-                new Date().toISOString(),
-
-            updated_at:
-                new Date().toISOString()
-        })
-        .eq(
-            "id",
-            activeLiveStream.id
-        )
-        .eq(
-            "streamer_id",
-            currentUser.id
-        );
-
-
-    if (error) {
-
-        console.error(error);
-
-        button.disabled =
-            false;
-
-        button.textContent =
-            "End LIVE";
-
-        showToast(
-            "Unable to end LIVE."
-        );
-
-        return;
-    }
-
-
-    await supabaseClient
-        .from("profiles")
-        .update({
-            is_live: false
-        })
-        .eq(
-            "id",
-            currentUser.id
-        );
-
-
-    activeLiveStream =
-        null;
-
-
-    document.getElementById(
-        "endLiveButton"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "goLiveButton"
-    ).style.display =
-        "inline-block";
-
-
-    document.getElementById(
-        "goLiveButton"
-    ).disabled =
-        false;
-
-
-    document.getElementById(
-        "goLiveButton"
-    ).textContent =
-        "🔴 Go LIVE";
-
-
-    document.getElementById(
-        "liveRoom"
-    ).style.display =
-        "none";
-
-
-    updateLiveUI(false);
-
-
-    showToast(
-        "LIVE ended."
-    );
-}
-
-
-/* =========================================
-   LOAD LIVE STATUS
-========================================= */
-
-async function loadLiveStatus() {
-
-    if (!profileUser) return;
-
+async function loadCurrentLiveStream() {
 
     const {
         data,
@@ -2187,23 +1223,13 @@ async function loadLiveStatus() {
     } = await supabaseClient
         .from("live_streams")
         .select("*")
-        .eq(
-            "streamer_id",
-            profileUser.id
-        )
-        .eq(
-            "is_live",
-            true
-        )
-        .order(
-            "started_at",
-            {
-                ascending: false
-            }
-        )
+        .eq("streamer_id", currentUser.id)
+        .eq("is_live", true)
+        .order("created_at", {
+            ascending: false
+        })
         .limit(1)
         .maybeSingle();
-
 
     if (error) {
 
@@ -2212,196 +1238,261 @@ async function loadLiveStatus() {
         return;
     }
 
+    currentStream = data || null;
 
-    if (data) {
+    if (currentStream) {
 
-        activeLiveStream =
-            data;
-
-        updateLiveUI(true);
+        currentProfile.is_live = true;
 
     } else {
 
-        updateLiveUI(false);
-
+        currentProfile.is_live = false;
     }
 
+    updateStreamerControls();
 
-    if (
-        currentUser &&
-        currentUser.id ===
-        profileUser.id &&
-        profileUser.account_type ===
-        "streamer"
-    ) {
-
-        if (data) {
-
-            document.getElementById(
-                "goLiveButton"
-            ).style.display =
-                "none";
-
-            document.getElementById(
-                "endLiveButton"
-            ).style.display =
-                "inline-block";
-
-            document.getElementById(
-                "liveRoom"
-            ).style.display =
-                "block";
-
-            document.getElementById(
-                "liveRoom"
-            ).textContent =
-                "Room ID: " +
-                data.room_id;
-
-        }
-
-    }
-
+    updateLiveStatus();
 }
 
 
-/* =========================================
-   UPDATE LIVE UI
-========================================= */
+/* =========================
+   LIVE STATUS
+========================= */
 
-function updateLiveUI(isLive) {
+function updateLiveStatus() {
 
     const status =
         document.getElementById(
             "liveStatus"
         );
 
-    const content =
+    const roomStatus =
+        document.getElementById(
+            "roomStatus"
+        );
+
+    const liveContent =
         document.getElementById(
             "liveContent"
         );
 
+    if (currentStream) {
 
-    if (isLive) {
+        status.textContent =
+            "🔴 You are LIVE right now.";
 
-        status.classList.add(
-            "online"
-        );
+        status.className =
+            "status live";
 
-        status.innerHTML =
-            `
-            <span class="live-dot"></span>
-            LIVE
-            `;
+        roomStatus.style.display =
+            "block";
 
+        roomStatus.textContent =
+            "Live room: " +
+            currentStream.room_id;
 
-        content.innerHTML =
-            `
-            <div class="empty-profile-icon">
-                🔴
-            </div>
-
-            <h3>
-                LIVE now
-            </h3>
-
-            <p>
-                This streamer is currently broadcasting.
-            </p>
-            `;
+        liveContent.innerHTML = `
+            <div class="empty-icon">🔴</div>
+            <div>Your LIVE session is active.</div>
+        `;
 
     } else {
 
-        status.classList.remove(
-            "online"
-        );
+        status.textContent =
+            "You are currently offline.";
 
-        status.innerHTML =
-            `
-            <span class="live-dot"></span>
-            OFFLINE
-            `;
+        status.className =
+            "status";
 
+        roomStatus.style.display =
+            "none";
 
-        content.innerHTML =
-            `
-            <div class="empty-profile-icon">
-                🔴
-            </div>
-
-            <h3>
-                Not LIVE
-            </h3>
-
-            <p>
-                This streamer is not currently
-                broadcasting.
-            </p>
-            `;
-
+        liveContent.innerHTML = `
+            <div class="empty-icon">📺</div>
+            <div>No LIVE sessions yet.</div>
+        `;
     }
-
 }
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+/* =========================
+   END LIVE
+========================= */
 
-async function logoutUser() {
+async function endLive() {
 
-    const {
-        error
-    } = await supabaseClient
-        .auth
-        .signOut();
+    if (!currentStream) {
 
-
-    if (error) {
-
-        console.error(error);
-
-        showToast(
-            "Unable to logout."
+        showMessage(
+            "You are not currently LIVE."
         );
 
         return;
     }
 
+    const {
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .update({
+            is_live: false,
+            ended_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        })
+        .eq("id", currentStream.id)
+        .eq("streamer_id", currentUser.id);
 
-    window.location.href =
-        "index.html";
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message ||
+            "Unable to end LIVE."
+        );
+
+        return;
+    }
+
+    const {
+        error: profileError
+    } = await supabaseClient
+        .from("profiles")
+        .update({
+            is_live: false,
+            updated_at: new Date().toISOString()
+        })
+        .eq("id", currentUser.id);
+
+    if (profileError) {
+
+        console.error(profileError);
+    }
+
+    currentProfile.is_live = false;
+
+    currentStream = null;
+
+    updateStreamerControls();
+
+    updateLiveStatus();
+
+    stopAllMedia();
+
+    showMessage(
+        "LIVE session ended."
+    );
 }
 
 
-/* =========================================
-   START
-========================================= */
+/* =========================
+   STOP ALL MEDIA
+========================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
+function stopAllMedia() {
 
-        try {
+    if (!mediaStream) {
 
-            await loadProfile();
+        return;
+    }
 
-        } catch (error) {
+    mediaStream
+        .getTracks()
+        .forEach(track => {
+            track.stop();
+        });
 
-            console.error(error);
+    mediaStream = null;
 
-            showToast(
-                "Something went wrong loading the profile."
-            );
+    cameraEnabled = false;
+    microphoneEnabled = false;
 
+    const video =
+        document.getElementById(
+            "cameraPreview"
+        );
+
+    video.srcObject = null;
+
+    video.style.display = "none";
+
+    document.getElementById(
+        "cameraPlaceholder"
+    ).style.display = "block";
+
+    updateMediaUI();
+}
+
+
+/* =========================
+   ROOM ID
+========================= */
+
+function generateRoomId() {
+
+    if (
+        window.crypto &&
+        crypto.randomUUID
+    ) {
+
+        return crypto.randomUUID();
+    }
+
+    return (
+        "room-" +
+        Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .substring(2, 10)
+    );
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================
+   CLEANUP
+========================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if (mediaStream) {
+
+            mediaStream
+                .getTracks()
+                .forEach(track => {
+                    track.stop();
+                });
         }
-
     }
 );
 
 
-</script>
+/* =========================
+   START APP
+========================= */
 
+document.addEventListener(
+    "DOMContentLoaded",
+    initialize
+);
+</script>
 
 </body>
 </html>
