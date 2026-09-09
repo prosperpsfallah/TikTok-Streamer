@@ -218,6 +218,14 @@
 
             box-shadow:
                 0 5px 20px rgba(0, 0, 0, .15);
+
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .profile-info {
@@ -254,6 +262,24 @@
             font-weight: 900;
         }
 
+        .streamer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            margin-top: 6px;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #fff0f3;
+            color: #fe2c55;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
         .profile-username {
             margin: 0 0 12px;
 
@@ -274,18 +300,22 @@
 
 
         /* =========================================
-           FOLLOW
+           ACTIONS
         ========================================== */
 
         .profile-actions {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
 
             margin-top: 20px;
         }
 
         .follow-button,
-        .message-button {
+        .message-button,
+        .streamer-button,
+        .live-button,
+        .end-live-button {
 
             border: 0;
 
@@ -306,6 +336,75 @@
         .message-button {
             background: #111;
             color: #fff;
+        }
+
+        .streamer-button {
+            background: #25f4ee;
+            color: #111;
+        }
+
+        .live-button {
+            background: #fe2c55;
+            color: #fff;
+        }
+
+        .end-live-button {
+            background: #111;
+            color: #fff;
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================================
+           STREAMER CONTROL
+        ========================================== */
+
+        .streamer-control {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            background: #f7f8fa;
+
+            border: 1px solid #e5e5e5;
+        }
+
+        .streamer-control h3 {
+            margin: 0 0 7px;
+            font-size: 16px;
+        }
+
+        .streamer-control p {
+            margin: 0 0 15px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .live-room {
+            display: none;
+
+            margin-top: 12px;
+
+            padding: 10px 12px;
+
+            background: #fff;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            word-break: break-all;
         }
 
 
@@ -461,6 +560,11 @@
             font-weight: 700;
         }
 
+        .live-status.online {
+            background: #fff0f3;
+            color: #fe2c55;
+        }
+
         .live-dot {
 
             width: 8px;
@@ -469,6 +573,49 @@
             border-radius: 50%;
 
             background: #888;
+        }
+
+        .live-status.online .live-dot {
+            background: #fe2c55;
+        }
+
+
+        /* =========================================
+           TOAST
+        ========================================== */
+
+        .toast {
+
+            position: fixed;
+
+            left: 50%;
+            bottom: 25px;
+
+            transform: translateX(-50%);
+
+            background: #111;
+
+            color: #fff;
+
+            padding: 12px 18px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: .25s;
+
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
         }
 
 
@@ -557,10 +704,6 @@
 <div class="profile-page">
 
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
-
     <header class="profile-header">
 
         <div class="profile-header-inner">
@@ -593,22 +736,12 @@
     </header>
 
 
-
-    <!-- =========================================
-         COVER
-    ========================================== -->
-
     <div class="profile-cover">
 
         <div class="profile-cover-pattern"></div>
 
     </div>
 
-
-
-    <!-- =========================================
-         PROFILE
-    ========================================== -->
 
     <div class="profile-container">
 
@@ -618,8 +751,6 @@
             <div class="profile-top">
 
 
-                <!-- AVATAR -->
-
                 <div
                     class="profile-avatar"
                     id="profileAvatar"
@@ -627,9 +758,6 @@
                     ?
                 </div>
 
-
-
-                <!-- INFO -->
 
                 <div class="profile-info">
 
@@ -639,7 +767,7 @@
                             class="profile-name"
                             id="profileName"
                         >
-                            No Streamer
+                            Loading...
                         </h1>
 
                     </div>
@@ -649,35 +777,70 @@
                         class="profile-username"
                         id="profileUsername"
                     >
-                        No profile selected
+                        Loading profile...
                     </p>
 
 
-                    <p class="profile-bio">
+                    <div
+                        id="streamerBadge"
+                        class="streamer-badge"
+                        style="display:none;"
+                    >
+                        🎥 Streamer
+                    </div>
 
-                        This streamer profile is currently
-                        empty. Real profile information will
-                        appear here when a streamer joins
-                        the platform.
 
+                    <p
+                        class="profile-bio"
+                        id="profileBio"
+                        style="margin-top:10px;"
+                    >
+                        Loading profile information...
                     </p>
 
 
-                    <div class="profile-actions">
+                    <div
+                        class="profile-actions"
+                        id="profileActions"
+                    >
+
+                    </div>
+
+
+                    <div
+                        class="streamer-control"
+                        id="streamerControl"
+                    >
+
+                        <h3>
+                            Streamer Controls
+                        </h3>
+
+                        <p id="streamerControlText">
+                            Your streaming controls will appear here.
+                        </p>
 
                         <button
-                            class="follow-button"
-                            onclick="followStreamer()"
+                            class="live-button"
+                            id="goLiveButton"
+                            onclick="goLive()"
                         >
-                            Follow
+                            🔴 Go LIVE
                         </button>
 
                         <button
-                            class="message-button"
-                            onclick="messageStreamer()"
+                            class="end-live-button"
+                            id="endLiveButton"
+                            onclick="endLive()"
+                            style="display:none;"
                         >
-                            Message
+                            End LIVE
                         </button>
+
+                        <div
+                            class="live-room"
+                            id="liveRoom"
+                        ></div>
 
                     </div>
 
@@ -686,17 +849,12 @@
             </div>
 
 
-
-            <!-- =================================
-                 STATS
-            ================================== -->
-
             <div class="profile-stats">
 
 
                 <div class="profile-stat">
 
-                    <strong>
+                    <strong id="followersCount">
                         0
                     </strong>
 
@@ -709,7 +867,7 @@
 
                 <div class="profile-stat">
 
-                    <strong>
+                    <strong id="followingCount">
                         0
                     </strong>
 
@@ -752,15 +910,8 @@
     </div>
 
 
-
-    <!-- =========================================
-         CONTENT
-    ========================================== -->
-
     <div class="profile-content">
 
-
-        <!-- LIVE -->
 
         <section class="content-card">
 
@@ -778,7 +929,10 @@
                     LIVE
                 </h2>
 
-                <span class="live-status">
+                <span
+                    class="live-status"
+                    id="liveStatus"
+                >
 
                     <span class="live-dot"></span>
 
@@ -789,7 +943,10 @@
             </div>
 
 
-            <div class="empty-profile">
+            <div
+                class="empty-profile"
+                id="liveContent"
+            >
 
                 <div class="empty-profile-icon">
                     🔴
@@ -808,9 +965,6 @@
 
         </section>
 
-
-
-        <!-- VIDEOS -->
 
         <section class="content-card">
 
@@ -838,9 +992,6 @@
 
         </section>
 
-
-
-        <!-- BATTLES -->
 
         <section class="content-card">
 
@@ -873,35 +1024,1381 @@
 </div>
 
 
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
 
 /* =========================================
-   PROFILE ACTIONS
+   SUPABASE
 ========================================= */
 
-function followStreamer() {
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
 
-    alert(
-        "You need to be logged in before following a streamer."
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb3F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
     );
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3000);
+}
+
+
+function getInitials(name) {
+
+    if (!name) return "?";
+
+    const parts =
+        name.trim().split(/\s+/);
+
+    if (parts.length === 1) {
+        return parts[0]
+            .substring(0, 2)
+            .toUpperCase();
+    }
+
+    return (
+        parts[0][0] +
+        parts[parts.length - 1][0]
+    ).toUpperCase();
+}
+
+
+function generateRoomId() {
+
+    if (
+        window.crypto &&
+        crypto.randomUUID
+    ) {
+        return crypto.randomUUID();
+    }
+
+    return (
+        "room-" +
+        Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .substring(2, 10)
+    );
+}
+
+
+/* =========================================
+   GLOBAL STATE
+========================================= */
+
+let currentUser = null;
+let profileUser = null;
+let activeLiveStream = null;
+
+
+/* =========================================
+   LOAD PROFILE
+========================================= */
+
+async function loadProfile() {
+
+    const {
+        data: {
+            user
+        }
+    } = await supabaseClient
+        .auth
+        .getUser();
+
+    currentUser = user;
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const requestedId =
+        params.get("id");
+
+    let profileId =
+        requestedId || (
+            currentUser
+                ? currentUser.id
+                : null
+        );
+
+
+    if (!profileId) {
+
+        document.getElementById(
+            "profileName"
+        ).textContent =
+            "No Streamer";
+
+        document.getElementById(
+            "profileUsername"
+        ).textContent =
+            "No profile selected";
+
+        document.getElementById(
+            "profileBio"
+        ).textContent =
+            "Log in to view your profile.";
+
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select(`
+            id,
+            full_name,
+            username,
+            account_type,
+            avatar_url,
+            bio,
+            followers_count,
+            following_count,
+            is_live
+        `)
+        .eq("id", profileId)
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(error);
+
+        showToast(
+            "Unable to load profile."
+        );
+
+        return;
+    }
+
+
+    if (!data) {
+
+        document.getElementById(
+            "profileName"
+        ).textContent =
+            "Profile not found";
+
+        document.getElementById(
+            "profileUsername"
+        ).textContent =
+            "No profile available";
+
+        document.getElementById(
+            "profileBio"
+        ).textContent =
+            "This profile does not exist.";
+
+        return;
+    }
+
+
+    profileUser = data;
+
+    renderProfile();
+
+    await loadFollowCounts();
+
+    await loadLiveStatus();
+
+    if (
+        currentUser &&
+        currentUser.id === profileUser.id
+    ) {
+
+        setupOwnProfile();
+
+    } else {
+
+        setupPublicProfile();
+
+    }
+}
+
+
+/* =========================================
+   RENDER PROFILE
+========================================= */
+
+function renderProfile() {
+
+    const name =
+        profileUser.full_name ||
+        "Unnamed User";
+
+    const username =
+        profileUser.username
+            ? "@" + profileUser.username
+            : "No username";
+
+    document.getElementById(
+        "profileName"
+    ).textContent = name;
+
+    document.getElementById(
+        "profileUsername"
+    ).textContent = username;
+
+
+    document.getElementById(
+        "profileBio"
+    ).textContent =
+        profileUser.bio ||
+        "No bio has been added yet.";
+
+
+    const avatar =
+        document.getElementById(
+            "profileAvatar"
+        );
+
+
+    if (profileUser.avatar_url) {
+
+        avatar.innerHTML =
+            `<img src="${profileUser.avatar_url}" alt="Profile photo">`;
+
+    } else {
+
+        avatar.textContent =
+            getInitials(name);
+
+    }
+
+
+    if (
+        profileUser.account_type ===
+        "streamer"
+    ) {
+
+        document.getElementById(
+            "streamerBadge"
+        ).style.display =
+            "inline-flex";
+
+    }
 
 }
 
 
-function messageStreamer() {
+/* =========================================
+   FOLLOW COUNTS
+========================================= */
 
-    alert(
-        "Messaging will be available after the account system is connected."
+async function loadFollowCounts() {
+
+    if (!profileUser) return;
+
+
+    const {
+        count: followers,
+        error: followersError
+    } = await supabaseClient
+        .from("follows")
+        .select("*", {
+            count: "exact",
+            head: true
+        })
+        .eq(
+            "following_id",
+            profileUser.id
+        );
+
+
+    if (!followersError) {
+
+        document.getElementById(
+            "followersCount"
+        ).textContent =
+            followers || 0;
+
+    }
+
+
+    const {
+        count: following,
+        error: followingError
+    } = await supabaseClient
+        .from("follows")
+        .select("*", {
+            count: "exact",
+            head: true
+        })
+        .eq(
+            "follower_id",
+            profileUser.id
+        );
+
+
+    if (!followingError) {
+
+        document.getElementById(
+            "followingCount"
+        ).textContent =
+            following || 0;
+
+    }
+}
+
+
+/* =========================================
+   OWN PROFILE
+========================================= */
+
+function setupOwnProfile() {
+
+    const actions =
+        document.getElementById(
+            "profileActions"
+        );
+
+    actions.innerHTML = "";
+
+
+    const settingsButton =
+        document.createElement("button");
+
+    settingsButton.className =
+        "message-button";
+
+    settingsButton.textContent =
+        "⚙ Settings";
+
+    settingsButton.onclick = () => {
+
+        window.location.href =
+            "settings.html";
+
+    };
+
+    actions.appendChild(
+        settingsButton
     );
+
+
+    const logoutButton =
+        document.createElement("button");
+
+    logoutButton.className =
+        "follow-button";
+
+    logoutButton.textContent =
+        "Logout";
+
+    logoutButton.onclick =
+        logoutUser;
+
+    actions.appendChild(
+        logoutButton
+    );
+
+
+    const control =
+        document.getElementById(
+            "streamerControl"
+        );
+
+
+    if (
+        profileUser.account_type ===
+        "streamer"
+    ) {
+
+        control.style.display =
+            "block";
+
+        document.getElementById(
+            "streamerControlText"
+        ).textContent =
+            "You are registered as a streamer. You can start or end a LIVE stream.";
+
+    } else {
+
+        control.style.display =
+            "block";
+
+        document.getElementById(
+            "streamerControlText"
+        ).textContent =
+            "Become a streamer to start broadcasting LIVE.";
+
+        document.getElementById(
+            "goLiveButton"
+        ).textContent =
+            "🎥 Become a Streamer";
+
+        document.getElementById(
+            "goLiveButton"
+        ).onclick =
+            becomeStreamer;
+
+    }
 
 }
 
 
-console.log(
-    "Streamer profile loaded — waiting for a real streamer."
+/* =========================================
+   PUBLIC PROFILE
+========================================= */
+
+async function setupPublicProfile() {
+
+    const actions =
+        document.getElementById(
+            "profileActions"
+        );
+
+    actions.innerHTML = "";
+
+
+    if (!currentUser) {
+
+        const loginButton =
+            document.createElement("button");
+
+        loginButton.className =
+            "follow-button";
+
+        loginButton.textContent =
+            "Login to Follow";
+
+        loginButton.onclick = () => {
+
+            window.location.href =
+                "login.html";
+
+        };
+
+        actions.appendChild(
+            loginButton
+        );
+
+        return;
+    }
+
+
+    const followButton =
+        document.createElement("button");
+
+    followButton.className =
+        "follow-button";
+
+    followButton.textContent =
+        "Checking...";
+
+    followButton.disabled =
+        true;
+
+    actions.appendChild(
+        followButton
+    );
+
+
+    const messageButton =
+        document.createElement("button");
+
+    messageButton.className =
+        "message-button";
+
+    messageButton.textContent =
+        "Message";
+
+    messageButton.onclick =
+        messageStreamer;
+
+    actions.appendChild(
+        messageButton
+    );
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("follows")
+        .select("follower_id")
+        .eq(
+            "follower_id",
+            currentUser.id
+        )
+        .eq(
+            "following_id",
+            profileUser.id
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(error);
+
+        followButton.textContent =
+            "Follow";
+
+        followButton.disabled =
+            false;
+
+        followButton.onclick =
+            followStreamer;
+
+        return;
+    }
+
+
+    if (data) {
+
+        followButton.textContent =
+            "Following";
+
+        followButton.disabled =
+            false;
+
+        followButton.onclick =
+            unfollowStreamer;
+
+    } else {
+
+        followButton.textContent =
+            "Follow";
+
+        followButton.disabled =
+            false;
+
+        followButton.onclick =
+            followStreamer;
+
+    }
+
+}
+
+
+/* =========================================
+   FOLLOW
+========================================= */
+
+async function followStreamer() {
+
+    if (!currentUser) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    if (!profileUser) return;
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("follows")
+        .insert({
+            follower_id:
+                currentUser.id,
+
+            following_id:
+                profileUser.id
+        });
+
+
+    if (error) {
+
+        if (
+            error.code === "23505"
+        ) {
+
+            showToast(
+                "You are already following this user."
+            );
+
+        } else {
+
+            console.error(error);
+
+            showToast(
+                "Unable to follow this user."
+            );
+
+        }
+
+        return;
+    }
+
+
+    showToast(
+        "Following successfully."
+    );
+
+    await loadFollowCounts();
+
+    await setupPublicProfile();
+}
+
+
+/* =========================================
+   UNFOLLOW
+========================================= */
+
+async function unfollowStreamer() {
+
+    if (!currentUser ||
+        !profileUser) {
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("follows")
+        .delete()
+        .eq(
+            "follower_id",
+            currentUser.id
+        )
+        .eq(
+            "following_id",
+            profileUser.id
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showToast(
+            "Unable to unfollow."
+        );
+
+        return;
+    }
+
+
+    showToast(
+        "Unfollowed."
+    );
+
+    await loadFollowCounts();
+
+    await setupPublicProfile();
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+async function messageStreamer() {
+
+    if (!currentUser) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    if (!profileUser) return;
+
+
+    if (
+        currentUser.id ===
+        profileUser.id
+    ) {
+
+        showToast(
+            "You cannot message yourself."
+        );
+
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .rpc(
+            "get_or_create_conversation",
+            {
+                other_user_id:
+                    profileUser.id
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showToast(
+            "Unable to open conversation."
+        );
+
+        return;
+    }
+
+
+    window.location.href =
+        "messages.html?conversation=" +
+        encodeURIComponent(data);
+}
+
+
+/* =========================================
+   BECOME A STREAMER
+========================================= */
+
+async function becomeStreamer() {
+
+    if (!currentUser) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "goLiveButton"
+        );
+
+    button.disabled = true;
+
+    button.textContent =
+        "Creating streamer account...";
+
+
+    const {
+        error
+    } = await supabaseClient
+        .rpc(
+            "become_streamer"
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "🎥 Become a Streamer";
+
+        showToast(
+            "Unable to become a streamer."
+        );
+
+        return;
+    }
+
+
+    showToast(
+        "You are now a streamer!"
+    );
+
+
+    setTimeout(() => {
+
+        window.location.reload();
+
+    }, 800);
+}
+
+
+/* =========================================
+   GO LIVE
+========================================= */
+
+async function goLive() {
+
+    if (!currentUser) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    if (
+        !profileUser ||
+        profileUser.id !== currentUser.id
+    ) {
+
+        showToast(
+            "Only your own account can start LIVE."
+        );
+
+        return;
+    }
+
+
+    if (
+        profileUser.account_type !==
+        "streamer"
+    ) {
+
+        showToast(
+            "Become a streamer first."
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "goLiveButton"
+        );
+
+    button.disabled = true;
+
+    button.textContent =
+        "Starting LIVE...";
+
+
+    const roomId =
+        generateRoomId();
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .insert({
+            streamer_id:
+                currentUser.id,
+
+            title:
+                "LIVE Stream",
+
+            room_id:
+                roomId,
+
+            is_live:
+                true,
+
+            viewer_count:
+                0,
+
+            started_at:
+                new Date().toISOString()
+        })
+        .select()
+        .single();
+
+
+    if (error) {
+
+        console.error(error);
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "🔴 Go LIVE";
+
+        showToast(
+            "Unable to start LIVE."
+        );
+
+        return;
+    }
+
+
+    activeLiveStream =
+        data;
+
+
+    const {
+        error: profileError
+    } = await supabaseClient
+        .from("profiles")
+        .update({
+            is_live: true
+        })
+        .eq(
+            "id",
+            currentUser.id
+        );
+
+
+    if (profileError) {
+
+        console.error(profileError);
+
+    }
+
+
+    document.getElementById(
+        "goLiveButton"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "endLiveButton"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "liveRoom"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "liveRoom"
+    ).textContent =
+        "Room ID: " + roomId;
+
+
+    updateLiveUI(true);
+
+
+    showToast(
+        "You are LIVE!"
+    );
+}
+
+
+/* =========================================
+   END LIVE
+========================================= */
+
+async function endLive() {
+
+    if (!currentUser) return;
+
+
+    if (!activeLiveStream) {
+
+        const {
+            data
+        } = await supabaseClient
+            .from("live_streams")
+            .select("*")
+            .eq(
+                "streamer_id",
+                currentUser.id
+            )
+            .eq(
+                "is_live",
+                true
+            )
+            .order(
+                "started_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(1)
+            .maybeSingle();
+
+        activeLiveStream =
+            data;
+    }
+
+
+    if (!activeLiveStream) {
+
+        showToast(
+            "You are not currently LIVE."
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "endLiveButton"
+        );
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Ending LIVE...";
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .update({
+            is_live: false,
+
+            ended_at:
+                new Date().toISOString(),
+
+            updated_at:
+                new Date().toISOString()
+        })
+        .eq(
+            "id",
+            activeLiveStream.id
+        )
+        .eq(
+            "streamer_id",
+            currentUser.id
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "End LIVE";
+
+        showToast(
+            "Unable to end LIVE."
+        );
+
+        return;
+    }
+
+
+    await supabaseClient
+        .from("profiles")
+        .update({
+            is_live: false
+        })
+        .eq(
+            "id",
+            currentUser.id
+        );
+
+
+    activeLiveStream =
+        null;
+
+
+    document.getElementById(
+        "endLiveButton"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "goLiveButton"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "goLiveButton"
+    ).disabled =
+        false;
+
+
+    document.getElementById(
+        "goLiveButton"
+    ).textContent =
+        "🔴 Go LIVE";
+
+
+    document.getElementById(
+        "liveRoom"
+    ).style.display =
+        "none";
+
+
+    updateLiveUI(false);
+
+
+    showToast(
+        "LIVE ended."
+    );
+}
+
+
+/* =========================================
+   LOAD LIVE STATUS
+========================================= */
+
+async function loadLiveStatus() {
+
+    if (!profileUser) return;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .select("*")
+        .eq(
+            "streamer_id",
+            profileUser.id
+        )
+        .eq(
+            "is_live",
+            true
+        )
+        .order(
+            "started_at",
+            {
+                ascending: false
+            }
+        )
+        .limit(1)
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+    }
+
+
+    if (data) {
+
+        activeLiveStream =
+            data;
+
+        updateLiveUI(true);
+
+    } else {
+
+        updateLiveUI(false);
+
+    }
+
+
+    if (
+        currentUser &&
+        currentUser.id ===
+        profileUser.id &&
+        profileUser.account_type ===
+        "streamer"
+    ) {
+
+        if (data) {
+
+            document.getElementById(
+                "goLiveButton"
+            ).style.display =
+                "none";
+
+            document.getElementById(
+                "endLiveButton"
+            ).style.display =
+                "inline-block";
+
+            document.getElementById(
+                "liveRoom"
+            ).style.display =
+                "block";
+
+            document.getElementById(
+                "liveRoom"
+            ).textContent =
+                "Room ID: " +
+                data.room_id;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   UPDATE LIVE UI
+========================================= */
+
+function updateLiveUI(isLive) {
+
+    const status =
+        document.getElementById(
+            "liveStatus"
+        );
+
+    const content =
+        document.getElementById(
+            "liveContent"
+        );
+
+
+    if (isLive) {
+
+        status.classList.add(
+            "online"
+        );
+
+        status.innerHTML =
+            `
+            <span class="live-dot"></span>
+            LIVE
+            `;
+
+
+        content.innerHTML =
+            `
+            <div class="empty-profile-icon">
+                🔴
+            </div>
+
+            <h3>
+                LIVE now
+            </h3>
+
+            <p>
+                This streamer is currently broadcasting.
+            </p>
+            `;
+
+    } else {
+
+        status.classList.remove(
+            "online"
+        );
+
+        status.innerHTML =
+            `
+            <span class="live-dot"></span>
+            OFFLINE
+            `;
+
+
+        content.innerHTML =
+            `
+            <div class="empty-profile-icon">
+                🔴
+            </div>
+
+            <h3>
+                Not LIVE
+            </h3>
+
+            <p>
+                This streamer is not currently
+                broadcasting.
+            </p>
+            `;
+
+    }
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logoutUser() {
+
+    const {
+        error
+    } = await supabaseClient
+        .auth
+        .signOut();
+
+
+    if (error) {
+
+        console.error(error);
+
+        showToast(
+            "Unable to logout."
+        );
+
+        return;
+    }
+
+
+    window.location.href =
+        "index.html";
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        try {
+
+            await loadProfile();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                "Something went wrong loading the profile."
+            );
+
+        }
+
+    }
 );
+
 
 </script>
 
