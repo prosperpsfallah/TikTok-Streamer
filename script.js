@@ -1,48 +1,29 @@
-/* =========================================================
-   TIKTOK STREAMERS
-   Main JavaScript
-   ========================================================= */
-
-"use strict";
-
-/* =========================================================
-   CONFIGURATION
-   ========================================================= */
+// ==========================================
+// TIKTOK STREAMERS
+// MAIN FRONTEND SCRIPT
+// ==========================================
 
 const API_BASE = "/api";
 
-/* =========================================================
-   MOBILE MENU
-   ========================================================= */
+// ==========================================
+// MOBILE MENU
+// ==========================================
 
 function toggleMenu() {
     const menu = document.getElementById("mobileMenu");
 
-    if (!menu) return;
-
-    menu.classList.toggle("active");
+    if (menu) {
+        menu.classList.toggle("active");
+    }
 }
 
 function toggleMobileMenu() {
     toggleMenu();
 }
 
-/* Close mobile menu after clicking a link */
-document.addEventListener("click", function (event) {
-    const link = event.target.closest("#mobileMenu a");
-
-    if (!link) return;
-
-    const menu = document.getElementById("mobileMenu");
-
-    if (menu) {
-        menu.classList.remove("active");
-    }
-});
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
+// ==========================================
+// SEARCH
+// ==========================================
 
 function openSearch() {
     const overlay = document.getElementById("searchOverlay");
@@ -51,36 +32,41 @@ function openSearch() {
 
     overlay.classList.add("active");
 
-    const input = overlay.querySelector("input");
+    const input = document.getElementById("streamerSearch");
 
     if (input) {
-        setTimeout(() => input.focus(), 100);
+        setTimeout(() => {
+            input.focus();
+        }, 100);
     }
 }
 
 function closeSearch() {
     const overlay = document.getElementById("searchOverlay");
 
-    if (!overlay) return;
-
-    overlay.classList.remove("active");
+    if (overlay) {
+        overlay.classList.remove("active");
+    }
 }
 
 async function searchStreamers() {
     const input = document.getElementById("streamerSearch");
+    const results = document.getElementById("searchResults");
 
     if (!input) return;
 
-    const query = input.value.trim();
+    const searchTerm = input.value.trim();
 
-    if (!query) {
-        showMessage("Please enter a streamer name or username.");
+    if (!searchTerm) {
+        if (results) {
+            results.innerHTML = "";
+        }
         return;
     }
 
     try {
         const response = await fetch(
-            `${API_BASE}/streamers?search=${encodeURIComponent(query)}`
+            `${API_BASE}/streamers?search=${encodeURIComponent(searchTerm)}`
         );
 
         if (!response.ok) {
@@ -89,162 +75,135 @@ async function searchStreamers() {
 
         const data = await response.json();
 
-        if (!data.streamers || data.streamers.length === 0) {
-            showMessage("No streamers found.");
+        const streamers = data.streamers || [];
+
+        if (!results) return;
+
+        if (streamers.length === 0) {
+            results.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">👤</div>
+                    <h3>No streamers found</h3>
+                    <p>There are no matching streamers yet.</p>
+                </div>
+            `;
             return;
         }
 
-        showMessage(`${data.streamers.length} streamer(s) found.`);
-
-        /*
-         * Real search results will be rendered here
-         * after the database is connected.
-         */
-        console.log("Streamer search results:", data.streamers);
+        results.innerHTML = streamers.map(streamer => `
+            <div class="search-result-item">
+                <strong>
+                    ${escapeHTML(streamer.username || "Streamer")}
+                </strong>
+                <span>
+                    ${escapeHTML(streamer.full_name || "")}
+                </span>
+            </div>
+        `).join("");
 
     } catch (error) {
-        console.error("Streamer search error:", error);
-        showMessage("Search is not available yet.");
+        console.error("Search error:", error);
+
+        if (results) {
+            results.innerHTML = `
+                <div class="empty-state">
+                    <h3>Search unavailable</h3>
+                    <p>Please try again later.</p>
+                </div>
+            `;
+        }
     }
 }
 
-/* =========================================================
-   SECTION SCROLLING
-   ========================================================= */
+// ==========================================
+// SECTION SCROLL
+// ==========================================
 
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
 
-    if (!section) return;
-
-    section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+    if (section) {
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
 }
 
-/* =========================================================
-   LOGIN MODAL
-   ========================================================= */
+// ==========================================
+// LOGIN
+// ==========================================
 
 function openLogin() {
-    const modal = document.getElementById("loginModal");
-
-    if (!modal) return;
-
-    modal.classList.add("active");
+    window.location.href = "login.html";
 }
 
 function closeLogin() {
-    const modal = document.getElementById("loginModal");
-
-    if (!modal) return;
-
-    modal.classList.remove("active");
+    // Kept for compatibility with older HTML.
 }
 
-function loginUser(event) {
+async function loginUser(event) {
     if (event) {
         event.preventDefault();
     }
 
-    /*
-     * Authentication will be connected to the backend
-     * and database later.
-     */
-
-    showMessage("Login will be available after the account system is connected.");
+    window.location.href = "login.html";
 }
 
-/* =========================================================
-   REGISTER MODAL
-   ========================================================= */
+// ==========================================
+// REGISTER
+// ==========================================
 
 function openRegister() {
-    const modal = document.getElementById("registerModal");
-
-    if (!modal) return;
-
-    modal.classList.add("active");
+    window.location.href = "register.html";
 }
 
 function closeRegister() {
-    const modal = document.getElementById("registerModal");
-
-    if (!modal) return;
-
-    modal.classList.remove("active");
+    // Kept for compatibility with older HTML.
 }
 
-function registerUser(event) {
+async function registerUser(event) {
     if (event) {
         event.preventDefault();
     }
 
-    /*
-     * Registration will be connected to the backend
-     * and database later.
-     */
-
-    showMessage("Registration will be available soon.");
+    window.location.href = "register.html";
 }
 
-/* =========================================================
-   SWITCH AUTH MODALS
-   ========================================================= */
-
 function switchToRegister() {
-    closeLogin();
-    openRegister();
+    window.location.href = "register.html";
 }
 
 function switchToLogin() {
-    closeRegister();
-    openLogin();
+    window.location.href = "login.html";
 }
 
-/* =========================================================
-   STREAMER ACTIONS
-   ========================================================= */
+// ==========================================
+// STREAMER ACTIONS
+// ==========================================
 
 function joinStreamer() {
     window.location.href = "register.html";
 }
 
-function viewProfile() {
-    window.location.href = "profile.html";
-}
-
-/* =========================================================
-   LEADERBOARD
-   ========================================================= */
-
-function changeRanking(period) {
-    const allowedPeriods = [
-        "weekly",
-        "monthly",
-        "all-time"
-    ];
-
-    if (!allowedPeriods.includes(period)) {
+function viewProfile(userId) {
+    if (userId) {
+        window.location.href =
+            `profile.html?id=${encodeURIComponent(userId)}`;
         return;
     }
 
-    /*
-     * Real rankings will be loaded from the backend
-     * after users and streamer activity exist.
-     */
-
-    console.log("Selected leaderboard:", period);
-
-    showMessage(
-        "Leaderboard data will appear when streamers start using the platform."
-    );
+    showMessage("No streamer profile is available yet.");
 }
 
-/* =========================================================
-   BACKEND STATUS
-   ========================================================= */
+function changeRanking(period) {
+    window.location.href =
+        `leaderboard.html?period=${encodeURIComponent(period)}`;
+}
+
+// ==========================================
+// BACKEND HEALTH CHECK
+// ==========================================
 
 async function checkBackendStatus() {
     try {
@@ -256,19 +215,28 @@ async function checkBackendStatus() {
         });
 
         if (!response.ok) {
-            throw new Error("Backend unavailable.");
+            throw new Error(`Server returned ${response.status}`);
         }
 
         const data = await response.json();
 
-        console.log("TikTok Streamers API:", data);
+        console.log("=================================");
+        console.log("TIKTOK STREAMERS BACKEND");
+        console.log("=================================");
+        console.log("Status:", data.status);
+        console.log("Message:", data.message);
+        console.log("Database:", data.database);
+        console.log("Users:", data.users);
+        console.log("Streamers:", data.streamers);
+        console.log("Live streams:", data.liveStreams);
+        console.log("=================================");
 
         updateBackendStatus(true);
 
         return data;
 
     } catch (error) {
-        console.warn("Backend status:", error.message);
+        console.error("Backend connection failed:", error);
 
         updateBackendStatus(false);
 
@@ -276,29 +244,38 @@ async function checkBackendStatus() {
     }
 }
 
+// ==========================================
+// BACKEND STATUS
+// ==========================================
+
 function updateBackendStatus(isOnline) {
-    const statusElement = document.getElementById("backendStatus");
+    const statusElement =
+        document.getElementById("backendStatus");
 
     if (!statusElement) return;
 
     if (isOnline) {
-        statusElement.textContent = "Online";
+        statusElement.textContent = "Backend Online";
+
         statusElement.classList.add("online");
         statusElement.classList.remove("offline");
+
     } else {
-        statusElement.textContent = "Offline";
+        statusElement.textContent = "Backend Offline";
+
         statusElement.classList.add("offline");
         statusElement.classList.remove("online");
     }
 }
 
-/* =========================================================
-   LOAD STREAMERS
-   ========================================================= */
+// ==========================================
+// LOAD STREAMERS
+// ==========================================
 
 async function loadStreamers() {
     try {
-        const response = await fetch(`${API_BASE}/streamers`);
+        const response =
+            await fetch(`${API_BASE}/streamers`);
 
         if (!response.ok) {
             throw new Error("Could not load streamers.");
@@ -306,30 +283,28 @@ async function loadStreamers() {
 
         const data = await response.json();
 
-        /*
-         * The platform intentionally starts empty.
-         *
-         * No fake streamers are created here.
-         */
-
-        console.log("Streamers:", data.streamers || []);
+        console.log("Streamers received:", data);
 
         return data.streamers || [];
 
     } catch (error) {
-        console.warn("Streamers unavailable:", error.message);
+        console.error(
+            "Streamer loading error:",
+            error
+        );
 
         return [];
     }
 }
 
-/* =========================================================
-   LOAD LIVE STREAMS
-   ========================================================= */
+// ==========================================
+// LOAD LIVE STREAMS
+// ==========================================
 
 async function loadLiveStreams() {
     try {
-        const response = await fetch(`${API_BASE}/live`);
+        const response =
+            await fetch(`${API_BASE}/live`);
 
         if (!response.ok) {
             throw new Error("Could not load live streams.");
@@ -337,28 +312,28 @@ async function loadLiveStreams() {
 
         const data = await response.json();
 
-        /*
-         * No demo or fake LIVE streams are created.
-         */
-
-        console.log("Live streams:", data.liveStreams || []);
+        console.log("Live streams received:", data);
 
         return data.liveStreams || [];
 
     } catch (error) {
-        console.warn("Live streams unavailable:", error.message);
+        console.error(
+            "Live stream loading error:",
+            error
+        );
 
         return [];
     }
 }
 
-/* =========================================================
-   LOAD LEADERBOARD
-   ========================================================= */
+// ==========================================
+// LOAD LEADERBOARD
+// ==========================================
 
 async function loadLeaderboard() {
     try {
-        const response = await fetch(`${API_BASE}/leaderboard`);
+        const response =
+            await fetch(`${API_BASE}/leaderboard`);
 
         if (!response.ok) {
             throw new Error("Could not load leaderboard.");
@@ -366,155 +341,165 @@ async function loadLeaderboard() {
 
         const data = await response.json();
 
-        /*
-         * No fake rankings are created.
-         */
-
-        console.log("Leaderboard:", data.rankings || []);
+        console.log(
+            "Leaderboard received:",
+            data
+        );
 
         return data.rankings || [];
 
     } catch (error) {
-        console.warn("Leaderboard unavailable:", error.message);
+        console.error(
+            "Leaderboard loading error:",
+            error
+        );
 
         return [];
     }
 }
 
-/* =========================================================
-   MESSAGE / TOAST
-   ========================================================= */
+// ==========================================
+// TOAST MESSAGE
+// ==========================================
 
 function showMessage(message) {
-    let toast = document.getElementById("toast");
-
-    /*
-     * Create the toast automatically if the HTML page
-     * does not already contain one.
-     */
+    let toast =
+        document.getElementById("toast");
 
     if (!toast) {
         toast = document.createElement("div");
 
         toast.id = "toast";
-        toast.className = "toast";
+
+        toast.style.position = "fixed";
+        toast.style.left = "50%";
+        toast.style.bottom = "30px";
+        toast.style.transform =
+            "translateX(-50%)";
+        toast.style.zIndex = "99999";
+        toast.style.padding =
+            "12px 18px";
+        toast.style.borderRadius =
+            "12px";
+        toast.style.background = "#111";
+        toast.style.color = "#fff";
+        toast.style.fontSize = "14px";
+        toast.style.boxShadow =
+            "0 10px 30px rgba(0,0,0,.2)";
+        toast.style.transition =
+            "opacity .25s ease";
 
         document.body.appendChild(toast);
     }
 
     toast.textContent = message;
-    toast.classList.add("show");
+    toast.style.opacity = "1";
 
     clearTimeout(window.toastTimer);
 
     window.toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 3500);
+        toast.style.opacity = "0";
+    }, 3000);
 }
 
-/* =========================================================
-   CLOSE MODALS WHEN CLICKING OUTSIDE
-   ========================================================= */
+// ==========================================
+// ESCAPE KEY
+// ==========================================
 
-document.addEventListener("click", function (event) {
+document.addEventListener(
+    "keydown",
+    function (event) {
 
-    const loginModal = document.getElementById("loginModal");
+        if (event.key !== "Escape") {
+            return;
+        }
 
-    if (
-        loginModal &&
-        event.target === loginModal
-    ) {
-        closeLogin();
-    }
-
-    const registerModal = document.getElementById("registerModal");
-
-    if (
-        registerModal &&
-        event.target === registerModal
-    ) {
-        closeRegister();
-    }
-
-    const searchOverlay = document.getElementById("searchOverlay");
-
-    if (
-        searchOverlay &&
-        event.target === searchOverlay
-    ) {
         closeSearch();
+
+        const mobileMenu =
+            document.getElementById(
+                "mobileMenu"
+            );
+
+        if (mobileMenu) {
+            mobileMenu.classList.remove(
+                "active"
+            );
+        }
     }
-});
+);
 
-/* =========================================================
-   ESCAPE KEY
-   ========================================================= */
+// ==========================================
+// CLOSE SEARCH WHEN CLICKING OUTSIDE
+// ==========================================
 
-document.addEventListener("keydown", function (event) {
+document.addEventListener(
+    "click",
+    function (event) {
 
-    if (event.key !== "Escape") {
-        return;
+        const searchOverlay =
+            document.getElementById(
+                "searchOverlay"
+            );
+
+        if (
+            searchOverlay &&
+            event.target === searchOverlay
+        ) {
+            closeSearch();
+        }
+
+        const mobileMenu =
+            document.getElementById(
+                "mobileMenu"
+            );
+
+        if (
+            mobileMenu &&
+            event.target.closest("a")
+        ) {
+            mobileMenu.classList.remove(
+                "active"
+            );
+        }
     }
+);
 
-    closeLogin();
-    closeRegister();
-    closeSearch();
+// ==========================================
+// HTML SECURITY
+// ==========================================
 
-    const menu = document.getElementById("mobileMenu");
+function escapeHTML(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
-    if (menu) {
-        menu.classList.remove("active");
+// ==========================================
+// PAGE STARTUP
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+        console.log(
+            "TikTok Streamers frontend loaded."
+        );
+
+        // These are optional.
+        // The homepage still works if the
+        // backend/API is not available yet.
+
+        checkBackendStatus();
+
+        loadStreamers();
+
+        loadLiveStreams();
+
+        loadLeaderboard();
     }
-});
-
-/* =========================================================
-   SEARCH ENTER KEY
-   ========================================================= */
-
-document.addEventListener("keydown", function (event) {
-
-    const searchInput = document.getElementById("streamerSearch");
-
-    if (!searchInput) return;
-
-    if (
-        document.activeElement === searchInput &&
-        event.key === "Enter"
-    ) {
-        event.preventDefault();
-        searchStreamers();
-    }
-});
-
-/* =========================================================
-   PAGE INITIALIZATION
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", async function () {
-
-    console.log("=================================");
-    console.log("   TIKTOK STREAMERS");
-    console.log("=================================");
-    console.log("Frontend loaded successfully.");
-    console.log("Platform status: Empty / Ready");
-    console.log("Fake users: 0");
-    console.log("Fake streamers: 0");
-    console.log("Fake LIVE streams: 0");
-    console.log("=================================");
-
-    /*
-     * Check the backend if the endpoint exists.
-     */
-
-    await checkBackendStatus();
-
-    /*
-     * Load real data only.
-     * If the database has no users yet,
-     * these arrays remain empty.
-     */
-
-    await loadStreamers();
-    await loadLiveStreams();
-    await loadLeaderboard();
-});
+);
