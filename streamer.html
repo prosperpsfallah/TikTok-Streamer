@@ -33,10 +33,10 @@
         }
 
         .logo {
-            font-size: 21px;
-            font-weight: 800;
             color: white;
             text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
         }
 
         .logo span {
@@ -67,8 +67,7 @@
         .cover {
             height: 220px;
             border-radius: 18px;
-            background:
-                linear-gradient(135deg, #111, #222, #111);
+            background: linear-gradient(135deg, #111, #222, #111);
             position: relative;
             overflow: hidden;
         }
@@ -79,20 +78,24 @@
             inset: 0;
             background: linear-gradient(
                 135deg,
-                rgba(254, 44, 85, .25),
+                rgba(254,44,85,.25),
                 transparent 45%,
-                rgba(37, 244, 238, .18)
+                rgba(37,244,238,.18)
             );
         }
 
-        .profile-card {
+        .profile-card,
+        .section {
             background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.05);
+        }
+
+        .profile-card {
             margin-top: -55px;
             position: relative;
             z-index: 2;
-            border-radius: 18px;
             padding: 24px;
-            box-shadow: 0 10px 35px rgba(0,0,0,.08);
         }
 
         .profile-top {
@@ -173,12 +176,6 @@
             color: white;
         }
 
-        .outline {
-            background: white;
-            color: #111;
-            border: 1px solid #ddd;
-        }
-
         button:disabled {
             opacity: .55;
             cursor: not-allowed;
@@ -210,11 +207,8 @@
         }
 
         .section {
-            background: white;
-            border-radius: 18px;
             padding: 24px;
             margin-top: 22px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.05);
         }
 
         .section h2 {
@@ -283,6 +277,11 @@
             color: #166534;
         }
 
+        .status.error {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
         .empty {
             text-align: center;
             padding: 45px 20px;
@@ -292,6 +291,30 @@
         .empty-icon {
             font-size: 42px;
             margin-bottom: 10px;
+        }
+
+        .viewer-box {
+            background: #f7f8fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .viewer-count-number {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .login-required {
+            text-align: center;
+            background: white;
+            padding: 60px 20px;
+            border-radius: 18px;
+        }
+
+        .login-required p {
+            color: #777;
+            margin: 10px 0 20px;
         }
 
         .message {
@@ -311,24 +334,8 @@
             display: block;
         }
 
-        .login-required {
-            text-align: center;
-            background: white;
-            padding: 60px 20px;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.05);
-        }
-
-        .login-required h2 {
-            margin-bottom: 10px;
-        }
-
-        .login-required p {
-            color: #777;
-            margin-bottom: 20px;
-        }
-
         @media (max-width: 700px) {
+
             header {
                 padding: 0 15px;
             }
@@ -373,6 +380,7 @@
 <body>
 
 <header>
+
     <a href="index.html" class="logo">
         TikTok <span>Streamers</span>
     </a>
@@ -383,21 +391,40 @@
         <a href="leaderboard.html">Leaderboard</a>
         <a href="profile.html">Profile</a>
     </nav>
+
 </header>
 
-<main id="mainContent">
+<main>
 
-    <div class="login-required" id="loginRequired" style="display:none;">
+    <div
+        class="login-required"
+        id="loginRequired"
+        style="display:none;"
+    >
         <h2>Login Required</h2>
-        <p>You need to log in before accessing your streamer dashboard.</p>
+
+        <p>
+            You need to log in before accessing
+            your streamer dashboard.
+        </p>
+
         <a href="login.html">
-            <button class="primary">Login</button>
+            <button class="primary">
+                Login
+            </button>
         </a>
     </div>
 
-    <div id="streamerContent" style="display:none;">
+
+    <div
+        id="streamerContent"
+        style="display:none;"
+    >
 
         <div class="cover"></div>
+
+
+        <!-- PROFILE -->
 
         <section class="profile-card">
 
@@ -408,14 +435,29 @@
                 </div>
 
                 <div class="profile-info">
-                    <h1 id="fullName">Loading...</h1>
-                    <div class="username" id="username">@loading</div>
-                    <div class="bio" id="bio">
+
+                    <h1 id="fullName">
+                        Loading...
+                    </h1>
+
+                    <div
+                        class="username"
+                        id="username"
+                    >
+                        @loading
+                    </div>
+
+                    <div
+                        class="bio"
+                        id="bio"
+                    >
                         No bio yet.
                     </div>
+
                 </div>
 
             </div>
+
 
             <div class="actions">
 
@@ -447,6 +489,7 @@
 
             </div>
 
+
             <div class="stats">
 
                 <div class="stat">
@@ -460,12 +503,12 @@
                 </div>
 
                 <div class="stat">
-                    <strong id="likes">0</strong>
+                    <strong>0</strong>
                     <span>Likes</span>
                 </div>
 
                 <div class="stat">
-                    <strong id="views">0</strong>
+                    <strong>0</strong>
                     <span>Views</span>
                 </div>
 
@@ -473,14 +516,18 @@
 
         </section>
 
-        <!-- CAMERA / MICROPHONE -->
+
+        <!-- LIVE STUDIO -->
+
         <section class="section">
 
             <h2>LIVE Studio</h2>
 
             <p class="section-description">
-                Test your camera and microphone before starting your LIVE stream.
+                Turn on your camera and microphone,
+                then start your LIVE broadcast.
             </p>
+
 
             <div class="camera-box">
 
@@ -495,11 +542,19 @@
                     class="camera-placeholder"
                     id="cameraPlaceholder"
                 >
-                    <div class="icon">🎥</div>
-                    <div>Camera preview is off.</div>
+
+                    <div class="icon">
+                        🎥
+                    </div>
+
+                    <div>
+                        Camera preview is off.
+                    </div>
+
                 </div>
 
             </div>
+
 
             <div class="camera-controls">
 
@@ -521,6 +576,7 @@
 
             </div>
 
+
             <div
                 class="status"
                 id="cameraStatus"
@@ -530,10 +586,12 @@
 
         </section>
 
-        <!-- LIVE STATUS -->
+
+        <!-- BROADCAST STATUS -->
+
         <section class="section">
 
-            <h2>LIVE Status</h2>
+            <h2>Broadcast Status</h2>
 
             <div
                 class="status"
@@ -548,43 +606,65 @@
                 style="display:none;"
             ></div>
 
-        </section>
-
-        <!-- LIVE CONTENT -->
-        <section class="section">
-
-            <h2>LIVE</h2>
-
             <div
-                class="empty"
-                id="liveContent"
+                class="viewer-box"
+                id="viewerBox"
+                style="display:none;"
             >
-                <div class="empty-icon">📺</div>
-                <div>No LIVE sessions yet.</div>
+
+                <div>
+                    Current connected viewers
+                </div>
+
+                <div
+                    class="viewer-count-number"
+                    id="connectedViewers"
+                >
+                    0
+                </div>
+
             </div>
 
         </section>
 
+
         <!-- VIDEOS -->
+
         <section class="section">
 
             <h2>Videos</h2>
 
             <div class="empty">
-                <div class="empty-icon">🎬</div>
-                <div>No videos yet.</div>
+
+                <div class="empty-icon">
+                    🎬
+                </div>
+
+                <div>
+                    No videos yet.
+                </div>
+
             </div>
 
         </section>
 
+
         <!-- BATTLES -->
+
         <section class="section">
 
             <h2>Battles</h2>
 
             <div class="empty">
-                <div class="empty-icon">⚔️</div>
-                <div>No battles yet.</div>
+
+                <div class="empty-icon">
+                    ⚔️
+                </div>
+
+                <div>
+                    No battles yet.
+                </div>
+
             </div>
 
         </section>
@@ -593,11 +673,17 @@
 
 </main>
 
-<div class="message" id="message"></div>
+
+<div
+    class="message"
+    id="message"
+></div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
 const SUPABASE_URL =
     "https://malrwexkhekripoaubur.supabase.co";
 
@@ -617,13 +703,25 @@ const supabaseClient =
         }
     );
 
+
 let currentUser = null;
 let currentProfile = null;
 let currentStream = null;
 
 let mediaStream = null;
+
 let cameraEnabled = false;
 let microphoneEnabled = false;
+
+let signalChannel = null;
+
+
+/*
+    One PeerConnection for each viewer.
+
+    viewer_id -> RTCPeerConnection
+*/
+const viewerConnections = new Map();
 
 
 /* =========================
@@ -632,13 +730,17 @@ let microphoneEnabled = false;
 
 function showMessage(text) {
 
-    const box = document.getElementById("message");
+    const box =
+        document.getElementById("message");
 
     box.textContent = text;
+
     box.classList.add("show");
 
     setTimeout(() => {
+
         box.classList.remove("show");
+
     }, 3500);
 }
 
@@ -653,16 +755,22 @@ async function initialize() {
         data: {
             session
         }
-    } = await supabaseClient.auth.getSession();
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
 
     if (!session || !session.user) {
 
-        document.getElementById("loginRequired").style.display = "block";
+        document.getElementById(
+            "loginRequired"
+        ).style.display = "block";
 
         return;
     }
 
-    currentUser = session.user;
+    currentUser =
+        session.user;
 
     await loadProfile();
 }
@@ -677,21 +785,22 @@ async function loadProfile() {
     const {
         data,
         error
-    } = await supabaseClient
-        .from("profiles")
-        .select(`
-            id,
-            full_name,
-            username,
-            account_type,
-            avatar_url,
-            bio,
-            followers_count,
-            following_count,
-            is_live
-        `)
-        .eq("id", currentUser.id)
-        .single();
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select(`
+                id,
+                full_name,
+                username,
+                account_type,
+                avatar_url,
+                bio,
+                followers_count,
+                following_count,
+                is_live
+            `)
+            .eq("id", currentUser.id)
+            .single();
 
     if (error) {
 
@@ -706,14 +815,15 @@ async function loadProfile() {
 
     currentProfile = data;
 
-    document.getElementById("streamerContent")
-        .style.display = "block";
+    document.getElementById(
+        "streamerContent"
+    ).style.display = "block";
 
     displayProfile();
 
-    updateStreamerControls();
-
     await loadCurrentLiveStream();
+
+    updateStreamerControls();
 }
 
 
@@ -731,46 +841,55 @@ function displayProfile() {
         currentProfile.username ||
         "user";
 
-    document.getElementById("fullName")
-        .textContent = name;
+    document.getElementById(
+        "fullName"
+    ).textContent = name;
 
-    document.getElementById("username")
-        .textContent = "@" + username;
+    document.getElementById(
+        "username"
+    ).textContent =
+        "@" + username;
 
-    document.getElementById("bio")
-        .textContent =
-            currentProfile.bio ||
-            "No bio yet.";
+    document.getElementById(
+        "bio"
+    ).textContent =
+        currentProfile.bio ||
+        "No bio yet.";
 
-    document.getElementById("followers")
-        .textContent =
-            currentProfile.followers_count || 0;
+    document.getElementById(
+        "followers"
+    ).textContent =
+        currentProfile.followers_count || 0;
 
-    document.getElementById("following")
-        .textContent =
-            currentProfile.following_count || 0;
+    document.getElementById(
+        "following"
+    ).textContent =
+        currentProfile.following_count || 0;
 
     const avatar =
-        document.getElementById("avatar");
+        document.getElementById(
+            "avatar"
+        );
 
     if (currentProfile.avatar_url) {
 
         avatar.innerHTML =
-            `<img src="${escapeHtml(currentProfile.avatar_url)}"
-                  alt="Profile photo">`;
+            `<img src="${escapeHtml(
+                currentProfile.avatar_url
+            )}" alt="Profile photo">`;
 
     } else {
 
-        const letter =
-            name.charAt(0).toUpperCase() || "?";
-
-        avatar.textContent = letter;
+        avatar.textContent =
+            name
+                .charAt(0)
+                .toUpperCase() || "?";
     }
 }
 
 
 /* =========================
-   STREAMER CONTROLS
+   CONTROLS
 ========================= */
 
 function updateStreamerControls() {
@@ -795,25 +914,36 @@ function updateStreamerControls() {
         "streamer"
     ) {
 
-        becomeButton.style.display = "none";
+        becomeButton.style.display =
+            "none";
 
         if (currentProfile.is_live) {
 
-            startButton.style.display = "none";
-            endButton.style.display = "inline-block";
+            startButton.style.display =
+                "none";
+
+            endButton.style.display =
+                "inline-block";
 
         } else {
 
-            startButton.style.display = "inline-block";
-            endButton.style.display = "none";
+            startButton.style.display =
+                "inline-block";
+
+            endButton.style.display =
+                "none";
         }
 
     } else {
 
-        becomeButton.style.display = "inline-block";
+        becomeButton.style.display =
+            "inline-block";
 
-        startButton.style.display = "none";
-        endButton.style.display = "none";
+        startButton.style.display =
+            "none";
+
+        endButton.style.display =
+            "none";
     }
 }
 
@@ -823,13 +953,6 @@ function updateStreamerControls() {
 ========================= */
 
 async function becomeStreamer() {
-
-    if (!currentUser) {
-
-        showMessage("Please log in first.");
-
-        return;
-    }
 
     const button =
         document.getElementById(
@@ -843,9 +966,10 @@ async function becomeStreamer() {
 
     const {
         error
-    } = await supabaseClient.rpc(
-        "become_streamer"
-    );
+    } =
+        await supabaseClient.rpc(
+            "become_streamer"
+        );
 
     if (error) {
 
@@ -883,14 +1007,25 @@ async function toggleCamera() {
 
     if (cameraEnabled) {
 
-        stopCamera();
+        if (mediaStream) {
+
+            mediaStream
+                .getVideoTracks()
+                .forEach(track => {
+                    track.stop();
+                });
+        }
+
+        cameraEnabled = false;
+
+        updateMediaUI();
 
         return;
     }
 
     try {
 
-        await startMediaStream(true);
+        await startMediaStream();
 
     } catch (error) {
 
@@ -929,9 +1064,7 @@ async function toggleMicrophone() {
 
     try {
 
-        await startMediaStream(
-            cameraEnabled
-        );
+        await startMediaStream();
 
     } catch (error) {
 
@@ -945,90 +1078,85 @@ async function toggleMicrophone() {
 
 
 /* =========================
-   START MEDIA STREAM
+   MEDIA
 ========================= */
 
-async function startMediaStream(
-    wantCamera
-) {
+async function startMediaStream() {
 
-    if (mediaStream) {
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
 
-        mediaStream
-            .getTracks()
-            .forEach(track => track.stop());
-    }
-
-    mediaStream =
-        await navigator.mediaDevices
-            .getUserMedia({
-                video: wantCamera,
-                audio: true
-            });
-
-    const videoTrack =
-        mediaStream.getVideoTracks()[0];
-
-    const audioTrack =
-        mediaStream.getAudioTracks()[0];
-
-    cameraEnabled =
-        !!videoTrack;
-
-    microphoneEnabled =
-        !!audioTrack;
-
-    const video =
-        document.getElementById(
-            "cameraPreview"
+        throw new Error(
+            "Camera API unavailable"
         );
-
-    if (cameraEnabled) {
-
-        video.srcObject = mediaStream;
-
-        video.style.display = "block";
-
-        document.getElementById(
-            "cameraPlaceholder"
-        ).style.display = "none";
     }
-
-    updateMediaUI();
-}
-
-
-/* =========================
-   STOP CAMERA
-========================= */
-
-function stopCamera() {
 
     if (!mediaStream) {
 
-        return;
+        mediaStream =
+            await navigator.mediaDevices
+                .getUserMedia({
+                    video: true,
+                    audio: true
+                });
+
+    } else {
+
+        const videoTracks =
+            mediaStream.getVideoTracks();
+
+        const audioTracks =
+            mediaStream.getAudioTracks();
+
+        if (
+            videoTracks.length === 0 ||
+            audioTracks.length === 0
+        ) {
+
+            mediaStream
+                .getTracks()
+                .forEach(track => {
+                    track.stop();
+                });
+
+            mediaStream =
+                await navigator.mediaDevices
+                    .getUserMedia({
+                        video: true,
+                        audio: true
+                    });
+        }
     }
 
-    mediaStream
-        .getVideoTracks()
-        .forEach(track => {
-            track.stop();
-        });
+    cameraEnabled =
+        mediaStream
+            .getVideoTracks()
+            .some(track =>
+                track.readyState === "live"
+            );
 
-    cameraEnabled = false;
+    microphoneEnabled =
+        mediaStream
+            .getAudioTracks()
+            .some(track =>
+                track.readyState === "live"
+            );
 
     const video =
         document.getElementById(
             "cameraPreview"
         );
 
-    video.srcObject = null;
+    video.srcObject =
+        mediaStream;
 
-    video.style.display = "none";
+    video.style.display =
+        "block";
 
     document.getElementById(
         "cameraPlaceholder"
-    ).style.display = "block";
+    ).style.display =
+        "none";
 
     updateMediaUI();
 }
@@ -1040,30 +1168,24 @@ function stopCamera() {
 
 function updateMediaUI() {
 
-    const cameraButton =
-        document.getElementById(
-            "cameraBtn"
-        );
+    document.getElementById(
+        "cameraBtn"
+    ).textContent =
+        cameraEnabled
+            ? "⛔ Turn Off Camera"
+            : "🎥 Turn On Camera";
 
-    const micButton =
-        document.getElementById(
-            "micBtn"
-        );
+    document.getElementById(
+        "micBtn"
+    ).textContent =
+        microphoneEnabled
+            ? "⛔ Turn Off Microphone"
+            : "🎙️ Turn On Microphone";
 
     const status =
         document.getElementById(
             "cameraStatus"
         );
-
-    cameraButton.textContent =
-        cameraEnabled
-            ? "⛔ Turn Off Camera"
-            : "🎥 Turn On Camera";
-
-    micButton.textContent =
-        microphoneEnabled
-            ? "⛔ Turn Off Microphone"
-            : "🎙️ Turn On Microphone";
 
     if (
         cameraEnabled &&
@@ -1121,31 +1243,22 @@ async function startCameraAndLive() {
         return;
     }
 
-    if (!cameraEnabled || !microphoneEnabled) {
+    try {
 
-        try {
+        if (
+            !cameraEnabled ||
+            !microphoneEnabled
+        ) {
 
-            await startMediaStream(true);
-
-        } catch (error) {
-
-            console.error(error);
-
-            showMessage(
-                "Please allow camera and microphone access first."
-            );
-
-            return;
+            await startMediaStream();
         }
-    }
 
-    if (
-        !cameraEnabled ||
-        !microphoneEnabled
-    ) {
+    } catch (error) {
+
+        console.error(error);
 
         showMessage(
-            "Camera and microphone are required."
+            "Please allow camera and microphone access."
         );
 
         return;
@@ -1157,18 +1270,30 @@ async function startCameraAndLive() {
     const {
         data,
         error
-    } = await supabaseClient
-        .from("live_streams")
-        .insert({
-            streamer_id: currentUser.id,
-            title: "LIVE Stream",
-            room_id: roomId,
-            is_live: true,
-            viewer_count: 0,
-            started_at: new Date().toISOString()
-        })
-        .select()
-        .single();
+    } =
+        await supabaseClient
+            .from("live_streams")
+            .insert({
+                streamer_id:
+                    currentUser.id,
+
+                title:
+                    "LIVE Stream",
+
+                room_id:
+                    roomId,
+
+                is_live:
+                    true,
+
+                viewer_count:
+                    0,
+
+                started_at:
+                    new Date().toISOString()
+            })
+            .select()
+            .single();
 
     if (error) {
 
@@ -1186,28 +1311,443 @@ async function startCameraAndLive() {
 
     const {
         error: profileError
-    } = await supabaseClient
-        .from("profiles")
-        .update({
-            is_live: true,
-            updated_at: new Date().toISOString()
-        })
-        .eq("id", currentUser.id);
+    } =
+        await supabaseClient
+            .from("profiles")
+            .update({
+                is_live: true,
+                updated_at:
+                    new Date().toISOString()
+            })
+            .eq(
+                "id",
+                currentUser.id
+            );
 
     if (profileError) {
 
-        console.error(profileError);
+        console.error(
+            profileError
+        );
     }
 
-    currentProfile.is_live = true;
+    currentProfile.is_live =
+        true;
+
+    /*
+       Start listening for viewers
+       AFTER the live stream exists.
+    */
+    await subscribeToLiveSignals();
 
     updateStreamerControls();
 
     updateLiveStatus();
 
     showMessage(
-        "Your LIVE session has started."
+        "🔴 You are now LIVE!"
     );
+}
+
+
+/* =========================
+   SIGNAL CHANNEL
+========================= */
+
+async function subscribeToLiveSignals() {
+
+    if (
+        !currentStream ||
+        signalChannel
+    ) {
+
+        return;
+    }
+
+    signalChannel =
+        supabaseClient
+            .channel(
+                "streamer-signals-" +
+                currentStream.id
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "live_signals",
+                    filter:
+                        "stream_id=eq." +
+                        currentStream.id
+                },
+                async payload => {
+
+                    const signal =
+                        payload.new;
+
+                    /*
+                       Only process signals
+                       sent to this streamer.
+                    */
+                    if (
+                        signal.receiver_id !==
+                        currentUser.id
+                    ) {
+
+                        return;
+                    }
+
+                    await handleViewerSignal(
+                        signal
+                    );
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Signal channel:",
+                        status
+                    );
+
+                }
+            );
+}
+
+
+/* =========================
+   HANDLE VIEWER SIGNAL
+========================= */
+
+async function handleViewerSignal(
+    signal
+) {
+
+    if (!currentStream) {
+        return;
+    }
+
+    /*
+       A viewer is asking
+       to establish a connection.
+    */
+    if (
+        signal.signal_type ===
+        "viewer-ready"
+    ) {
+
+        const viewerId =
+            signal.sender_id;
+
+        await createViewerPeer(
+            viewerId
+        );
+
+        return;
+    }
+
+
+    /*
+       Viewer sent us an answer
+       to our offer.
+    */
+    if (
+        signal.signal_type ===
+        "answer"
+    ) {
+
+        const viewerId =
+            signal.sender_id;
+
+        const connection =
+            viewerConnections.get(
+                viewerId
+            );
+
+        if (!connection) {
+            return;
+        }
+
+        try {
+
+            await connection
+                .setRemoteDescription(
+                    new RTCSessionDescription(
+                        signal.signal_data
+                    )
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Answer error:",
+                error
+            );
+        }
+
+        return;
+    }
+
+
+    /*
+       Viewer sent ICE candidate.
+    */
+    if (
+        signal.signal_type ===
+        "ice-candidate"
+    ) {
+
+        const viewerId =
+            signal.sender_id;
+
+        const connection =
+            viewerConnections.get(
+                viewerId
+            );
+
+        if (!connection) {
+            return;
+        }
+
+        try {
+
+            await connection
+                .addIceCandidate(
+                    new RTCIceCandidate(
+                        signal.signal_data
+                    )
+                );
+
+        } catch (error) {
+
+            console.error(
+                "ICE candidate error:",
+                error
+            );
+        }
+    }
+}
+
+
+/* =========================
+   CREATE VIEWER PEER
+========================= */
+
+async function createViewerPeer(
+    viewerId
+) {
+
+    if (
+        viewerConnections.has(
+            viewerId
+        )
+    ) {
+
+        return;
+    }
+
+    if (
+        !mediaStream ||
+        !currentStream
+    ) {
+
+        return;
+    }
+
+    const peerConnection =
+        new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls:
+                        "stun:stun.l.google.com:19302"
+                }
+            ]
+        });
+
+
+    /*
+       Add camera and microphone
+       to this viewer's connection.
+    */
+    mediaStream
+        .getTracks()
+        .forEach(track => {
+
+            peerConnection.addTrack(
+                track,
+                mediaStream
+            );
+
+        });
+
+
+    /*
+       Send ICE candidates
+       to the viewer.
+    */
+    peerConnection.onicecandidate =
+        async event => {
+
+            if (!event.candidate) {
+                return;
+            }
+
+            await sendSignalToViewer(
+                viewerId,
+                "ice-candidate",
+                event.candidate
+            );
+        };
+
+
+    /*
+       Connection state.
+    */
+    peerConnection
+        .onconnectionstatechange =
+        async () => {
+
+            const state =
+                peerConnection
+                    .connectionState;
+
+            console.log(
+                "Viewer",
+                viewerId,
+                "connection:",
+                state
+            );
+
+            if (
+                state === "failed" ||
+                state === "closed"
+            ) {
+
+                viewerConnections.delete(
+                    viewerId
+                );
+
+                updateViewerCount();
+
+            }
+
+        };
+
+
+    viewerConnections.set(
+        viewerId,
+        peerConnection
+    );
+
+    updateViewerCount();
+
+
+    /*
+       Create the WebRTC offer.
+    */
+    try {
+
+        const offer =
+            await peerConnection
+                .createOffer();
+
+        await peerConnection
+            .setLocalDescription(
+                offer
+            );
+
+        await sendSignalToViewer(
+            viewerId,
+            "offer",
+            offer
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Offer creation error:",
+            error
+        );
+
+        viewerConnections.delete(
+            viewerId
+        );
+
+        updateViewerCount();
+    }
+}
+
+
+/* =========================
+   SEND TO VIEWER
+========================= */
+
+async function sendSignalToViewer(
+    viewerId,
+    signalType,
+    signalData
+) {
+
+    if (
+        !currentStream ||
+        !currentUser
+    ) {
+
+        return;
+    }
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("live_signals")
+            .insert({
+                stream_id:
+                    currentStream.id,
+
+                sender_id:
+                    currentUser.id,
+
+                receiver_id:
+                    viewerId,
+
+                signal_type:
+                    signalType,
+
+                signal_data:
+                    signalData
+            });
+
+    if (error) {
+
+        console.error(
+            "Signal send error:",
+            error
+        );
+    }
+}
+
+
+/* =========================
+   VIEWER COUNT
+========================= */
+
+function updateViewerCount() {
+
+    const count =
+        viewerConnections.size;
+
+    document.getElementById(
+        "connectedViewers"
+    ).textContent =
+        count;
+
+    document.getElementById(
+        "viewerBox"
+    ).style.display =
+        currentStream
+            ? "block"
+            : "none";
 }
 
 
@@ -1220,16 +1760,26 @@ async function loadCurrentLiveStream() {
     const {
         data,
         error
-    } = await supabaseClient
-        .from("live_streams")
-        .select("*")
-        .eq("streamer_id", currentUser.id)
-        .eq("is_live", true)
-        .order("created_at", {
-            ascending: false
-        })
-        .limit(1)
-        .maybeSingle();
+    } =
+        await supabaseClient
+            .from("live_streams")
+            .select("*")
+            .eq(
+                "streamer_id",
+                currentUser.id
+            )
+            .eq(
+                "is_live",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(1)
+            .maybeSingle();
 
     if (error) {
 
@@ -1238,20 +1788,30 @@ async function loadCurrentLiveStream() {
         return;
     }
 
-    currentStream = data || null;
+    currentStream =
+        data || null;
 
     if (currentStream) {
 
-        currentProfile.is_live = true;
+        currentProfile.is_live =
+            true;
+
+        /*
+           Reconnect signaling if
+           the page was refreshed while
+           the database still says LIVE.
+        */
+        await subscribeToLiveSignals();
 
     } else {
 
-        currentProfile.is_live = false;
+        currentProfile.is_live =
+            false;
     }
 
-    updateStreamerControls();
-
     updateLiveStatus();
+
+    updateViewerCount();
 }
 
 
@@ -1271,11 +1831,6 @@ function updateLiveStatus() {
             "roomStatus"
         );
 
-    const liveContent =
-        document.getElementById(
-            "liveContent"
-        );
-
     if (currentStream) {
 
         status.textContent =
@@ -1291,11 +1846,6 @@ function updateLiveStatus() {
             "Live room: " +
             currentStream.room_id;
 
-        liveContent.innerHTML = `
-            <div class="empty-icon">🔴</div>
-            <div>Your LIVE session is active.</div>
-        `;
-
     } else {
 
         status.textContent =
@@ -1306,12 +1856,9 @@ function updateLiveStatus() {
 
         roomStatus.style.display =
             "none";
-
-        liveContent.innerHTML = `
-            <div class="empty-icon">📺</div>
-            <div>No LIVE sessions yet.</div>
-        `;
     }
+
+    updateViewerCount();
 }
 
 
@@ -1332,15 +1879,24 @@ async function endLive() {
 
     const {
         error
-    } = await supabaseClient
-        .from("live_streams")
-        .update({
-            is_live: false,
-            ended_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        })
-        .eq("id", currentStream.id)
-        .eq("streamer_id", currentUser.id);
+    } =
+        await supabaseClient
+            .from("live_streams")
+            .update({
+                is_live: false,
+                ended_at:
+                    new Date().toISOString(),
+                updated_at:
+                    new Date().toISOString()
+            })
+            .eq(
+                "id",
+                currentStream.id
+            )
+            .eq(
+                "streamer_id",
+                currentUser.id
+            );
 
     if (error) {
 
@@ -1354,22 +1910,49 @@ async function endLive() {
         return;
     }
 
-    const {
-        error: profileError
-    } = await supabaseClient
+    await supabaseClient
         .from("profiles")
         .update({
             is_live: false,
-            updated_at: new Date().toISOString()
+            updated_at:
+                new Date().toISOString()
         })
-        .eq("id", currentUser.id);
+        .eq(
+            "id",
+            currentUser.id
+        );
 
-    if (profileError) {
 
-        console.error(profileError);
+    currentProfile.is_live =
+        false;
+
+
+    /*
+       Close every viewer connection.
+    */
+    viewerConnections
+        .forEach(connection => {
+
+            connection.close();
+
+        });
+
+    viewerConnections.clear();
+
+
+    /*
+       Remove realtime channel.
+    */
+    if (signalChannel) {
+
+        await supabaseClient
+            .removeChannel(
+                signalChannel
+            );
+
+        signalChannel = null;
     }
 
-    currentProfile.is_live = false;
 
     currentStream = null;
 
@@ -1386,21 +1969,19 @@ async function endLive() {
 
 
 /* =========================
-   STOP ALL MEDIA
+   STOP MEDIA
 ========================= */
 
 function stopAllMedia() {
 
-    if (!mediaStream) {
+    if (mediaStream) {
 
-        return;
+        mediaStream
+            .getTracks()
+            .forEach(track => {
+                track.stop();
+            });
     }
-
-    mediaStream
-        .getTracks()
-        .forEach(track => {
-            track.stop();
-        });
 
     mediaStream = null;
 
@@ -1414,11 +1995,13 @@ function stopAllMedia() {
 
     video.srcObject = null;
 
-    video.style.display = "none";
+    video.style.display =
+        "none";
 
     document.getElementById(
         "cameraPlaceholder"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 
     updateMediaUI();
 }
@@ -1472,6 +2055,21 @@ window.addEventListener(
     "beforeunload",
     () => {
 
+        viewerConnections
+            .forEach(connection => {
+
+                connection.close();
+
+            });
+
+        if (signalChannel) {
+
+            supabaseClient
+                .removeChannel(
+                    signalChannel
+                );
+        }
+
         if (mediaStream) {
 
             mediaStream
@@ -1480,18 +2078,20 @@ window.addEventListener(
                     track.stop();
                 });
         }
+
     }
 );
 
 
 /* =========================
-   START APP
+   START
 ========================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     initialize
 );
+
 </script>
 
 </body>
