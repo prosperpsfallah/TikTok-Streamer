@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buy Coins - TikTok Streamers</title>
+
+    <meta
+        name="description"
+        content="Buy coins for TikTok Streamers."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .coins-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(53, 201, 255, 0.12),
+                    transparent 35%
+                ),
+                var(--navy-950);
+        }
+
+        .coins-main {
+            padding: 110px 20px 50px;
+        }
+
+        .coins-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .coins-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .coins-header h1 {
+            margin: 0 0 10px;
+            color: #ffffff;
+            font-size: clamp(30px, 5vw, 48px);
+        }
+
+        .coins-header p {
+            margin: 0;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .wallet-card {
+            background: linear-gradient(
+                135deg,
+                var(--navy-800),
+                var(--navy-700)
+            );
+            border: 1px solid rgba(53, 201, 255, 0.25);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+
+        .wallet-label {
+            color: rgba(255,255,255,0.65);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .wallet-balance {
+            color: #ffffff;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .wallet-balance span {
+            color: var(--sky);
+        }
+
+        .wallet-email {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        .section-title {
+            color: #ffffff;
+            margin-bottom: 18px;
+            font-size: 24px;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .package-card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: 0.2s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--sky);
+        }
+
+        .coin-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--sky-soft);
+            font-size: 35px;
+        }
+
+        .package-card h3 {
+            margin: 0 0 8px;
+            color: var(--navy-900);
+        }
+
+        .package-coins {
+            color: var(--blue);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .package-price {
+            color: #526274;
+            margin-bottom: 20px;
+        }
+
+        .buy-button {
+            width: 100%;
+            border: 0;
+            border-radius: 12px;
+            padding: 13px 15px;
+            background: linear-gradient(
+                135deg,
+                var(--blue),
+                var(--sky)
+            );
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .buy-button:hover {
+            opacity: 0.9;
+        }
+
+        .buy-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .payments-section {
+            margin-top: 45px;
+        }
+
+        .payments-card {
+            background: #ffffff;
+            border-radius: 22px;
+            overflow: hidden;
+        }
+
+        .payment-row {
+            display: grid;
+            grid-template-columns:
+                1.4fr
+                1fr
+                1fr
+                1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 18px 22px;
+            border-bottom: 1px solid #e8eef4;
+        }
+
+        .payment-row:last-child {
+            border-bottom: 0;
+        }
+
+        .payment-head {
+            font-weight: 800;
+            color: var(--navy-900);
+            background: #f5faff;
+        }
+
+        .payment-row div {
+            color: #526274;
+            font-size: 14px;
+        }
+
+        .payment-row .package-name {
+            color: var(--navy-900);
+            font-weight: 700;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .status.pending {
+            background: #fff4d6;
+            color: #8a5b00;
+        }
+
+        .status.paid {
+            background: #dff8e8;
+            color: #14753b;
+        }
+
+        .status.failed {
+            background: #ffe4e4;
+            color: #a52020;
+        }
+
+        .status.cancelled {
+            background: #edf0f4;
+            color: #596575;
+        }
+
+        .empty-payments {
+            padding: 35px 20px;
+            text-align: center;
+            color: #68778a;
+        }
+
+        .info-card {
+            margin-top: 35px;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(53,201,255,0.08);
+            border: 1px solid rgba(53,201,255,0.2);
+            color: rgba(255,255,255,0.75);
+        }
+
+        .info-card strong {
+            color: #ffffff;
+        }
+
+        .login-required {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px 25px;
+            text-align: center;
+            background: #ffffff;
+            border-radius: 24px;
+        }
+
+        .login-required h2 {
+            color: var(--navy-900);
+            margin-top: 0;
+        }
+
+        .login-required p {
+            color: #66758a;
+        }
+
+        .login-required a {
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 10, 20, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .payment-modal {
+            width: 100%;
+            max-width: 500px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .payment-modal h2 {
+            margin-top: 0;
+            color: var(--navy-900);
+        }
+
+        .selected-package {
+            background: var(--sky-soft);
+            border: 1px solid #cceeff;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .selected-package strong {
+            color: var(--navy-900);
+        }
+
+        .payment-methods {
+            display: grid;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .payment-method {
+            border: 1px solid #dce5ed;
+            border-radius: 12px;
+            padding: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--navy-900);
+        }
+
+        .payment-method:hover {
+            border-color: var(--sky);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+        }
+
+        .cancel-button {
+            border: 1px solid #d7e0e8;
+            background: #f5f7fa;
+            color: #39495b;
+            border-radius: 12px;
+            padding: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .confirm-button {
+            border: 0;
+            background: linear-gradient(
+                135deg,
+                var(--blue),
+                var(--sky)
+            );
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .confirm-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .form-message.show {
+            display: block;
+        }
+
+        .form-message.error {
+            background: #ffe8e8;
+            color: #a52020;
+        }
+
+        .form-message.success {
+            background: #e3f8eb;
+            color: #16733b;
+        }
+
+        @media (max-width: 900px) {
+            .packages-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .coins-main {
+                padding: 90px 15px 40px;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .payment-head {
+                display: none;
+            }
+
+            .wallet-balance {
+                font-size: 34px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="coins-page">
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                <span class="logo-mark">TS</span>
+                <span>TikTok Streamers</span>
+            </a>
+
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="live.html">Live</a>
+                <a href="videos.html">Videos</a>
+                <a href="gifts.html">Gifts</a>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="profile.html" class="btn btn-secondary">
+                    Profile
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="coins-main">
+
+        <div class="coins-container">
+
+            <div id="loginRequired" class="login-required" style="display:none;">
+                <h2>Sign in required</h2>
+                <p>
+                    You need to sign in before you can buy coins.
+                </p>
+
+                <a href="login.html" class="btn btn-primary">
+                    Sign In
+                </a>
+            </div>
+
+
+            <div id="coinsContent" style="display:none;">
+
+                <section class="coins-header">
+                    <h1>Buy Coins</h1>
+                    <p>
+                        Get coins to support your favorite streamers.
+                    </p>
+                </section>
+
+
+                <!-- WALLET -->
+                <section class="wallet-card">
+
+                    <div class="wallet-label">
+                        Your Coin Balance
+                    </div>
+
+                    <div class="wallet-balance">
+                        🪙 <span id="coinBalance">0</span>
+                    </div>
+
+                    <div class="wallet-email" id="userEmail">
+                        Loading account...
+                    </div>
+
+                </section>
+
+
+                <!-- PACKAGES -->
+                <section>
+
+                    <h2 class="section-title">
+                        Choose a Coin Package
+                    </h2>
+
+                    <div id="packagesGrid" class="packages-grid">
+
+                        <div class="empty-state">
+                            <h3>Loading packages...</h3>
+                            <p>Please wait.</p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- PAYMENT HISTORY -->
+                <section class="payments-section">
+
+                    <h2 class="section-title">
+                        Payment History
+                    </h2>
+
+                    <div class="payments-card">
+
+                        <div class="payment-row payment-head">
+                            <div>Package</div>
+                            <div>Amount</div>
+                            <div>Method</div>
+                            <div>Status</div>
+                        </div>
+
+                        <div id="paymentsList">
+                            <div class="empty-payments">
+                                Loading payment history...
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <div class="info-card">
+                    <strong>Important:</strong>
+                    Selecting a package creates a pending payment record.
+                    Coins are not added automatically. Coins will only be
+                    credited after the payment is successfully verified by
+                    the payment system.
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" class="modal-overlay">
+
+        <div class="payment-modal">
+
+            <h2>Choose Payment Method</h2>
+
+            <div id="selectedPackage" class="selected-package">
+                Loading package...
+            </div>
+
+            <p>
+                Select how you intend to pay:
+            </p>
+
+            <div class="payment-methods">
+
+                <label class="payment-method">
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="mobile_money"
+                    >
+                    Mobile Money
+                </label>
+
+                <label class="payment-method">
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="bank"
+                    >
+                    Bank Payment
+                </label>
+
+                <label class="payment-method">
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="sendwave"
+                    >
+                    Sendwave
+                </label>
+
+            </div>
+
+            <div
+                id="paymentMessage"
+                class="form-message"
+            ></div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="closePaymentModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    id="confirmPaymentButton"
+                    class="confirm-button"
+                    onclick="createPaymentRequest()"
+                >
+                    Continue
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        const SUPABASE_URL =
+            "https://malrwexkhekripoaubur.supabase.co";
+
+        /*
+         * IMPORTANT:
+         * Use the exact ANON/PUBLIC key already working
+         * in your login.html and register.html.
+         *
+         * Do NOT use a service_role key here.
+         */
+        const SUPABASE_ANON_KEY =
+            "PASTE_THE_EXACT_ANON_PUBLIC_KEY_FROM_YOUR_WORKING_LOGIN_HTML_HERE";
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        let currentUser = null;
+        let selectedPackage = null;
+
+
+        // ============================================
+        // START
+        // ============================================
+
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            const {
+                data: {
+                    session
+                }
+            } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+                showLoginRequired();
+                return;
+            }
+
+            currentUser = session.user;
+
+            document.getElementById("coinsContent").style.display = "block";
+
+            document.getElementById("userEmail").textContent =
+                currentUser.email || "Account";
+
+            await loadWallet();
+            await loadPackages();
+            await loadPaymentHistory();
+        });
+
+
+        // ============================================
+        // AUTH STATE
+        // ============================================
+
+        supabaseClient.auth.onAuthStateChange(
+            (event, session) => {
+
+                if (event === "SIGNED_OUT") {
+                    window.location.href = "login.html";
+                }
+
+            }
+        );
+
+
+        // ============================================
+        // LOGIN REQUIRED
+        // ============================================
+
+        function showLoginRequired() {
+
+            document.getElementById("loginRequired").style.display =
+                "block";
+
+            document.getElementById("coinsContent").style.display =
+                "none";
+        }
+
+
+        // ============================================
+        // LOAD WALLET
+        // ============================================
+
+        async function loadWallet() {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("wallets")
+                .select("coin_balance")
+                .eq("user_id", currentUser.id)
+                .maybeSingle();
+
+
+            if (error) {
+
+                console.error(
+                    "Wallet error:",
+                    error
+                );
+
+                document.getElementById("coinBalance")
+                    .textContent = "0";
+
+                return;
+            }
+
+
+            document.getElementById("coinBalance")
+                .textContent =
+                data?.coin_balance || 0;
+        }
+
+
+        // ============================================
+        // LOAD PACKAGES
+        // ============================================
+
+        async function loadPackages() {
+
+            const grid =
+                document.getElementById("packagesGrid");
+
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("coin_packages")
+                .select(
+                    "id,name,coins,price,currency"
+                )
+                .eq("is_active", true)
+                .order("price", {
+                    ascending: true
+                });
+
+
+            if (error) {
+
+                console.error(
+                    "Package error:",
+                    error
+                );
+
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Unable to load packages</h3>
+                        <p>
+                            ${escapeHTML(error.message)}
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!data || data.length === 0) {
+
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No coin packages available</h3>
+                        <p>
+                            Coin packages will appear here
+                            when they are added.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            grid.innerHTML = data.map(pkg => {
+
+                return `
+                    <div class="package-card">
+
+                        <div class="coin-icon">
+                            🪙
+                        </div>
+
+                        <h3>
+                            ${escapeHTML(pkg.name)}
+                        </h3>
+
+                        <div class="package-coins">
+                            ${Number(pkg.coins).toLocaleString()}
+                            Coins
+                        </div>
+
+                        <div class="package-price">
+                            ${escapeHTML(pkg.currency)}
+                            ${Number(pkg.price).toFixed(2)}
+                        </div>
+
+                        <button
+                            class="buy-button"
+                            onclick="openPaymentModal(
+                                '${pkg.id}'
+                            )"
+                        >
+                            Buy Coins
+                        </button>
+
+                    </div>
+                `;
+
+            }).join("");
+        }
+
+
+        // ============================================
+        // OPEN PAYMENT MODAL
+        // ============================================
+
+        async function openPaymentModal(packageId) {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("coin_packages")
+                .select(
+                    "id,name,coins,price,currency"
+                )
+                .eq("id", packageId)
+                .eq("is_active", true)
+                .maybeSingle();
+
+
+            if (error || !data) {
+
+                alert(
+                    "This coin package is no longer available."
+                );
+
+                return;
+            }
+
+
+            selectedPackage = data;
+
+
+            document.getElementById(
+                "selectedPackage"
+            ).innerHTML = `
+                <strong>
+                    ${escapeHTML(data.name)}
+                </strong>
+
+                <br>
+
+                ${Number(data.coins).toLocaleString()}
+                coins for
+                ${escapeHTML(data.currency)}
+                ${Number(data.price).toFixed(2)}
+            `;
+
+
+            document.querySelectorAll(
+                'input[name="paymentMethod"]'
+            ).forEach(input => {
+                input.checked = false;
+            });
+
+
+            hidePaymentMessage();
+
+
+            document.getElementById(
+                "paymentModal"
+            ).classList.add("active");
+        }
+
+
+        // ============================================
+        // CLOSE MODAL
+        // ============================================
+
+        function closePaymentModal() {
+
+            document.getElementById(
+                "paymentModal"
+            ).classList.remove("active");
+
+            selectedPackage = null;
+
+            hidePaymentMessage();
+        }
+
+
+        // ============================================
+        // CREATE PAYMENT REQUEST
+        // ============================================
+
+        async function createPaymentRequest() {
+
+            if (!currentUser) {
+
+                showPaymentMessage(
+                    "Please sign in first.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!selectedPackage) {
+
+                showPaymentMessage(
+                    "Please select a coin package.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const selectedMethod =
+                document.querySelector(
+                    'input[name="paymentMethod"]:checked'
+                );
+
+
+            if (!selectedMethod) {
+
+                showPaymentMessage(
+                    "Please select a payment method.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const button =
+                document.getElementById(
+                    "confirmPaymentButton"
+                );
+
+
+            button.disabled = true;
+            button.textContent = "Creating...";
+
+
+            try {
+
+                /*
+                 * We create ONLY a pending payment.
+                 *
+                 * The browser does NOT add coins.
+                 */
+
+                const {
+                    data,
+                    error
+                } = await supabaseClient
+                    .from("coin_purchases")
+                    .insert({
+                        user_id: currentUser.id,
+                        package_id: selectedPackage.id,
+                        coins: selectedPackage.coins,
+                        amount: selectedPackage.price,
+                        currency: selectedPackage.currency,
+                        payment_method:
+                            selectedMethod.value,
+                        status: "pending"
+                    })
+                    .select(
+                        "id,status"
+                    )
+                    .single();
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                showPaymentMessage(
+                    "Payment request created. Your payment is still pending verification.",
+                    "success"
+                );
+
+
+                await loadPaymentHistory();
+
+
+                setTimeout(() => {
+                    closePaymentModal();
+                }, 1800);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Payment creation error:",
+                    error
+                );
+
+                showPaymentMessage(
+                    error.message ||
+                    "Unable to create payment request.",
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "Continue";
+            }
+        }
+
+
+        // ============================================
+        // PAYMENT HISTORY
+        // ============================================
+
+        async function loadPaymentHistory() {
+
+            const list =
+                document.getElementById(
+                    "paymentsList"
+                );
+
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("coin_purchases")
+                .select(`
+                    id,
+                    coins,
+                    amount,
+                    currency,
+                    payment_method,
+                    status,
+                    created_at,
+                    coin_packages (
+                        name
+                    )
+                `)
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "Payment history error:",
+                    error
+                );
+
+                list.innerHTML = `
+                    <div class="empty-payments">
+                        Unable to load payment history.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!data || data.length === 0) {
+
+                list.innerHTML = `
+                    <div class="empty-payments">
+                        You have no payment records yet.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            list.innerHTML = data.map(payment => {
+
+                const packageName =
+                    payment.coin_packages?.name ||
+                    "Coin Package";
+
+
+                const method =
+                    formatPaymentMethod(
+                        payment.payment_method
+                    );
+
+
+                const status =
+                    String(
+                        payment.status || "pending"
+                    ).toLowerCase();
+
+
+                return `
+                    <div class="payment-row">
+
+                        <div class="package-name">
+                            ${escapeHTML(packageName)}
+                            <br>
+                            <small>
+                                ${Number(
+                                    payment.coins
+                                ).toLocaleString()}
+                                coins
+                            </small>
+                        </div>
+
+                        <div>
+                            ${escapeHTML(
+                                payment.currency
+                            )}
+                            ${Number(
+                                payment.amount
+                            ).toFixed(2)}
+                        </div>
+
+                        <div>
+                            ${escapeHTML(method)}
+                        </div>
+
+                        <div>
+                            <span
+                                class="status ${escapeHTML(status)}"
+                            >
+                                ${escapeHTML(
+                                    capitalize(status)
+                                )}
+                            </span>
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+        }
+
+
+        // ============================================
+        // PAYMENT MESSAGE
+        // ============================================
+
+        function showPaymentMessage(
+            message,
+            type
+        ) {
+
+            const element =
+                document.getElementById(
+                    "paymentMessage"
+                );
+
+
+            element.textContent = message;
+
+            element.className =
+                `form-message show ${type}`;
+        }
+
+
+        function hidePaymentMessage() {
+
+            const element =
+                document.getElementById(
+                    "paymentMessage"
+                );
+
+            element.textContent = "";
+
+            element.className =
+                "form-message";
+        }
+
+
+        // ============================================
+        // FORMAT PAYMENT METHOD
+        // ============================================
+
+        function formatPaymentMethod(method) {
+
+            const methods = {
+
+                mobile_money:
+                    "Mobile Money",
+
+                bank:
+                    "Bank",
+
+                sendwave:
+                    "Sendwave"
+
+            };
+
+            return methods[method] ||
+                method ||
+                "Unknown";
+        }
+
+
+        // ============================================
+        // CAPITALIZE
+        // ============================================
+
+        function capitalize(value) {
+
+            if (!value) {
+                return "";
+            }
+
+            return value.charAt(0).toUpperCase() +
+                value.slice(1);
+        }
+
+
+        // ============================================
+        // HTML ESCAPE
+        // ============================================
+
+        function escapeHTML(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        // ============================================
+        // CLOSE MODAL WHEN CLICKING OUTSIDE
+        // ============================================
+
+        document.getElementById(
+            "paymentModal"
+        ).addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === this) {
+                    closePaymentModal();
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
