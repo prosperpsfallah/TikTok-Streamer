@@ -4,453 +4,615 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | TikTok Streamers</title>
+    <title>Login — TikTok Streamers</title>
 
     <meta
         name="description"
-        content="Sign in to TikTok Streamers."
+        content="Login to your TikTok Streamers account."
     >
 
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 
-    <style>
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(37, 244, 238, 0.10),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 90% 90%,
-                    rgba(254, 44, 85, 0.12),
-                    transparent 30%
-                ),
-                #f7f7f8;
-        }
-
-        .auth-page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px 18px;
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 450px;
-        }
-
-        .auth-brand {
-            text-align: center;
-            margin-bottom: 22px;
-        }
-
-        .auth-brand a {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 23px;
-            font-weight: 800;
-        }
-
-        .auth-card {
-            background: #ffffff;
-            border: 1px solid #e8e8e8;
-            border-radius: 24px;
-            padding: 34px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-        }
-
-        .auth-card h1 {
-            font-size: 30px;
-            letter-spacing: -0.8px;
-            margin-bottom: 7px;
-        }
-
-        .auth-description {
-            color: #707070;
-            font-size: 14px;
-            margin-bottom: 27px;
-        }
-
-        .auth-form .form-group {
-            margin-bottom: 18px;
-        }
-
-        .password-wrapper {
-            position: relative;
-        }
-
-        .password-wrapper .form-control {
-            padding-right: 50px;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: none;
-            background: transparent;
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            color: #707070;
-        }
-
-        .login-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin: 5px 0 20px;
-            font-size: 13px;
-        }
-
-        .remember {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            color: #555;
-        }
-
-        .remember input {
-            width: 15px;
-            height: 15px;
-        }
-
-        .forgot-password {
-            color: #fe2c55;
-            font-weight: 700;
-        }
-
-        .auth-submit {
-            width: 100%;
-            padding: 14px;
-            font-size: 15px;
-        }
-
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 25px 0;
-            color: #999;
-            font-size: 12px;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #e8e8e8;
-        }
-
-        .create-account {
-            text-align: center;
-            font-size: 14px;
-            color: #707070;
-        }
-
-        .create-account a {
-            color: #fe2c55;
-            font-weight: 800;
-        }
-
-        .back-home {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-home a {
-            color: #555;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .back-home a:hover {
-            color: #fe2c55;
-        }
-
-        .security-note {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 12px;
-            background: #f7f7f7;
-            color: #777;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        @media (max-width: 500px) {
-            .auth-card {
-                padding: 27px 20px;
-                border-radius: 20px;
-            }
-
-            .auth-card h1 {
-                font-size: 26px;
-            }
-
-            .login-options {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-        }
-    </style>
+    <!-- Supabase JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-    <main class="auth-page">
+<header class="site-header">
 
-        <div class="auth-container">
+    <div class="header-inner">
 
-            <!-- BRAND -->
-            <div class="auth-brand">
-                <a href="index.html">
-                    <span class="logo-mark">TS</span>
-                    <span>TikTok Streamers</span>
-                </a>
+        <a href="index.html" class="logo">
+            <span class="logo-icon">TS</span>
+            <span>TikTok Streamers</span>
+        </a>
+
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="live.html">LIVE</a>
+            <a href="streamer.html">Streamers</a>
+            <a href="leaderboard.html">Leaderboard</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="register.html" class="btn btn-primary">Join</a>
+
+            <button
+                class="mobile-menu-btn"
+                onclick="toggleMobileMenu()"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
+        </div>
+
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu">
+        <a href="index.html">Home</a>
+        <a href="live.html">LIVE</a>
+        <a href="streamer.html">Streamers</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="register.html">Join</a>
+    </div>
+
+</header>
+
+
+<main style="
+    min-height:80vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+">
+
+    <section style="
+        width:100%;
+        max-width:480px;
+        background:#fff;
+        padding:35px;
+        border-radius:20px;
+        box-shadow:0 15px 45px rgba(0,0,0,.08);
+    ">
+
+        <div style="
+            text-align:center;
+            margin-bottom:30px;
+        ">
+
+            <div style="
+                width:70px;
+                height:70px;
+                margin:0 auto 15px;
+                border-radius:20px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:#111;
+                color:#fff;
+                font-size:22px;
+                font-weight:800;
+            ">
+                TS
             </div>
 
-            <!-- LOGIN CARD -->
-            <section class="auth-card">
+            <h1 style="margin:0 0 8px;">
+                Welcome Back
+            </h1>
 
-                <h1>Welcome back</h1>
-
-                <p class="auth-description">
-                    Sign in to your TikTok Streamers account.
-                </p>
-
-                <form
-                    class="auth-form"
-                    id="loginForm"
-                    onsubmit="loginUser(event)"
-                >
-
-                    <!-- USERNAME / EMAIL -->
-                    <div class="form-group">
-
-                        <label for="loginIdentifier">
-                            Username or Email
-                        </label>
-
-                        <input
-                            type="text"
-                            id="loginIdentifier"
-                            name="identifier"
-                            class="form-control"
-                            placeholder="Enter your username or email"
-                            autocomplete="username"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- PASSWORD -->
-                    <div class="form-group">
-
-                        <label for="loginPassword">
-                            Password
-                        </label>
-
-                        <div class="password-wrapper">
-
-                            <input
-                                type="password"
-                                id="loginPassword"
-                                name="password"
-                                class="form-control"
-                                placeholder="Enter your password"
-                                autocomplete="current-password"
-                                required
-                            >
-
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                onclick="togglePassword()"
-                                aria-label="Show password"
-                            >
-                                👁
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                    <!-- OPTIONS -->
-                    <div class="login-options">
-
-                        <label class="remember">
-                            <input
-                                type="checkbox"
-                                id="rememberMe"
-                            >
-
-                            <span>Remember me</span>
-                        </label>
-
-                        <a
-                            href="#"
-                            class="forgot-password"
-                            onclick="forgotPassword(event)"
-                        >
-                            Forgot password?
-                        </a>
-
-                    </div>
-
-                    <!-- SUBMIT -->
-                    <button
-                        type="submit"
-                        class="btn btn-red auth-submit"
-                    >
-                        Sign In
-                    </button>
-
-                </form>
-
-                <div class="auth-divider">
-                    <span>OR</span>
-                </div>
-
-                <!-- REGISTER -->
-                <div class="create-account">
-                    Don't have an account?
-                    <a href="register.html">
-                        Create one
-                    </a>
-                </div>
-
-                <div class="security-note">
-                    🔒 Your account will use secure authentication
-                    when the backend and database are connected.
-                </div>
-
-            </section>
-
-            <!-- BACK HOME -->
-            <div class="back-home">
-                <a href="index.html">
-                    ← Back to TikTok Streamers
-                </a>
-            </div>
+            <p style="margin:0;color:#777;">
+                Login to your TikTok Streamers account.
+            </p>
 
         </div>
 
-    </main>
 
-    <!-- TOAST -->
-    <div
-        id="toast"
-        class="toast"
-        aria-live="polite"
-    ></div>
+        <form id="loginForm">
 
-    <script>
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:700;
+            ">
+                Email
+            </label>
 
-        function togglePassword() {
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-bottom:18px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    box-sizing:border-box;
+                "
+            >
 
-            const password =
-                document.getElementById("loginPassword");
 
-            const button =
-                document.querySelector(".password-toggle");
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:700;
+            ">
+                Password
+            </label>
 
-            if (!password) return;
+            <div style="
+                position:relative;
+                margin-bottom:18px;
+            ">
 
-            if (password.type === "password") {
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                    style="
+                        width:100%;
+                        padding:14px 50px 14px 14px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                        box-sizing:border-box;
+                    "
+                >
 
-                password.type = "text";
+                <button
+                    type="button"
+                    onclick="togglePassword()"
+                    id="passwordToggle"
+                    aria-label="Show password"
+                    style="
+                        position:absolute;
+                        right:10px;
+                        top:50%;
+                        transform:translateY(-50%);
+                        border:0;
+                        background:none;
+                        cursor:pointer;
+                        font-size:18px;
+                    "
+                >
+                    👁
+                </button>
 
-                if (button) {
-                    button.textContent = "🙈";
-                    button.setAttribute(
-                        "aria-label",
-                        "Hide password"
-                    );
-                }
+            </div>
 
-            } else {
 
-                password.type = "password";
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:10px;
+                margin-bottom:22px;
+                font-size:14px;
+            ">
 
-                if (button) {
-                    button.textContent = "👁";
-                    button.setAttribute(
-                        "aria-label",
-                        "Show password"
-                    );
-                }
-            }
+                <label style="
+                    display:flex;
+                    align-items:center;
+                    gap:7px;
+                    color:#555;
+                ">
+
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                    >
+
+                    Remember me
+
+                </label>
+
+
+                <button
+                    type="button"
+                    onclick="forgotPassword()"
+                    style="
+                        border:0;
+                        background:none;
+                        color:#fe2c55;
+                        font-weight:700;
+                        cursor:pointer;
+                    "
+                >
+                    Forgot password?
+                </button>
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="loginButton"
+                class="btn btn-primary"
+                style="
+                    width:100%;
+                    padding:15px;
+                    border:0;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-size:16px;
+                "
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <div
+            id="loginMessage"
+            style="
+                display:none;
+                margin-top:18px;
+                padding:13px;
+                border-radius:10px;
+                font-size:14px;
+                text-align:center;
+            "
+        ></div>
+
+
+        <p style="
+            text-align:center;
+            margin-top:25px;
+            color:#777;
+        ">
+
+            Don't have an account?
+
+            <a
+                href="register.html"
+                style="
+                    color:#fe2c55;
+                    font-weight:700;
+                    text-decoration:none;
+                "
+            >
+                Create Account
+            </a>
+
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div class="footer-inner">
+
+        <div>
+            <strong>TikTok Streamers</strong>
+
+            <p>
+                Discover streamers, LIVE creators,
+                and communities.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="live.html">LIVE</a>
+            <a href="leaderboard.html">Leaderboard</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 TikTok Streamers. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+<script>
+
+    /*
+     * ==========================================
+     * SUPABASE CONFIGURATION
+     * ==========================================
+     *
+     * Supabase Dashboard
+     * → Project Settings
+     * → API
+     *
+     * Use the Project URL and Publishable/Anon key.
+     *
+     * NEVER use the service_role/secret key here.
+     */
+
+    const SUPABASE_URL = "YOUR_SUPABASE_URL";
+
+    const SUPABASE_ANON_KEY =
+        "YOUR_SUPABASE_ANON_KEY";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+    function showLoginMessage(message, success = false) {
+
+        const box =
+            document.getElementById("loginMessage");
+
+        box.style.display = "block";
+
+        box.textContent = message;
+
+        if (success) {
+
+            box.style.background = "#e9fff3";
+            box.style.color = "#087443";
+
+        } else {
+
+            box.style.background = "#fff0f3";
+            box.style.color = "#c9184a";
+
         }
+    }
 
-        function loginUser(event) {
 
-            event.preventDefault();
+    function togglePassword() {
 
-            const identifier =
-                document.getElementById("loginIdentifier").value.trim();
+        const input =
+            document.getElementById("password");
 
-            const password =
-                document.getElementById("loginPassword").value;
+        const button =
+            document.getElementById("passwordToggle");
 
-            if (!identifier || !password) {
-                showMessage("Please complete all fields.");
-                return;
-            }
+        if (input.type === "password") {
 
-            /*
-             * Authentication is intentionally not connected yet.
-             *
-             * No fake account is created.
-             * No password is saved in the browser.
-             *
-             * Real authentication will be connected
-             * after the backend/database is added.
-             */
+            input.type = "text";
 
-            showMessage(
-                "Login is not connected yet. Backend coming next."
+            button.textContent = "🙈";
+
+            button.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            input.type = "password";
+
+            button.textContent = "👁";
+
+            button.setAttribute(
+                "aria-label",
+                "Show password"
             );
         }
+    }
 
-        function forgotPassword(event) {
 
-            event.preventDefault();
+    document
+        .getElementById("loginForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
 
-            showMessage(
-                "Password recovery will be available after authentication is connected."
+                event.preventDefault();
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+                const button =
+                    document
+                        .getElementById("loginButton");
+
+
+                button.disabled = true;
+                button.textContent = "Logging in...";
+
+
+                try {
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.auth
+                            .signInWithPassword({
+
+                                email: email,
+
+                                password: password
+
+                            });
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    if (!data.session) {
+
+                        throw new Error(
+                            "Login succeeded but no session was created."
+                        );
+                    }
+
+
+                    showLoginMessage(
+                        "Login successful. Redirecting...",
+                        true
+                    );
+
+
+                    /*
+                     * Store no password.
+                     *
+                     * Supabase manages the
+                     * authenticated session.
+                     */
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    }, 700);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    showLoginMessage(
+                        error.message ||
+                        "Unable to login. Please check your email and password."
+                    );
+
+
+                } finally {
+
+                    button.disabled = false;
+
+                    button.textContent = "Login";
+                }
+
+            }
+        );
+
+
+    async function forgotPassword() {
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        if (!email) {
+
+            showLoginMessage(
+                "Enter your email address first."
+            );
+
+            return;
+        }
+
+
+        try {
+
+            const { error } =
+                await supabaseClient.auth
+                    .resetPasswordForEmail(
+                        email,
+                        {
+                            redirectTo:
+                                window.location.origin +
+                                "/settings.html"
+                        }
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            showLoginMessage(
+                "If that email is registered, a password reset link has been sent.",
+                true
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Password reset error:",
+                error
+            );
+
+            showLoginMessage(
+                error.message ||
+                "Unable to send the password reset email."
             );
         }
+    }
 
-        function showMessage(message) {
 
-            const toast =
-                document.getElementById("toast");
+    function toggleMobileMenu() {
 
-            if (!toast) return;
+        const menu =
+            document.getElementById("mobileMenu");
 
-            toast.textContent = message;
+        if (!menu) return;
 
-            toast.classList.add("show");
+        menu.classList.toggle("active");
+    }
 
-            clearTimeout(window.loginToastTimer);
 
-            window.loginToastTimer =
-                setTimeout(() => {
-                    toast.classList.remove("show");
-                }, 4000);
+    /*
+     * Check whether a session already exists.
+     */
+
+    async function checkExistingSession() {
+
+        try {
+
+            const {
+                data
+            } =
+                await supabaseClient.auth
+                    .getSession();
+
+
+            if (data.session) {
+
+                console.log(
+                    "Authenticated user:",
+                    data.session.user.id
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Session check error:",
+                error
+            );
         }
+    }
 
-    </script>
+
+    checkExistingSession();
+
+</script>
 
 </body>
 </html>
