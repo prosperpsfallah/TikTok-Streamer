@@ -320,24 +320,15 @@
 
 <script>
 
-    /*
-     * ==========================================
-     * SUPABASE CONFIGURATION
-     * ==========================================
-     *
-     * Supabase Dashboard
-     * → Project Settings
-     * → API
-     *
-     * Use the Project URL and Publishable/Anon key.
-     *
-     * NEVER use the service_role/secret key here.
-     */
+    // ==========================================
+    // SUPABASE CONNECTION
+    // ==========================================
 
-    const SUPABASE_URL = "YOUR_SUPABASE_URL";
+    const SUPABASE_URL =
+        "https://malrwexkhekripoaubur.supabase.co";
 
     const SUPABASE_ANON_KEY =
-        "YOUR_SUPABASE_ANON_KEY";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWlJ4R3s11dRo2rfP82lxWjBWU2DM0eEM";
 
 
     const supabaseClient =
@@ -346,6 +337,10 @@
             SUPABASE_ANON_KEY
         );
 
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
 
     function showLoginMessage(message, success = false) {
 
@@ -369,6 +364,10 @@
         }
     }
 
+
+    // ==========================================
+    // PASSWORD VISIBILITY
+    // ==========================================
 
     function togglePassword() {
 
@@ -402,6 +401,10 @@
         }
     }
 
+
+    // ==========================================
+    // LOGIN
+    // ==========================================
 
     document
         .getElementById("loginForm")
@@ -466,13 +469,6 @@
                     );
 
 
-                    /*
-                     * Store no password.
-                     *
-                     * Supabase manages the
-                     * authenticated session.
-                     */
-
                     setTimeout(() => {
 
                         window.location.href =
@@ -488,23 +484,25 @@
                         error
                     );
 
-
                     showLoginMessage(
                         error.message ||
                         "Unable to login. Please check your email and password."
                     );
 
-
                 } finally {
 
                     button.disabled = false;
-
                     button.textContent = "Login";
+
                 }
 
             }
         );
 
+
+    // ==========================================
+    // FORGOT PASSWORD
+    // ==========================================
 
     async function forgotPassword() {
 
@@ -561,9 +559,15 @@
                 error.message ||
                 "Unable to send the password reset email."
             );
+
         }
+
     }
 
+
+    // ==========================================
+    // MOBILE MENU
+    // ==========================================
 
     function toggleMobileMenu() {
 
@@ -576,9 +580,9 @@
     }
 
 
-    /*
-     * Check whether a session already exists.
-     */
+    // ==========================================
+    // CHECK EXISTING SESSION
+    // ==========================================
 
     async function checkExistingSession() {
 
@@ -606,7 +610,9 @@
                 "Session check error:",
                 error
             );
+
         }
+
     }
 
 
