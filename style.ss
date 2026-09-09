@@ -42,7 +42,7 @@ a {
     text-decoration: none;
 }
 
-button,
+button
 input {
     font: inherit;
 }
