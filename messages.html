@@ -2,140 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Messages — TikTok Streamers</title>
 
-    <meta
-        name="description"
-        content="Messages and conversations on TikTok Streamers."
-    >
+    <meta name="description"
+          content="Private messages on TikTok Streamers">
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet"
+          href="style.css">
 
-    <meta name="theme-color" content="#111111">
+    <link rel="manifest"
+          href="manifest.json">
 
     <style>
-        /* =========================================
-           MESSAGES PAGE
-        ========================================= */
 
         .messages-page {
-            min-height: 100vh;
-            background: #f7f8fa;
-        }
-
-        .messages-container {
-            width: min(1100px, calc(100% - 30px));
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 45px 0 70px;
+            padding: 25px 15px 60px;
         }
 
-        /* =========================================
-           PAGE HEADER
-        ========================================= */
-
-        .messages-heading {
-            margin-bottom: 25px;
+        .messages-title {
+            margin-bottom: 20px;
         }
 
-        .messages-heading h1 {
-            margin: 0 0 8px;
-            color: #111111;
-            font-size: clamp(32px, 5vw, 45px);
-            font-weight: 900;
+        .messages-title h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
         }
 
-        .messages-heading p {
-            margin: 0;
-            color: #777777;
-            line-height: 1.6;
+        .messages-title p {
+            color: #777;
         }
 
-        /* =========================================
-           MESSAGES LAYOUT
-        ========================================= */
-
-        .messages-layout {
+        .messages-app {
             display: grid;
-            grid-template-columns: 330px 1fr;
-            min-height: 620px;
-            background: #ffffff;
-            border: 1px solid #eeeeee;
+            grid-template-columns: 340px 1fr;
+            height: 650px;
+            background: #fff;
             border-radius: 22px;
             overflow: hidden;
+            border: 1px solid #eee;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
         }
 
-        /* =========================================
-           CONVERSATIONS
-        ========================================= */
-
         .conversation-panel {
-            border-right: 1px solid #eeeeee;
+            border-right: 1px solid #eee;
+            background: #fff;
+            overflow-y: auto;
         }
 
         .conversation-header {
-            padding: 22px;
-            border-bottom: 1px solid #eeeeee;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
         }
 
         .conversation-header h2 {
-            margin: 0 0 15px;
-            font-size: 20px;
-            color: #111111;
+            font-size: 19px;
+            margin-bottom: 12px;
         }
 
-        .message-search {
+        .search-users {
             width: 100%;
-            box-sizing: border-box;
-            border: 1px solid #eeeeee;
-            background: #f7f8fa;
-            border-radius: 999px;
-            padding: 11px 15px;
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
             outline: none;
-            font-size: 13px;
         }
 
-        .message-search:focus {
-            border-color: #cccccc;
+        .conversation-list {
+            padding: 5px;
         }
 
-        .conversation-empty {
-            padding: 55px 25px;
-            text-align: center;
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .conversation-empty-icon {
-            width: 65px;
-            height: 65px;
-            margin: 0 auto 16px;
+        .conversation-item:hover {
+            background: #f5f5f5;
+        }
+
+        .conversation-item.active {
+            background: linear-gradient(
+                135deg,
+                rgba(37,244,238,0.12),
+                rgba(254,44,85,0.10)
+            );
+        }
+
+        .conversation-avatar {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
             border-radius: 50%;
-            background: #f1f2f4;
-
+            background: linear-gradient(
+                135deg,
+                #25f4ee,
+                #fe2c55
+            );
             display: flex;
             align-items: center;
             justify-content: center;
-
-            font-size: 28px;
+            color: white;
+            font-weight: 800;
+            overflow: hidden;
         }
 
-        .conversation-empty h3 {
-            margin: 0 0 8px;
-            color: #111111;
-            font-size: 18px;
+        .conversation-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .conversation-empty p {
-            margin: 0;
-            color: #888888;
+        .conversation-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .conversation-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .conversation-preview {
+            color: #888;
             font-size: 13px;
-            line-height: 1.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        /* =========================================
-           CHAT AREA
-        ========================================= */
 
         .chat-panel {
             display: flex;
@@ -146,265 +150,206 @@
         .chat-header {
             display: flex;
             align-items: center;
-            gap: 13px;
-            padding: 18px 22px;
-            border-bottom: 1px solid #eeeeee;
-        }
-
-        .chat-avatar {
-            width: 45px;
-            height: 45px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: #f1f2f4;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 20px;
+            gap: 12px;
+            padding: 17px 20px;
+            border-bottom: 1px solid #eee;
+            min-height: 76px;
         }
 
         .chat-header-info strong {
             display: block;
-            color: #111111;
             margin-bottom: 4px;
         }
 
         .chat-header-info span {
-            color: #999999;
             font-size: 12px;
+            color: #888;
         }
 
-        .chat-empty {
+        .messages-list {
             flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            background: #f8f9fa;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .message-row.mine {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 11px 15px;
+            border-radius: 17px;
+            background: #fff;
+            border: 1px solid #eee;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .message-row.mine .message-bubble {
+            background: #111;
+            color: #fff;
+            border-color: #111;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-row:not(.mine) .message-bubble {
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            display: block;
+            margin-top: 5px;
+            font-size: 10px;
+            opacity: 0.55;
+        }
+
+        .message-form {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+
+        .message-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 13px 17px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .message-input:focus {
+            border-color: #25f4ee;
+        }
+
+        .send-button {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                #25f4ee,
+                #fe2c55
+            );
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-chat {
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 40px 25px;
+            color: #777;
+            padding: 30px;
         }
 
-        .chat-empty-inner {
-            max-width: 430px;
+        .empty-chat-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
         }
 
-        .chat-empty-icon {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            background: #f1f2f4;
+        .empty-conversations {
+            text-align: center;
+            padding: 50px 20px;
+            color: #888;
+        }
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
+        .empty-conversations-icon {
             font-size: 40px;
+            margin-bottom: 12px;
         }
 
-        .chat-empty h2 {
-            margin: 0 0 10px;
-            color: #111111;
-            font-size: 25px;
+        .login-required {
+            max-width: 600px;
+            margin: 70px auto;
+            background: #fff;
+            padding: 45px 25px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
         }
 
-        .chat-empty p {
-            margin: 0;
-            color: #888888;
-            line-height: 1.7;
-            font-size: 14px;
+        .login-required h1 {
+            margin-bottom: 10px;
         }
 
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-            padding: 17px 20px;
-            border-top: 1px solid #eeeeee;
-        }
-
-        .chat-input {
-            flex: 1;
-            border: 1px solid #eeeeee;
-            background: #f7f8fa;
-            border-radius: 999px;
-            padding: 12px 16px;
-            outline: none;
-            color: #555555;
-        }
-
-        .chat-send {
-            width: 45px;
-            height: 45px;
-            flex-shrink: 0;
-            border: 0;
-            border-radius: 50%;
-            background: #eeeeee;
-            color: #999999;
-            cursor: not-allowed;
-        }
-
-        /* =========================================
-           NOTICE
-        ========================================= */
-
-        .messages-notice {
-            margin-top: 25px;
-            padding: 28px;
-            border-radius: 20px;
-            background: #111111;
-            color: #ffffff;
-        }
-
-        .messages-notice h2 {
-            margin: 0 0 8px;
-            font-size: 22px;
-        }
-
-        .messages-notice p {
-            margin: 0;
-            color: rgba(255,255,255,0.65);
+        .login-required p {
+            color: #777;
             line-height: 1.6;
-            font-size: 14px;
+            margin-bottom: 25px;
         }
 
-        .messages-notice-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            color: #777;
         }
 
-        .messages-notice-actions a {
+        .hidden {
+            display: none !important;
+        }
+
+        .back-dashboard {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #111;
             text-decoration: none;
-            padding: 11px 18px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 13px;
+            font-weight: 700;
         }
 
-        .messages-notice-actions .primary {
-            background: #fe2c55;
-            color: #ffffff;
-        }
+        @media (max-width: 750px) {
 
-        .messages-notice-actions .secondary {
-            background: rgba(255,255,255,0.1);
-            color: #ffffff;
-        }
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
-        @media (max-width: 800px) {
-
-            .messages-layout {
+            .messages-app {
                 grid-template-columns: 1fr;
+                height: 680px;
             }
 
             .conversation-panel {
-                border-right: 0;
-                border-bottom: 1px solid #eeeeee;
-            }
-
-            .conversation-empty {
-                padding: 35px 20px;
+                display: none;
             }
 
             .chat-panel {
-                min-height: 500px;
+                display: flex;
             }
 
+            .message-bubble {
+                max-width: 82%;
+            }
         }
 
-        @media (max-width: 500px) {
-
-            .messages-container {
-                width: calc(100% - 20px);
-                padding-top: 25px;
-            }
-
-            .messages-layout {
-                border-radius: 18px;
-            }
-
-            .chat-empty {
-                padding: 45px 18px;
-            }
-
-            .chat-input-area {
-                padding: 13px;
-            }
-
-        }
     </style>
 </head>
 
 <body>
 
-<div class="messages-page">
 
-    <!-- =====================================
-         HEADER
-    ====================================== -->
+<header class="header">
 
-    <header class="site-header">
+    <div class="container">
 
-        <div class="header-inner">
+        <a href="index.html" class="logo">
+            TikTok <span>Streamers</span>
+        </a>
 
-            <a href="index.html" class="brand">
-                <span class="brand-mark">T</span>
-                <span>TikTok Streamers</span>
-            </a>
-
-            <nav class="desktop-nav">
-
-                <a href="index.html">Home</a>
-
-                <a href="live.html">Live</a>
-
-                <a href="index.html#streamers">
-                    Streamers
-                </a>
-
-                <a href="leaderboard.html">
-                    Leaderboard
-                </a>
-
-            </nav>
-
-            <div class="header-actions">
-
-                <a
-                    href="login.html"
-                    class="btn btn-secondary"
-                >
-                    Login
-                </a>
-
-                <a
-                    href="register.html"
-                    class="btn btn-primary"
-                >
-                    Join
-                </a>
-
-                <button
-                    class="mobile-menu-button"
-                    type="button"
-                    onclick="toggleMobileMenu()"
-                    aria-label="Open menu"
-                >
-                    ☰
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div id="mobileMenu" class="mobile-menu">
+        <nav class="nav">
 
             <a href="index.html">Home</a>
 
@@ -418,292 +363,1066 @@
                 Leaderboard
             </a>
 
-            <a href="login.html">
-                Login
-            </a>
+        </nav>
 
-            <a href="register.html">
-                Join
+        <div class="header-actions">
+
+            <a href="dashboard.html"
+               class="btn btn-secondary">
+                Dashboard
             </a>
 
         </div>
 
-    </header>
+    </div>
+
+</header>
 
 
-    <!-- =====================================
-         MAIN
-    ====================================== -->
+<main class="messages-page">
 
-    <main class="messages-container">
 
-        <div class="messages-heading">
+    <a href="dashboard.html"
+       class="back-dashboard">
+        ← Back to Dashboard
+    </a>
 
-            <h1>
-                Messages
-            </h1>
 
-            <p>
-                Connect and communicate with other members
-                of the TikTok Streamers community.
-            </p>
+    <div class="messages-title">
 
+        <h1>Messages</h1>
+
+        <p>
+            Connect privately with other TikTok Streamers users.
+        </p>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div id="loading"
+         class="loading">
+
+        <h2>Loading messages...</h2>
+
+        <p>Please wait.</p>
+
+    </div>
+
+
+    <!-- LOGIN -->
+
+    <section id="loginRequired"
+             class="login-required hidden">
+
+        <div style="font-size:50px;margin-bottom:15px;">
+            💬
         </div>
 
+        <h1>Login Required</h1>
 
-        <!-- =================================
-             MESSAGES APPLICATION
-        ================================== -->
+        <p>
+            Log in to send and receive messages.
+        </p>
 
-        <section class="messages-layout">
+        <a href="login.html"
+           class="btn btn-primary"
+           style="text-decoration:none;">
+            Login
+        </a>
 
-
-            <!-- CONVERSATIONS -->
-
-            <aside class="conversation-panel">
-
-                <div class="conversation-header">
-
-                    <h2>
-                        Conversations
-                    </h2>
-
-                    <input
-                        type="search"
-                        class="message-search"
-                        placeholder="Search messages..."
-                        aria-label="Search messages"
-                        disabled
-                    >
-
-                </div>
+    </section>
 
 
-                <div class="conversation-empty">
+    <!-- MESSAGES APP -->
 
-                    <div class="conversation-empty-icon">
-                        💬
-                    </div>
-
-                    <h3>
-                        No conversations
-                    </h3>
-
-                    <p>
-                        Your conversations will appear here
-                        after real users join the platform
-                        and start communicating.
-                    </p>
-
-                </div>
-
-            </aside>
+    <section id="messagesApp"
+             class="messages-app hidden">
 
 
-            <!-- CHAT -->
+        <!-- CONVERSATIONS -->
 
-            <div class="chat-panel">
+        <aside class="conversation-panel">
+
+            <div class="conversation-header">
+
+                <h2>Conversations</h2>
+
+                <input
+                    type="search"
+                    id="userSearch"
+                    class="search-users"
+                    placeholder="Search users..."
+                    disabled
+                >
+
+            </div>
 
 
-                <div class="chat-header">
+            <div id="conversationList"
+                 class="conversation-list">
 
-                    <div class="chat-avatar">
-                        👤
-                    </div>
+            </div>
 
-                    <div class="chat-header-info">
+        </aside>
 
-                        <strong>
-                            No conversation selected
-                        </strong>
 
-                        <span>
-                            Select a real conversation to begin.
-                        </span>
+        <!-- CHAT -->
 
-                    </div>
+        <section class="chat-panel">
+
+
+            <div id="chatHeader"
+                 class="chat-header">
+
+                <div>
+
+                    <strong>
+                        Messages
+                    </strong>
+
+                    <span>
+                        Select a conversation
+                    </span>
 
                 </div>
 
+            </div>
 
-                <div class="chat-empty">
 
-                    <div class="chat-empty-inner">
+            <div id="messagesList"
+                 class="messages-list">
 
-                        <div class="chat-empty-icon">
+                <div class="empty-chat">
+
+                    <div>
+
+                        <div class="empty-chat-icon">
                             💬
                         </div>
 
-                        <h2>
-                            No messages yet
-                        </h2>
+                        <h2>No Conversation Selected</h2>
 
-                        <p>
-                            There are no messages to display.
-                            Once real members create accounts
-                            and communicate with each other,
-                            conversations will appear here.
+                        <p style="margin-top:8px;">
+                            Your real conversations will appear
+                            here when you start messaging users.
                         </p>
 
                     </div>
 
                 </div>
 
+            </div>
 
-                <div class="chat-input-area">
 
-                    <input
-                        class="chat-input"
-                        type="text"
-                        placeholder="Log in to send a message..."
-                        disabled
-                    >
+            <form id="messageForm"
+                  class="message-form">
 
-                    <button
-                        class="chat-send"
-                        type="button"
-                        disabled
-                        aria-label="Send message"
-                    >
-                        ➤
-                    </button>
+                <input
+                    type="text"
+                    id="messageInput"
+                    class="message-input"
+                    placeholder="Write a message..."
+                    autocomplete="off"
+                    disabled
+                >
+
+                <button
+                    type="submit"
+                    id="sendButton"
+                    class="send-button"
+                    disabled>
+
+                    ➤
+
+                </button>
+
+            </form>
+
+
+        </section>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            TikTok Streamers © 2026
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+
+
+let currentUser = null;
+
+let currentConversationId = null;
+
+let realtimeChannel = null;
+
+
+/* ELEMENTS */
+
+const loading =
+    document.getElementById("loading");
+
+const loginRequired =
+    document.getElementById("loginRequired");
+
+const messagesApp =
+    document.getElementById("messagesApp");
+
+const conversationList =
+    document.getElementById("conversationList");
+
+const messagesList =
+    document.getElementById("messagesList");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const sendButton =
+    document.getElementById("sendButton");
+
+const messageForm =
+    document.getElementById("messageForm");
+
+
+/* LOAD SESSION */
+
+async function initializeMessaging() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data.session) {
+
+            loading.style.display = "none";
+
+            loginRequired.classList.remove("hidden");
+
+            return;
+        }
+
+
+        currentUser =
+            data.session.user;
+
+
+        loading.style.display = "none";
+
+        messagesApp.classList.remove("hidden");
+
+
+        await loadConversations();
+
+    } catch (error) {
+
+        console.error(
+            "Messaging initialization error:",
+            error
+        );
+
+        loading.innerHTML = `
+            <h2>Unable to load messages</h2>
+            <p style="margin-top:10px;">
+                ${error.message || "Something went wrong."}
+            </p>
+        `;
+    }
+}
+
+
+/* LOAD CONVERSATIONS */
+
+async function loadConversations() {
+
+    conversationList.innerHTML = "";
+
+
+    const {
+        data: memberships,
+        error
+    } = await supabaseClient
+        .from("conversation_members")
+        .select("conversation_id")
+        .eq("user_id", currentUser.id);
+
+
+    if (error) {
+
+        console.error(
+            "Conversation error:",
+            error
+        );
+
+        showConversationEmpty();
+
+        return;
+    }
+
+
+    if (!memberships || memberships.length === 0) {
+
+        showConversationEmpty();
+
+        return;
+    }
+
+
+    const conversationIds =
+        memberships.map(
+            item => item.conversation_id
+        );
+
+
+    const {
+        data: conversations,
+        error: conversationError
+    } = await supabaseClient
+        .from("conversations")
+        .select("id, created_at, updated_at")
+        .in("id", conversationIds)
+        .order("updated_at", {
+            ascending: false
+        });
+
+
+    if (conversationError) {
+
+        console.error(
+            "Conversation loading error:",
+            conversationError
+        );
+
+        showConversationEmpty();
+
+        return;
+    }
+
+
+    if (!conversations ||
+        conversations.length === 0) {
+
+        showConversationEmpty();
+
+        return;
+    }
+
+
+    for (const conversation of conversations) {
+
+        await renderConversation(
+            conversation
+        );
+    }
+}
+
+
+/* EMPTY CONVERSATIONS */
+
+function showConversationEmpty() {
+
+    conversationList.innerHTML = `
+
+        <div class="empty-conversations">
+
+            <div class="empty-conversations-icon">
+                💬
+            </div>
+
+            <strong>
+                No conversations yet
+            </strong>
+
+            <p style="margin-top:8px;">
+                Start connecting with real users
+                when messaging is available.
+            </p>
+
+        </div>
+
+    `;
+}
+
+
+/* RENDER CONVERSATION */
+
+async function renderConversation(
+    conversation
+) {
+
+    const {
+        data: members
+    } = await supabaseClient
+        .from("conversation_members")
+        .select("user_id")
+        .eq(
+            "conversation_id",
+            conversation.id
+        );
+
+
+    if (!members) {
+        return;
+    }
+
+
+    const otherMember =
+        members.find(
+            member =>
+                member.user_id !== currentUser.id
+        );
+
+
+    if (!otherMember) {
+        return;
+    }
+
+
+    const {
+        data: profile
+    } = await supabaseClient
+        .from("profiles")
+        .select(
+            "id, full_name, username, avatar_url"
+        )
+        .eq(
+            "id",
+            otherMember.user_id
+        )
+        .maybeSingle();
+
+
+    if (!profile) {
+        return;
+    }
+
+
+    const {
+        data: lastMessages
+    } = await supabaseClient
+        .from("messages")
+        .select(
+            "message, created_at"
+        )
+        .eq(
+            "conversation_id",
+            conversation.id
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        )
+        .limit(1);
+
+
+    const lastMessage =
+        lastMessages &&
+        lastMessages.length
+            ? lastMessages[0]
+            : null;
+
+
+    const item =
+        document.createElement("div");
+
+
+    item.className =
+        "conversation-item";
+
+
+    item.dataset.conversationId =
+        conversation.id;
+
+
+    const firstLetter =
+        (profile.full_name ||
+            profile.username ||
+            "?")
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+
+
+    let avatarHTML =
+        firstLetter;
+
+
+    if (profile.avatar_url) {
+
+        avatarHTML =
+            `<img src="${escapeHTML(
+                profile.avatar_url
+            )}" alt="Profile">`;
+    }
+
+
+    item.innerHTML = `
+
+        <div class="conversation-avatar">
+            ${avatarHTML}
+        </div>
+
+        <div class="conversation-info">
+
+            <div class="conversation-name">
+                ${escapeHTML(
+                    profile.full_name ||
+                    profile.username ||
+                    "User"
+                )}
+            </div>
+
+            <div class="conversation-preview">
+                ${
+                    lastMessage
+                        ? escapeHTML(
+                            lastMessage.message
+                          )
+                        : "No messages yet"
+                }
+            </div>
+
+        </div>
+
+    `;
+
+
+    item.addEventListener(
+        "click",
+        () => {
+
+            openConversation(
+                conversation.id,
+                profile
+            );
+
+        }
+    );
+
+
+    conversationList.appendChild(item);
+}
+
+
+/* OPEN CONVERSATION */
+
+async function openConversation(
+    conversationId,
+    profile
+) {
+
+    currentConversationId =
+        conversationId;
+
+
+    document.querySelectorAll(
+        ".conversation-item"
+    ).forEach(item => {
+
+        item.classList.toggle(
+            "active",
+            item.dataset.conversationId ===
+            conversationId
+        );
+
+    });
+
+
+    document.getElementById(
+        "chatHeader"
+    ).innerHTML = `
+
+        <div class="conversation-avatar">
+
+            ${
+                profile.avatar_url
+                    ? `<img src="${escapeHTML(
+                        profile.avatar_url
+                    )}" alt="Profile">`
+                    : escapeHTML(
+                        (
+                            profile.full_name ||
+                            profile.username ||
+                            "?"
+                        )
+                        .trim()
+                        .charAt(0)
+                        .toUpperCase()
+                    )
+            }
+
+        </div>
+
+        <div class="chat-header-info">
+
+            <strong>
+                ${escapeHTML(
+                    profile.full_name ||
+                    profile.username ||
+                    "User"
+                )}
+            </strong>
+
+            <span>
+                ${
+                    profile.username
+                        ? "@" + escapeHTML(
+                            profile.username
+                          )
+                        : "TikTok Streamers user"
+                }
+            </span>
+
+        </div>
+
+    `;
+
+
+    messageInput.disabled = false;
+
+    sendButton.disabled = false;
+
+
+    await loadMessages(
+        conversationId
+    );
+
+
+    subscribeToMessages(
+        conversationId
+    );
+}
+
+
+/* LOAD MESSAGES */
+
+async function loadMessages(
+    conversationId
+) {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("messages")
+        .select(
+            "id, sender_id, message, is_read, created_at"
+        )
+        .eq(
+            "conversation_id",
+            conversationId
+        )
+        .order(
+            "created_at",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Messages error:",
+            error
+        );
+
+        messagesList.innerHTML = `
+            <div class="empty-chat">
+                <div>
+                    <h2>Unable to load messages</h2>
+                    <p style="margin-top:8px;">
+                        ${escapeHTML(error.message)}
+                    </p>
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        messagesList.innerHTML = `
+
+            <div class="empty-chat">
+
+                <div>
+
+                    <div class="empty-chat-icon">
+                        👋
+                    </div>
+
+                    <h2>Start the conversation</h2>
+
+                    <p style="margin-top:8px;">
+                        There are no messages yet.
+                    </p>
 
                 </div>
 
             </div>
 
-        </section>
+        `;
 
-
-        <!-- =================================
-             NOTICE
-        ================================== -->
-
-        <section class="messages-notice">
-
-            <h2>
-                Messaging is waiting for real users
-            </h2>
-
-            <p>
-                Nothing is preloaded into the messaging system.
-                Real conversations, users and messages will be
-                created after authentication and the database
-                are connected.
-            </p>
-
-            <div class="messages-notice-actions">
-
-                <a
-                    href="register.html"
-                    class="primary"
-                >
-                    Create Account
-                </a>
-
-                <a
-                    href="login.html"
-                    class="secondary"
-                >
-                    Log In
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =====================================
-         FOOTER
-    ====================================== -->
-
-    <footer class="site-footer">
-
-        <div class="footer-inner">
-
-            <div>
-
-                <strong>
-                    TikTok Streamers
-                </strong>
-
-                <p>
-                    A community platform for discovering
-                    and connecting with streamers.
-                </p>
-
-            </div>
-
-
-            <div class="footer-links">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="live.html">
-                    Live
-                </a>
-
-                <a href="leaderboard.html">
-                    Leaderboard
-                </a>
-
-                <a href="login.html">
-                    Login
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer-bottom">
-
-            © <span id="currentYear"></span>
-            TikTok Streamers.
-            All rights reserved.
-
-        </div>
-
-    </footer>
-
-</div>
-
-
-<script>
-
-    /* =========================================
-       MOBILE MENU
-    ========================================= */
-
-    function toggleMobileMenu() {
-
-        const menu =
-            document.getElementById("mobileMenu");
-
-        if (!menu) return;
-
-        menu.classList.toggle("open");
-
+        return;
     }
 
 
-    /* =========================================
-       CURRENT YEAR
-    ========================================= */
+    messagesList.innerHTML = "";
 
-    const yearElement =
-        document.getElementById("currentYear");
 
-    if (yearElement) {
+    data.forEach(
+        message =>
+            renderMessage(message)
+    );
 
-        yearElement.textContent =
-            new Date().getFullYear();
+
+    scrollMessagesToBottom();
+
+
+    await markMessagesRead(
+        conversationId
+    );
+}
+
+
+/* RENDER MESSAGE */
+
+function renderMessage(
+    message
+) {
+
+    const row =
+        document.createElement("div");
+
+
+    const mine =
+        message.sender_id ===
+        currentUser.id;
+
+
+    row.className =
+        "message-row" +
+        (mine ? " mine" : "");
+
+
+    const bubble =
+        document.createElement("div");
+
+
+    bubble.className =
+        "message-bubble";
+
+
+    bubble.innerHTML = `
+
+        ${escapeHTML(message.message)}
+
+        <span class="message-time">
+            ${formatTime(
+                message.created_at
+            )}
+        </span>
+
+    `;
+
+
+    row.appendChild(bubble);
+
+    messagesList.appendChild(row);
+}
+
+
+/* SEND MESSAGE */
+
+messageForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        if (
+            !currentUser ||
+            !currentConversationId
+        ) {
+            return;
+        }
+
+
+        const message =
+            messageInput.value.trim();
+
+
+        if (!message) {
+            return;
+        }
+
+
+        sendButton.disabled = true;
+
+
+        try {
+
+            const {
+                error
+            } = await supabaseClient
+                .from("messages")
+                .insert({
+                    conversation_id:
+                        currentConversationId,
+
+                    sender_id:
+                        currentUser.id,
+
+                    message:
+                        message
+                });
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            messageInput.value = "";
+
+
+        } catch (error) {
+
+            console.error(
+                "Send message error:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Unable to send message."
+            );
+
+        } finally {
+
+            sendButton.disabled = false;
+
+            messageInput.focus();
+        }
+    }
+);
+
+
+/* REALTIME */
+
+function subscribeToMessages(
+    conversationId
+) {
+
+    if (realtimeChannel) {
+
+        supabaseClient
+            .removeChannel(
+                realtimeChannel
+            );
+    }
+
+
+    realtimeChannel =
+        supabaseClient
+            .channel(
+                "messages-" +
+                conversationId
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "messages",
+                    filter:
+                        "conversation_id=eq." +
+                        conversationId
+                },
+                payload => {
+
+                    const message =
+                        payload.new;
+
+
+                    /*
+                     * Avoid displaying a message
+                     * twice if it was already loaded.
+                     */
+
+                    if (
+                        document.querySelector(
+                            `[data-message-id="${message.id}"]`
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    renderMessage(
+                        message
+                    );
+
+
+                    scrollMessagesToBottom();
+
+
+                    if (
+                        message.sender_id !==
+                        currentUser.id
+                    ) {
+
+                        markMessagesRead(
+                            conversationId
+                        );
+                    }
+
+                }
+            )
+            .subscribe();
+}
+
+
+/* MARK READ */
+
+async function markMessagesRead(
+    conversationId
+) {
+
+    await supabaseClient
+        .from("messages")
+        .update({
+            is_read: true
+        })
+        .eq(
+            "conversation_id",
+            conversationId
+        )
+        .neq(
+            "sender_id",
+            currentUser.id
+        )
+        .eq(
+            "is_read",
+            false
+        );
+}
+
+
+/* SCROLL */
+
+function scrollMessagesToBottom() {
+
+    messagesList.scrollTop =
+        messagesList.scrollHeight;
+}
+
+
+/* FORMAT TIME */
+
+function formatTime(
+    value
+) {
+
+    return new Date(
+        value
+    ).toLocaleTimeString(
+        undefined,
+        {
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+}
+
+
+/* BASIC HTML ESCAPE */
+
+function escapeHTML(
+    value
+) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* AUTH LISTENER */
+
+supabaseClient.auth.onAuthStateChange(
+    (event) => {
+
+        if (
+            event === "SIGNED_OUT"
+        ) {
+
+            window.location.href =
+                "login.html";
+        }
 
     }
+);
+
+
+/* START */
+
+initializeMessaging();
 
 </script>
 
