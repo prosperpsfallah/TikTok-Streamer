@@ -12,9 +12,6 @@
     <link rel="manifest" href="manifest.json">
 
     <style>
-        /* Profile page additions only.
-           Main app design remains in style.css. */
-
         .profile-page {
             max-width: 1100px;
             margin: 0 auto;
@@ -278,6 +275,13 @@
             line-height: 1.6;
         }
 
+        .follow-status {
+            font-size: 13px;
+            color: #777;
+            margin-top: 10px;
+            display: none;
+        }
+
         @media (max-width: 800px) {
 
             .profile-main {
@@ -342,7 +346,6 @@
 
 <body>
 
-<!-- APP HEADER -->
 <header class="header">
 
     <div class="container">
@@ -352,12 +355,10 @@
         </a>
 
         <nav class="nav">
-
             <a href="index.html">Home</a>
             <a href="live.html">Live</a>
             <a href="index.html#streamers">Streamers</a>
             <a href="leaderboard.html">Leaderboard</a>
-
         </nav>
 
         <div class="header-actions">
@@ -377,8 +378,6 @@
 </header>
 
 
-<!-- MOBILE MENU -->
-
 <div id="mobileMenu" class="mobile-menu">
 
     <a href="index.html">Home</a>
@@ -392,8 +391,6 @@
 
 <main class="profile-page">
 
-    <!-- LOADING -->
-
     <section id="loadingProfile" class="loading-profile">
 
         <h2>Loading your profile...</h2>
@@ -402,8 +399,6 @@
 
     </section>
 
-
-    <!-- LOGIN REQUIRED -->
 
     <section id="loginScreen"
              class="login-screen"
@@ -435,8 +430,6 @@
 
     </section>
 
-
-    <!-- REAL PROFILE -->
 
     <section id="profileContent"
              style="display:none;">
@@ -490,7 +483,9 @@
 
                 <div class="profile-stat">
 
-                    <strong>0</strong>
+                    <strong id="followersCount">
+                        0
+                    </strong>
 
                     <span>Followers</span>
 
@@ -498,7 +493,9 @@
 
                 <div class="profile-stat">
 
-                    <strong>0</strong>
+                    <strong id="followingCount">
+                        0
+                    </strong>
 
                     <span>Following</span>
 
@@ -506,7 +503,9 @@
 
                 <div class="profile-stat">
 
-                    <strong>0</strong>
+                    <strong id="videosCount">
+                        0
+                    </strong>
 
                     <span>Videos</span>
 
@@ -519,8 +518,6 @@
 
         <div class="profile-grid">
 
-
-            <!-- ACCOUNT INFORMATION -->
 
             <div class="profile-card">
 
@@ -584,8 +581,6 @@
             </div>
 
 
-            <!-- CONTENT -->
-
             <div class="profile-card">
 
                 <h2>My Content</h2>
@@ -616,8 +611,6 @@
         </div>
 
 
-        <!-- PROFILE INFORMATION -->
-
         <div class="profile-card"
              style="margin-top:20px;">
 
@@ -637,8 +630,6 @@
 
     </section>
 
-
-    <!-- ERROR -->
 
     <section id="profileError"
              class="profile-error"
@@ -675,10 +666,7 @@
 </footer>
 
 
-<!-- SUPABASE -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
@@ -686,8 +674,7 @@ const SUPABASE_URL =
     "https://malrwexkhekripoaubur.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
-
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraW5rZXJpcG9hdWJ1ciIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg4OTQ1MDI5LCJleHAiOjIxMDQ1MjEwMjl9.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -716,6 +703,67 @@ const profileError =
     document.getElementById("profileError");
 
 
+/* LOAD FOLLOW COUNTS */
+
+async function loadFollowCounts(userId) {
+
+    const followersResult =
+        await supabaseClient
+            .from("follows")
+            .select(
+                "follower_id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "following_id",
+                userId
+            );
+
+
+    if (followersResult.error) {
+        throw followersResult.error;
+    }
+
+
+    const followingResult =
+        await supabaseClient
+            .from("follows")
+            .select(
+                "following_id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "follower_id",
+                userId
+            );
+
+
+    if (followingResult.error) {
+        throw followingResult.error;
+    }
+
+
+    document.getElementById(
+        "followersCount"
+    ).textContent =
+        followersResult.count || 0;
+
+
+    document.getElementById(
+        "followingCount"
+    ).textContent =
+        followingResult.count || 0;
+}
+
+
+/* LOAD PROFILE */
+
 async function loadProfile() {
 
     try {
@@ -731,20 +779,24 @@ async function loadProfile() {
         }
 
 
-        const session = data.session;
+        const session =
+            data.session;
 
 
         if (!session) {
 
-            loadingProfile.style.display = "none";
+            loadingProfile.style.display =
+                "none";
 
-            loginScreen.style.display = "block";
+            loginScreen.style.display =
+                "block";
 
             return;
         }
 
 
-        const user = session.user;
+        const user =
+            session.user;
 
 
         const {
@@ -755,7 +807,10 @@ async function loadProfile() {
             .select(
                 "id, full_name, username, account_type, avatar_url, created_at"
             )
-            .eq("id", user.id)
+            .eq(
+                "id",
+                user.id
+            )
             .maybeSingle();
 
 
@@ -773,68 +828,89 @@ async function loadProfile() {
 
 
         const fullName =
-            profile.full_name || "No Name";
+            profile.full_name ||
+            "No Name";
+
 
         const username =
-            profile.username || "No Username";
+            profile.username ||
+            "No Username";
+
 
         const accountType =
-            profile.account_type || "viewer";
+            profile.account_type ||
+            "viewer";
 
 
-        document.getElementById("fullName")
-            .textContent = fullName;
+        document.getElementById(
+            "fullName"
+        ).textContent =
+            fullName;
 
 
-        document.getElementById("username")
-            .textContent =
-                username.startsWith("@")
-                    ? username
-                    : "@" + username;
+        const displayUsername =
+            username.startsWith("@")
+                ? username
+                : "@" + username;
 
 
-        document.getElementById("usernameInfo")
-            .textContent =
-                username.startsWith("@")
-                    ? username
-                    : "@" + username;
+        document.getElementById(
+            "username"
+        ).textContent =
+            displayUsername;
 
 
-        document.getElementById("accountType")
-            .textContent =
-                accountType;
+        document.getElementById(
+            "usernameInfo"
+        ).textContent =
+            displayUsername;
 
 
-        document.getElementById("accountTypeInfo")
-            .textContent =
-                accountType;
+        document.getElementById(
+            "accountType"
+        ).textContent =
+            accountType;
 
 
-        document.getElementById("email")
-            .textContent =
-                user.email || "No email";
+        document.getElementById(
+            "accountTypeInfo"
+        ).textContent =
+            accountType;
+
+
+        document.getElementById(
+            "email"
+        ).textContent =
+            user.email ||
+            "No email";
 
 
         if (profile.created_at) {
 
             const joined =
-                new Date(profile.created_at);
+                new Date(
+                    profile.created_at
+                );
 
-            document.getElementById("joinedDate")
-                .textContent =
-                    joined.toLocaleDateString(
-                        undefined,
-                        {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric"
-                        }
-                    );
+
+            document.getElementById(
+                "joinedDate"
+            ).textContent =
+                joined.toLocaleDateString(
+                    undefined,
+                    {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                    }
+                );
         }
 
 
         const avatar =
-            document.getElementById("avatar");
+            document.getElementById(
+                "avatar"
+            );
 
 
         if (profile.avatar_url) {
@@ -849,13 +925,23 @@ async function loadProfile() {
                 fullName
                     .trim()
                     .charAt(0)
-                    .toUpperCase() || "?";
+                    .toUpperCase() ||
+                "?";
         }
 
 
-        loadingProfile.style.display = "none";
+        /* REAL FOLLOW COUNTS */
 
-        profileContent.style.display = "block";
+        await loadFollowCounts(
+            user.id
+        );
+
+
+        loadingProfile.style.display =
+            "none";
+
+        profileContent.style.display =
+            "block";
 
 
     } catch (error) {
@@ -866,14 +952,18 @@ async function loadProfile() {
         );
 
 
-        loadingProfile.style.display = "none";
+        loadingProfile.style.display =
+            "none";
 
-        profileError.style.display = "block";
+        profileError.style.display =
+            "block";
 
-        document.getElementById("errorMessage")
-            .textContent =
-                error.message ||
-                "Something went wrong.";
+
+        document.getElementById(
+            "errorMessage"
+        ).textContent =
+            error.message ||
+            "Something went wrong.";
     }
 }
 
@@ -884,12 +974,15 @@ async function logout() {
 
     const {
         error
-    } = await supabaseClient.auth.signOut();
+    } =
+        await supabaseClient.auth.signOut();
 
 
     if (error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
 
         return;
     }
@@ -900,18 +993,20 @@ async function logout() {
 }
 
 
-document.getElementById("logoutButton")
-    .addEventListener(
-        "click",
-        logout
-    );
+document.getElementById(
+    "logoutButton"
+).addEventListener(
+    "click",
+    logout
+);
 
 
-document.getElementById("logoutTop")
-    .addEventListener(
-        "click",
-        logout
-    );
+document.getElementById(
+    "logoutTop"
+).addEventListener(
+    "click",
+    logout
+);
 
 
 /* AUTH STATE */
@@ -919,7 +1014,10 @@ document.getElementById("logoutTop")
 supabaseClient.auth.onAuthStateChange(
     (event) => {
 
-        if (event === "SIGNED_OUT") {
+        if (
+            event ===
+            "SIGNED_OUT"
+        ) {
 
             window.location.href =
                 "login.html";
