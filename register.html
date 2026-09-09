@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | TikTok Streamers</title>
+    <meta
+        name="description"
+        content="Create your TikTok Streamers account."
+    >
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(37, 244, 238, 0.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 90%,
+                    rgba(254, 44, 85, 0.12),
+                    transparent 30%
+                ),
+                #f7f7f8;
+        }
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 18px;
+        }
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+        }
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        .auth-brand a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 23px;
+            font-weight: 800;
+        }
+        .auth-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 24px;
+            padding: 34px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+        .auth-card h1 {
+            font-size: 30px;
+            letter-spacing: -0.8px;
+            margin-bottom: 7px;
+        }
+        .auth-description {
+            color: #707070;
+            font-size: 14px;
+            margin-bottom: 27px;
+        }
+        .auth-form .form-group {
+            margin-bottom: 17px;
+        }
+        .form-hint {
+            display: block;
+            color: #888;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper .form-control {
+            padding-right: 50px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            color: #707070;
+        }
+        .account-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .account-type {
+            position: relative;
+        }
+        .account-type input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .account-type label {
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        .account-type label strong {
+            display: block;
+            font-size: 14px;
+        }
+        .account-type label span {
+            display: block;
+            color: #888;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+        .account-type input:checked + label {
+            border-color: #fe2c55;
+            background: rgba(254, 44, 85, 0.05);
+            box-shadow: 0 0 0 2px rgba(254, 44, 85, 0.08);
+        }
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin: 20px 0;
+            color: #666;
+            font-size: 12px;
+        }
+        .terms input {
+            width: 16px;
+            height: 16px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+        .terms a {
+            color: #fe2c55;
+            font-weight: 700;
+        }
+        .auth-submit {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+        }
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            color: #999;
+            font-size: 12px;
+        }
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e8e8e8;
+        }
+        .login-link {
+            text-align: center;
+            font-size: 14px;
+            color: #707070;
+        }
+        .login-link a {
+            color: #fe2c55;
+            font-weight: 800;
+        }
+        .back-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-home a {
+            color: #555;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .back-home a:hover {
+            color: #fe2c55;
+        }
+        .security-note {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 12px;
+            background: #f7f7f7;
+            color: #777;
+            font-size: 12px;
+            text-align: center;
+        }
+        @media (max-width: 500px) {
+            .auth-card {
+                padding: 27px 20px;
+                border-radius: 20px;
+            }
+            .auth-card h1 {
+                font-size: 26px;
+            }
+            .account-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="auth-page">
+        <div class="auth-container">
+            <!-- BRAND -->
+            <div class="auth-brand">
+                <a href="index.html">
+                    <span class="logo-mark">TS</span>
+                    <span>TikTok Streamers</span>
+                </a>
+            </div>
+            <!-- REGISTER CARD -->
+            <section class="auth-card">
+                <h1>Create your account</h1>
+                <p class="auth-description">
+                    Join TikTok Streamers and become part of the community.
+                </p>
+                <form
+                    class="auth-form"
+                    id="registerForm"
+                    onsubmit="registerUser(event)"
+                >
+                    <!-- FULL NAME -->
+                    <div class="form-group">
+                        <label for="fullName">
+                            Full Name
+                        </label>
+                        <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            class="form-control"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+                    <!-- USERNAME -->
+                    <div class="form-group">
+                        <label for="username">
+                            Username
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control"
+                            placeholder="@username"
+                            autocomplete="username"
+                            maxlength="30"
+                            pattern="[A-Za-z0-9_]{3,30}"
+                            required
+                        >
+                        <span class="form-hint">
+                            3–30 characters: letters, numbers and underscores.
+                        </span>
+                    </div>
+                    <!-- EMAIL -->
+                    <div class="form-group">
+                        <label for="email">
+                            Email Address
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+                    <!-- ACCOUNT TYPE -->
+                    <div class="form-group">
+                        <label>
+                            Account Type
+                        </label>
+                        <div class="account-types">
+                            <div class="account-type">
+                                <input
+                                    type="radio"
+                                    id="viewer"
+                                    name="accountType"
+                                    value="viewer"
+                                    checked
+                                >
+                                <label for="viewer">
+                                    <strong>👤 Viewer</strong>
+                                    <span>
+                                        Watch and follow streamers
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="account-type">
+                                <input
+                                    type="radio"
+                                    id="streamer"
+                                    name="accountType"
+                                    value="streamer"
+                                >
+                                <label for="streamer">
+                                    <strong>🎥 Streamer</strong>
+                                    <span>
+                                        Go LIVE and build an audience
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+                        <label for="password">
+                            Password
+                        </label>
+                        <div class="password-wrapper">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Create a strong password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="toggleRegisterPassword('password', this)"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+                        </div>
+                        <span class="form-hint">
+                            Use at least 8 characters.
+                        </span>
+                    </div>
+                    <!-- CONFIRM PASSWORD -->
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+                        <div class="password-wrapper">
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                class="form-control"
+                                placeholder="Enter your password again"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="toggleRegisterPassword('confirmPassword', this)"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+                        </div>
+                    </div>
+                    <!-- TERMS -->
+                    <label class="terms">
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                        >
+                        <span>
+                            I agree to the
+                            <a href="#" onclick="showTerms(event)">
+                                Terms of Service
+                            </a>
+                            and
+                            <a href="#" onclick="showPrivacy(event)">
+                                Privacy Policy
+                            </a>.
+                        </span>
+                    </label>
+                    <!-- SUBMIT -->
+                    <button
+                        type="submit"
+                        class="btn btn-red auth-submit"
+                    >
+                        Create Account
+                    </button>
+                </form>
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+                <!-- LOGIN -->
+                <div class="login-link">
+                    Already have an account?
+                    <a href="login.html">
+                        Sign In
+                    </a>
+                </div>
+                <!-- SECURITY -->
+                <div class="security-note">
+                    🔒 Your password will be securely handled
+                    when the authentication system is connected.
+                </div>
+            </section>
+            <!-- HOME -->
+            <div class="back-home">
+                <a href="index.html">
+                    ← Back to TikTok Streamers
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- TOAST -->
+    <div
+        id="toast"
+        class="toast"
+        aria-live="polite"
+    ></div>
+    <script>
+        /* =====================================================
+           PASSWORD VISIBILITY
+           ===================================================== */
+        function toggleRegisterPassword(fieldId, button) {
+            const field =
+                document.getElementById(fieldId);
+            if (!field) return;
+            if (field.type === "password") {
+                field.type = "text";
+                button.textContent = "🙈";
+                button.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+            } else {
+                field.type = "password";
+                button.textContent = "👁";
+                button.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+            }
+        }
+        /* =====================================================
+           REGISTRATION
+           ===================================================== */
+        function registerUser(event) {
+            event.preventDefault();
+            const fullName =
+                document.getElementById("fullName").value.trim();
+            const username =
+                document.getElementById("username").value.trim();
+            const email =
+                document.getElementById("email").value.trim();
+            const password =
+                document.getElementById("password").value;
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+            const terms =
+                document.getElementById("terms").checked;
+            if (!fullName || !username || !email) {
+                showMessage(
+                    "Please complete all required fields."
+                );
+                return;
+            }
+            if (password.length < 8) {
+                showMessage(
+                    "Password must contain at least 8 characters."
+                );
+                return;
+            }
+            if (password !== confirmPassword) {
+                showMessage(
+                    "Passwords do not match."
+                );
+                return;
+            }
+            if (!terms) {
+                showMessage(
+                    "Please accept the Terms and Privacy Policy."
+                );
+                return;
+            }
+            /*
+             * IMPORTANT:
+             *
+             * No account is created here yet.
+             * No password is stored in localStorage.
+             * No fake user is generated.
+             *
+             * Real registration will be connected to the
+             * backend/database in a later step.
+             */
+            showMessage(
+                "Registration is ready. Account system will be connected next."
+            );
+            console.log("Registration form validated:", {
+                fullName,
+                username,
+                email
+            });
+        }
+        /* =====================================================
+           TERMS
+           ===================================================== */
+        function showTerms(event) {
+            event.preventDefault();
+            showMessage(
+                "Terms of Service will be added before public launch."
+            );
+        }
+        /* =====================================================
+           PRIVACY
+           ===================================================== */
+        function showPrivacy(event) {
+            event.preventDefault();
+            showMessage(
+                "Privacy Policy will be added before public launch."
+            );
+        }
+        /* =====================================================
+           TOAST
+           ===================================================== */
+        function showMessage(message) {
+            const toast =
+                document.getElementById("toast");
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add("show");
+            clearTimeout(window.registerToastTimer);
+            window.registerToastTimer =
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 4000);
+        }
+    </script>
+</body>
+</html>
