@@ -1,678 +1,539 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#111111"
-    >
-
-    <meta
-        name="description"
-        content="Watch real LIVE streams on TikTok Streamers."
-    >
-
-    <link
-        rel="manifest"
-        href="manifest.json"
-    >
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
-    <title>LIVE — TikTok Streamers</title>
-
-    <style>
-
-        .live-page {
-            min-height: 100vh;
-            background: #f7f8fa;
-        }
-
-        .live-header {
-            background: #111;
-            color: #fff;
-            padding: 16px 20px;
-        }
-
-        .live-header-inner {
-            max-width: 1100px;
-            margin: auto;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .live-brand {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 18px;
-        }
-
-        .back-button {
-            color: #fff;
-            text-decoration: none;
-            border: 1px solid #444;
-            padding: 9px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .live-container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 35px 20px 70px;
-        }
-
-        .live-heading {
-            margin-bottom: 25px;
-        }
-
-        .live-heading h1 {
-            margin: 0 0 8px;
-            font-size: 32px;
-        }
-
-        .live-heading p {
-            margin: 0;
-            color: #777;
-        }
-
-        .live-count {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-
-            margin-top: 15px;
-
-            padding: 8px 12px;
-
-            background: #fff0f3;
-            color: #fe2c55;
-
-            border-radius: 20px;
-
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .live-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .live-card {
-            background: #111;
-            color: #fff;
-
-            border-radius: 20px;
-
-            overflow: hidden;
-
-            min-height: 350px;
-
-            display: flex;
-            flex-direction: column;
-
-            border: 1px solid #222;
-        }
-
-        .live-screen {
-            position: relative;
-
-            min-height: 260px;
-
-            background:
-                radial-gradient(
-                    circle at 20% 30%,
-                    rgba(254,44,85,.25),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at 80% 70%,
-                    rgba(37,244,238,.2),
-                    transparent 35%
-                ),
-                #151515;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            text-align: center;
-            padding: 25px;
-        }
-
-        .live-label {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-
-            background: #fe2c55;
-            color: #fff;
-
-            padding: 6px 10px;
-
-            border-radius: 8px;
-
-            font-size: 11px;
-            font-weight: 900;
-        }
-
-        .live-screen-icon {
-            font-size: 45px;
-            margin-bottom: 12px;
-        }
-
-        .live-screen h3 {
-            margin: 0 0 7px;
-        }
-
-        .live-screen p {
-            margin: 0;
-            color: #aaa;
-            font-size: 13px;
-        }
-
-        .live-info {
-            padding: 17px;
-        }
-
-        .streamer-name {
-            margin: 0 0 5px;
-            font-size: 17px;
-        }
-
-        .streamer-username {
-            margin: 0 0 15px;
-            color: #999;
-            font-size: 13px;
-        }
-
-        .watch-button {
-            width: 100%;
-
-            border: 0;
-
-            background: #fe2c55;
-            color: #fff;
-
-            padding: 12px;
-
-            border-radius: 10px;
-
-            font-weight: 900;
-
-            cursor: pointer;
-        }
-
-        .empty-state {
-            background: #fff;
-
-            border: 1px solid #e5e5e5;
-
-            border-radius: 22px;
-
-            min-height: 350px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-direction: column;
-
-            text-align: center;
-
-            padding: 35px;
-        }
-
-        .empty-icon {
-            width: 75px;
-            height: 75px;
-
-            border-radius: 22px;
-
-            background: #f1f1f1;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 32px;
-
-            margin-bottom: 18px;
-        }
-
-        .empty-state h2 {
-            margin: 0 0 8px;
-        }
-
-        .empty-state p {
-            color: #888;
-
-            max-width: 500px;
-
-            line-height: 1.6;
-
-            margin: 0;
-        }
-
-        .refresh-button {
-            margin-top: 20px;
-
-            border: 0;
-
-            background: #111;
-            color: #fff;
-
-            padding: 12px 20px;
-
-            border-radius: 11px;
-
-            cursor: pointer;
-
-            font-weight: 800;
-        }
-
-        .status-message {
-            text-align: center;
-            padding: 25px;
-            color: #777;
-        }
-
-        @media (max-width: 850px) {
-
-            .live-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-        }
-
-        @media (max-width: 600px) {
-
-            .live-container {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .live-heading h1 {
-                font-size: 27px;
-            }
-
-            .live-grid {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-<div class="live-page">
-
-    <header class="live-header">
-
-        <div class="live-header-inner">
-
-            <a
-                href="index.html"
-                class="live-brand"
-            >
-                TikTok Streamers
-            </a>
-
-            <a
-                href="index.html"
-                class="back-button"
-            >
-                ← Back
-            </a>
-
-        </div>
-
-    </header>
-
-
-    <main class="live-container">
-
-        <div class="live-heading">
-
-            <h1>
-                🔴 LIVE
-            </h1>
-
-            <p>
-                Watch streamers who are broadcasting right now.
-            </p>
-
-            <div
-                class="live-count"
-                id="liveCount"
-            >
-                🔴 0 LIVE
-            </div>
-
-        </div>
-
-
-        <div
-            id="loadingMessage"
-            class="status-message"
-        >
-            Checking for LIVE streams...
-        </div>
-
-
-        <div
-            id="liveGrid"
-            class="live-grid"
-            style="display:none;"
-        ></div>
-
-
-        <div
-            id="emptyState"
-            class="empty-state"
-            style="display:none;"
-        >
-
-            <div class="empty-icon">
-                🔴
-            </div>
-
-            <h2>
-                Nobody is LIVE right now
-            </h2>
-
-            <p>
-                When real streamers start broadcasting,
-                their LIVE streams will appear here automatically.
-            </p>
-
-            <button
-                class="refresh-button"
-                onclick="loadLiveStreams()"
-            >
-                Refresh
-            </button>
-
-        </div>
-
-    </main>
-
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+/*
+========================================
+STEP 36E
+IMPROVED VIEWER WEBRTC SIGNALING
+========================================
+*/
 
-const SUPABASE_URL =
-    "https://malrwexkhekripoaubur.supabase.co";
+let pendingIceCandidates = [];
 
-const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsImVwIjoiYW5vbiIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwiaWF0IjoxNzg4OTQ1MDI5LCJleHAiOjIxMDQ1MjEwMjksIn0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY,
-        {
-            auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-                detectSessionInUrl: true
+/* =========================
+   CREATE VIEWER CONNECTION
+========================= */
+
+async function createViewerConnection() {
+
+    cleanupPeerConnection();
+
+    pendingIceCandidates = [];
+
+    peerConnection =
+        new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls:
+                        "stun:stun.l.google.com:19302"
+                }
+            ]
+        });
+
+
+    /*
+       RECEIVE STREAM
+    */
+    peerConnection.ontrack = event => {
+
+        const remoteVideo =
+            document.getElementById(
+                "remoteVideo"
+            );
+
+        if (
+            event.streams &&
+            event.streams[0]
+        ) {
+
+            remoteVideo.srcObject =
+                event.streams[0];
+
+            remoteVideo.play()
+                .catch(error => {
+                    console.log(
+                        "Autoplay waiting:",
+                        error
+                    );
+                });
+
+            updateWatchStatus(
+                "LIVE video connected.",
+                "success"
+            );
+        }
+    };
+
+
+    /*
+       ICE CANDIDATE
+    */
+    peerConnection.onicecandidate =
+        async event => {
+
+            if (
+                !event.candidate ||
+                !currentStream
+            ) {
+                return;
             }
+
+            await sendSignal(
+                "ice-candidate",
+                event.candidate
+            );
+        };
+
+
+    /*
+       CONNECTION STATE
+    */
+    peerConnection.onconnectionstatechange =
+        () => {
+
+            if (!peerConnection) {
+                return;
+            }
+
+            const state =
+                peerConnection.connectionState;
+
+            console.log(
+                "Viewer connection:",
+                state
+            );
+
+            if (state === "connected") {
+
+                updateWatchStatus(
+                    "LIVE connection established.",
+                    "success"
+                );
+            }
+
+            if (state === "connecting") {
+
+                updateWatchStatus(
+                    "Connecting to LIVE..."
+                );
+            }
+
+            if (
+                state === "failed" ||
+                state === "disconnected"
+            ) {
+
+                updateWatchStatus(
+                    "LIVE connection lost.",
+                    "error"
+                );
+            }
+        };
+
+
+    /*
+       Listen for streamer signals
+    */
+    await subscribeToSignals();
+
+
+    /*
+       Tell streamer that this viewer
+       is ready.
+    */
+    await sendSignal(
+        "viewer-ready",
+        {
+            viewer_id:
+                currentUser.id
         }
     );
+}
 
 
-async function loadLiveStreams() {
+/* =========================
+   HANDLE SIGNAL
+========================= */
 
-    const loading =
-        document.getElementById(
-            "loadingMessage"
+async function handleSignal(signal) {
+
+    if (!peerConnection) {
+        return;
+    }
+
+
+    /*
+       STREAMER OFFER
+    */
+    if (
+        signal.signal_type ===
+        "offer"
+    ) {
+
+        try {
+
+            await peerConnection
+                .setRemoteDescription(
+                    new RTCSessionDescription(
+                        signal.signal_data
+                    )
+                );
+
+
+            /*
+               Add ICE candidates that
+               arrived before the offer.
+            */
+            for (
+                const candidate
+                of pendingIceCandidates
+            ) {
+
+                try {
+
+                    await peerConnection
+                        .addIceCandidate(
+                            new RTCIceCandidate(
+                                candidate
+                            )
+                        );
+
+                } catch (error) {
+
+                    console.error(
+                        "Pending ICE error:",
+                        error
+                    );
+                }
+            }
+
+            pendingIceCandidates = [];
+
+
+            /*
+               Create answer.
+            */
+            const answer =
+                await peerConnection
+                    .createAnswer();
+
+            await peerConnection
+                .setLocalDescription(
+                    answer
+                );
+
+
+            /*
+               Send answer to streamer.
+            */
+            await sendSignal(
+                "answer",
+                answer
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Offer handling error:",
+                error
+            );
+
+            updateWatchStatus(
+                "Unable to connect to LIVE.",
+                "error"
+            );
+        }
+
+        return;
+    }
+
+
+    /*
+       ICE CANDIDATE
+    */
+    if (
+        signal.signal_type ===
+        "ice-candidate"
+    ) {
+
+        const candidate =
+            signal.signal_data;
+
+        /*
+           If remote description isn't
+           ready yet, save candidate.
+        */
+        if (
+            !peerConnection.remoteDescription
+        ) {
+
+            pendingIceCandidates.push(
+                candidate
+            );
+
+            return;
+        }
+
+
+        try {
+
+            await peerConnection
+                .addIceCandidate(
+                    new RTCIceCandidate(
+                        candidate
+                    )
+                );
+
+        } catch (error) {
+
+            console.error(
+                "ICE error:",
+                error
+            );
+        }
+
+        return;
+    }
+}
+
+
+/* =========================
+   SEND SIGNAL
+========================= */
+
+async function sendSignal(
+    signalType,
+    signalData
+) {
+
+    if (
+        !currentStream ||
+        !currentUser
+    ) {
+
+        return;
+    }
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("live_signals")
+            .insert({
+                stream_id:
+                    currentStream.id,
+
+                sender_id:
+                    currentUser.id,
+
+                receiver_id:
+                    currentStream.streamer_id,
+
+                signal_type:
+                    signalType,
+
+                signal_data:
+                    signalData
+            });
+
+    if (error) {
+
+        console.error(
+            "Signal error:",
+            error
+        );
+    }
+}
+
+
+/* =========================
+   WATCH STREAM
+========================= */
+
+async function watchStream(stream) {
+
+    if (!currentUser) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+    currentStream = stream;
+
+    document.getElementById(
+        "streamListSection"
+    ).style.display = "none";
+
+    document.getElementById(
+        "watchPanel"
+    ).classList.add("active");
+
+    const profile =
+        stream.profiles || {};
+
+    document.getElementById(
+        "watchTitle"
+    ).textContent =
+        stream.title ||
+        "LIVE Stream";
+
+    document.getElementById(
+        "watchStreamer"
+    ).textContent =
+        "@" +
+        (
+            profile.username ||
+            "streamer"
         );
 
-    const grid =
-        document.getElementById(
-            "liveGrid"
-        );
+    updateWatchStatus(
+        "Connecting to LIVE..."
+    );
 
-    const empty =
-        document.getElementById(
-            "emptyState"
-        );
-
-    const count =
-        document.getElementById(
-            "liveCount"
-        );
+    await createViewerConnection();
+}
 
 
-    loading.style.display =
-        "block";
+/* =========================
+   CHECK IF LIVE STILL EXISTS
+========================= */
 
-    grid.style.display =
-        "none";
+async function checkCurrentLiveStream() {
 
-    empty.style.display =
-        "none";
-
+    if (!currentStream) {
+        return;
+    }
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from("live_streams")
-        .select(`
-            id,
-            streamer_id,
-            title,
-            room_id,
-            thumbnail_url,
-            viewer_count,
-            started_at,
-            profiles (
-                full_name,
-                username,
-                avatar_url
+    } =
+        await supabaseClient
+            .from("live_streams")
+            .select(
+                "id,is_live,viewer_count"
             )
-        `)
-        .eq(
-            "is_live",
-            true
-        )
-        .order(
-            "started_at",
-            {
-                ascending: false
-            }
-        );
-
-
-    loading.style.display =
-        "none";
-
+            .eq(
+                "id",
+                currentStream.id
+            )
+            .maybeSingle();
 
     if (error) {
 
         console.error(error);
 
-        count.textContent =
-            "🔴 0 LIVE";
+        return;
+    }
 
-        empty.style.display =
-            "flex";
 
-        empty.querySelector("h2")
-            .textContent =
-            "Unable to load LIVE streams";
+    /*
+       Stream ended.
+    */
+    if (!data || !data.is_live) {
 
-        empty.querySelector("p")
-            .textContent =
-            "Please check your connection and try again.";
+        updateWatchStatus(
+            "This LIVE stream has ended.",
+            "error"
+        );
+
+        cleanupPeerConnection();
+
+        setTimeout(() => {
+
+            closeWatch();
+
+            loadLiveStreams();
+
+        }, 1800);
 
         return;
     }
 
 
-    const streams =
-        data || [];
+    /*
+       Update viewer count.
+    */
+    currentStream.viewer_count =
+        data.viewer_count || 0;
+}
 
 
-    count.textContent =
-        "🔴 " +
-        streams.length +
-        " LIVE";
+/* =========================
+   CLEANUP
+========================= */
+
+function cleanupPeerConnection() {
+
+    pendingIceCandidates = [];
+
+    if (peerConnection) {
+
+        peerConnection.close();
+
+        peerConnection = null;
+    }
+}
 
 
-    if (streams.length === 0) {
+/* =========================
+   CLOSE WATCH
+========================= */
 
-        empty.style.display =
-            "flex";
+function closeWatch() {
 
-        return;
+    cleanupPeerConnection();
+
+    if (realtimeChannel) {
+
+        supabaseClient
+            .removeChannel(
+                realtimeChannel
+            );
+
+        realtimeChannel = null;
     }
 
+    const remoteVideo =
+        document.getElementById(
+            "remoteVideo"
+        );
 
-    grid.innerHTML = "";
+    if (remoteVideo) {
 
+        remoteVideo.pause();
 
-    streams.forEach(
-        stream => {
+        remoteVideo.srcObject = null;
+    }
 
-            const profile =
-                stream.profiles || {};
+    currentStream = null;
 
-            const card =
-                document.createElement(
-                    "article"
-                );
+    document.getElementById(
+        "watchPanel"
+    ).classList.remove("active");
 
-            card.className =
-                "live-card";
-
-
-            const name =
-                profile.full_name ||
-                "Streamer";
-
-            const username =
-                profile.username
-                    ? "@" +
-                      profile.username
-                    : "No username";
-
-
-            card.innerHTML =
-                `
-                <div class="live-screen">
-
-                    <span class="live-label">
-                        🔴 LIVE
-                    </span>
-
-                    <div>
-
-                        <div class="live-screen-icon">
-                            📹
-                        </div>
-
-                        <h3>
-                            ${escapeHtml(
-                                stream.title ||
-                                "LIVE Stream"
-                            )}
-                        </h3>
-
-                        <p>
-                            Real LIVE stream
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="live-info">
-
-                    <h3 class="streamer-name">
-                        ${escapeHtml(name)}
-                    </h3>
-
-                    <p class="streamer-username">
-                        ${escapeHtml(username)}
-                    </p>
-
-                    <button
-                        class="watch-button"
-                        onclick="watchStream('${encodeURIComponent(
-                            stream.id
-                        )}')"
-                    >
-                        Watch LIVE
-                    </button>
-
-                </div>
-                `;
-
-
-            grid.appendChild(card);
-
-        }
-    );
-
-
-    grid.style.display =
-        "grid";
+    document.getElementById(
+        "streamListSection"
+    ).style.display = "block";
 }
 
 
-function watchStream(streamId) {
+/* =========================
+   AUTOMATIC LIVE CHECK
+========================= */
 
-    window.location.href =
-        "live.html?stream=" +
-        streamId;
-}
+setInterval(() => {
 
+    if (currentStream) {
 
-function escapeHtml(value) {
+        checkCurrentLiveStream();
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
+    } else {
 
+        loadLiveStreams();
 
-document.addEventListener(
-    "DOMContentLoaded",
-    loadLiveStreams
-);
+    }
 
+}, 5000);
 </script>
-
-</body>
-</html>
