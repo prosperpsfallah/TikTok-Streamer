@@ -163,6 +163,18 @@
             font-size: 12px;
         }
 
+        .mobile-back-button {
+            display: none;
+            border: none;
+            background: #f1f1f1;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
         .messages-list {
             flex: 1;
             overflow-y: auto;
@@ -330,7 +342,23 @@
             }
 
             .conversation-panel {
+                display: block;
+            }
+
+            .chat-panel {
                 display: none;
+            }
+
+            .messages-app.show-chat .conversation-panel {
+                display: none;
+            }
+
+            .messages-app.show-chat .chat-panel {
+                display: flex;
+            }
+
+            .mobile-back-button {
+                display: block;
             }
 
             .message-bubble {
@@ -465,6 +493,13 @@
             <div id="chatHeader"
                  class="chat-header">
 
+                <button
+                    id="mobileBackButton"
+                    class="mobile-back-button"
+                    type="button">
+                    ←
+                </button>
+
                 <div>
 
                     <strong>
@@ -555,7 +590,8 @@ const SUPABASE_URL =
     "https://malrwexkhekripoaubur.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoibWFscndleGtoZWtyaXBvYXVidXIiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODk0NTAyOSwiZXhwIjoyMTA0NTIxMDI5fQ.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -574,6 +610,21 @@ const supabaseClient =
 let currentUser = null;
 let currentConversationId = null;
 let realtimeChannel = null;
+
+
+/*
+ * Conversation supplied through URL.
+ *
+ * Example:
+ *
+ * messages.html?conversation=REAL_CONVERSATION_ID
+ *
+ */
+
+const requestedConversationId =
+    new URLSearchParams(
+        window.location.search
+    ).get("conversation");
 
 
 /* ELEMENTS */
@@ -602,6 +653,37 @@ const messageInput =
 const sendButton =
     document.getElementById("sendButton");
 
+const mobileBackButton =
+    document.getElementById("mobileBackButton");
+
+
+/* MOBILE BACK */
+
+mobileBackButton.addEventListener(
+    "click",
+    () => {
+
+        messagesApp.classList.remove(
+            "show-chat"
+        );
+
+        currentConversationId = null;
+
+        messageInput.disabled = true;
+
+        sendButton.disabled = true;
+
+        if (realtimeChannel) {
+
+            supabaseClient.removeChannel(
+                realtimeChannel
+            );
+
+            realtimeChannel = null;
+        }
+    }
+);
+
 
 /* INITIALIZE */
 
@@ -614,27 +696,51 @@ async function initialize() {
             error
         } = await supabaseClient.auth.getSession();
 
+
         if (error) {
             throw error;
         }
+
 
         if (!data.session) {
 
             loading.style.display = "none";
 
-            loginRequired.classList.remove("hidden");
+            loginRequired.classList.remove(
+                "hidden"
+            );
 
             return;
         }
 
+
         currentUser =
             data.session.user;
 
+
         loading.style.display = "none";
 
-        messagesApp.classList.remove("hidden");
+        messagesApp.classList.remove(
+            "hidden"
+        );
+
 
         await loadConversations();
+
+
+        /*
+         * If profile.html created or opened
+         * a conversation and redirected here,
+         * open it automatically.
+         */
+
+        if (requestedConversationId) {
+
+            await openConversationFromURL(
+                requestedConversationId
+            );
+        }
+
 
     } catch (error) {
 
@@ -662,7 +768,10 @@ async function loadConversations() {
     } = await supabaseClient
         .from("conversation_members")
         .select("conversation_id")
-        .eq("user_id", currentUser.id);
+        .eq(
+            "user_id",
+            currentUser.id
+        );
 
 
     if (error) {
@@ -675,8 +784,10 @@ async function loadConversations() {
     }
 
 
-    if (!memberships ||
-        memberships.length === 0) {
+    if (
+        !memberships ||
+        memberships.length === 0
+    ) {
 
         showNoConversations();
 
@@ -684,7 +795,9 @@ async function loadConversations() {
     }
 
 
-    for (const membership of memberships) {
+    for (
+        const membership of memberships
+    ) {
 
         await renderConversation(
             membership.conversation_id
@@ -700,7 +813,8 @@ async function renderConversation(
 ) {
 
     const {
-        data: members
+        data: members,
+        error
     } = await supabaseClient
         .from("conversation_members")
         .select("user_id")
@@ -710,7 +824,7 @@ async function renderConversation(
         );
 
 
-    if (!members) {
+    if (error || !members) {
         return;
     }
 
@@ -718,7 +832,8 @@ async function renderConversation(
     const other =
         members.find(
             member =>
-                member.user_id !== currentUser.id
+                member.user_id !==
+                currentUser.id
         );
 
 
@@ -842,6 +957,7 @@ function showNoConversations() {
 
 let searchTimer = null;
 
+
 userSearch.addEventListener(
     "input",
     function() {
@@ -912,8 +1028,10 @@ async function searchUsers(
     }
 
 
-    if (!data ||
-        data.length === 0) {
+    if (
+        !data ||
+        data.length === 0
+    ) {
 
         conversationList.innerHTML += `
 
@@ -1000,7 +1118,9 @@ function renderSearchResult(
                 ${
                     profile.username
                         ? "@" +
-                          escapeHTML(profile.username)
+                          escapeHTML(
+                              profile.username
+                          )
                         : "TikTok Streamers user"
                 }
             </div>
@@ -1019,18 +1139,7 @@ function renderSearchResult(
 }
 
 
-/* START CONVERSATION
- *
- * IMPORTANT:
- * Conversation creation is now handled
- * securely by the Supabase RPC function:
- *
- * get_or_create_conversation(uuid)
- *
- * We no longer insert directly into:
- * conversations
- * conversation_members
- */
+/* START CONVERSATION */
 
 async function startConversation(
     profile
@@ -1060,7 +1169,8 @@ async function startConversation(
 
 
     if (
-        profile.id === currentUser.id
+        profile.id ===
+        currentUser.id
     ) {
 
         alert(
@@ -1072,12 +1182,6 @@ async function startConversation(
 
 
     try {
-
-        /*
-         * Ask Supabase to find an existing
-         * conversation or securely create
-         * a new one.
-         */
 
         const {
             data: conversationId,
@@ -1115,17 +1219,8 @@ async function startConversation(
             conversationId;
 
 
-        /*
-         * Reload the conversation list
-         * so the new conversation appears.
-         */
-
         await loadConversations();
 
-
-        /*
-         * Open the conversation immediately.
-         */
 
         await openConversation(
             conversationId,
@@ -1145,6 +1240,124 @@ async function startConversation(
             "Unable to start conversation."
         );
     }
+}
+
+
+/* OPEN CONVERSATION FROM URL */
+
+async function openConversationFromURL(
+    conversationId
+) {
+
+    /*
+     * IMPORTANT:
+     * Never trust a conversation ID
+     * from the URL.
+     *
+     * First verify that the logged-in
+     * user is actually a member.
+     */
+
+    const {
+        data: membership,
+        error
+    } = await supabaseClient
+        .from("conversation_members")
+        .select("conversation_id")
+        .eq(
+            "conversation_id",
+            conversationId
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .maybeSingle();
+
+
+    if (
+        error ||
+        !membership
+    ) {
+
+        console.warn(
+            "Requested conversation is not available."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Find the other member.
+     */
+
+    const {
+        data: members,
+        error: membersError
+    } = await supabaseClient
+        .from("conversation_members")
+        .select("user_id")
+        .eq(
+            "conversation_id",
+            conversationId
+        );
+
+
+    if (
+        membersError ||
+        !members
+    ) {
+
+        return;
+    }
+
+
+    const other =
+        members.find(
+            member =>
+                member.user_id !==
+                currentUser.id
+        );
+
+
+    if (!other) {
+        return;
+    }
+
+
+    /*
+     * Load the other user's real profile.
+     */
+
+    const {
+        data: profile,
+        error: profileError
+    } = await supabaseClient
+        .from("profiles")
+        .select(
+            "id, full_name, username, avatar_url"
+        )
+        .eq(
+            "id",
+            other.user_id
+        )
+        .maybeSingle();
+
+
+    if (
+        profileError ||
+        !profile
+    ) {
+
+        return;
+    }
+
+
+    await openConversation(
+        conversationId,
+        profile
+    );
 }
 
 
@@ -1188,6 +1401,13 @@ async function openConversation(
         "chatHeader"
     ).innerHTML = `
 
+        <button
+            id="mobileBackButton"
+            class="mobile-back-button"
+            type="button">
+            ←
+        </button>
+
         <div class="conversation-avatar">
 
             ${
@@ -1221,9 +1441,27 @@ async function openConversation(
     `;
 
 
+    /*
+     * Reconnect the mobile back button
+     * because chatHeader was replaced.
+     */
+
+    document.getElementById(
+        "mobileBackButton"
+    ).addEventListener(
+        "click",
+        showConversationList
+    );
+
+
     messageInput.disabled = false;
 
     sendButton.disabled = false;
+
+
+    messagesApp.classList.add(
+        "show-chat"
+    );
 
 
     await loadMessages(
@@ -1234,6 +1472,37 @@ async function openConversation(
     subscribeToMessages(
         conversationId
     );
+}
+
+
+/* SHOW CONVERSATION LIST ON MOBILE */
+
+function showConversationList() {
+
+    messagesApp.classList.remove(
+        "show-chat"
+    );
+
+
+    currentConversationId =
+        null;
+
+
+    messageInput.disabled =
+        true;
+
+    sendButton.disabled =
+        true;
+
+
+    if (realtimeChannel) {
+
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
+
+        realtimeChannel = null;
+    }
 }
 
 
@@ -1276,7 +1545,9 @@ async function loadMessages(
                     </h2>
 
                     <p style="margin-top:8px;">
-                        ${escapeHTML(error.message)}
+                        ${escapeHTML(
+                            error.message
+                        )}
                     </p>
 
                 </div>
@@ -1291,8 +1562,10 @@ async function loadMessages(
     messagesList.innerHTML = "";
 
 
-    if (!data ||
-        data.length === 0) {
+    if (
+        !data ||
+        data.length === 0
+    ) {
 
         messagesList.innerHTML = `
 
@@ -1323,7 +1596,6 @@ async function loadMessages(
             message =>
                 renderMessage(message)
         );
-
     }
 
 
@@ -1344,9 +1616,12 @@ function renderMessage(
 
     if (
         document.querySelector(
-            `[data-message-id="${message.id}"]`
+            `[data-message-id="${escapeHTML(
+                message.id
+            )}"]`
         )
     ) {
+
         return;
     }
 
@@ -1410,6 +1685,7 @@ document.getElementById(
             !currentUser ||
             !currentConversationId
         ) {
+
             return;
         }
 
@@ -1433,6 +1709,7 @@ document.getElementById(
             } = await supabaseClient
                 .from("messages")
                 .insert({
+
                     conversation_id:
                         currentConversationId,
 
@@ -1461,7 +1738,8 @@ document.getElementById(
 
         } finally {
 
-            sendButton.disabled = false;
+            sendButton.disabled =
+                false;
 
             messageInput.focus();
         }
@@ -1477,10 +1755,9 @@ function subscribeToMessages(
 
     if (realtimeChannel) {
 
-        supabaseClient
-            .removeChannel(
-                realtimeChannel
-            );
+        supabaseClient.removeChannel(
+            realtimeChannel
+        );
     }
 
 
@@ -1507,7 +1784,6 @@ function subscribeToMessages(
                     );
 
                     scrollToBottom();
-
                 }
             )
             .subscribe();
@@ -1594,7 +1870,6 @@ supabaseClient.auth.onAuthStateChange(
             window.location.href =
                 "login.html";
         }
-
     }
 );
 
