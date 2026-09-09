@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | TikTok Streamers</title>
+
+    <meta
+        name="description"
+        content="Sign in to TikTok Streamers."
+    >
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(37, 244, 238, 0.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 90%,
+                    rgba(254, 44, 85, 0.12),
+                    transparent 30%
+                ),
+                #f7f7f8;
+        }
+
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 18px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .auth-brand a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 24px;
+            padding: 34px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .auth-card h1 {
+            font-size: 30px;
+            letter-spacing: -0.8px;
+            margin-bottom: 7px;
+        }
+
+        .auth-description {
+            color: #707070;
+            font-size: 14px;
+            margin-bottom: 27px;
+        }
+
+        .auth-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .form-control {
+            padding-right: 50px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            color: #707070;
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0 20px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #555;
+        }
+
+        .remember input {
+            width: 15px;
+            height: 15px;
+        }
+
+        .forgot-password {
+            color: #fe2c55;
+            font-weight: 700;
+        }
+
+        .auth-submit {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e8e8e8;
+        }
+
+        .create-account {
+            text-align: center;
+            font-size: 14px;
+            color: #707070;
+        }
+
+        .create-account a {
+            color: #fe2c55;
+            font-weight: 800;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-home a {
+            color: #555;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-home a:hover {
+            color: #fe2c55;
+        }
+
+        .security-note {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 12px;
+            background: #f7f7f7;
+            color: #777;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            .auth-card {
+                padding: 27px 20px;
+                border-radius: 20px;
+            }
+
+            .auth-card h1 {
+                font-size: 26px;
+            }
+
+            .login-options {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <div class="auth-container">
+
+            <!-- BRAND -->
+            <div class="auth-brand">
+                <a href="index.html">
+                    <span class="logo-mark">TS</span>
+                    <span>TikTok Streamers</span>
+                </a>
+            </div>
+
+            <!-- LOGIN CARD -->
+            <section class="auth-card">
+
+                <h1>Welcome back</h1>
+
+                <p class="auth-description">
+                    Sign in to your TikTok Streamers account.
+                </p>
+
+                <form
+                    class="auth-form"
+                    id="loginForm"
+                    onsubmit="loginUser(event)"
+                >
+
+                    <!-- USERNAME / EMAIL -->
+                    <div class="form-group">
+
+                        <label for="loginIdentifier">
+                            Username or Email
+                        </label>
+
+                        <input
+                            type="text"
+                            id="loginIdentifier"
+                            name="identifier"
+                            class="form-control"
+                            placeholder="Enter your username or email"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                name="password"
+                                class="form-control"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword()"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- OPTIONS -->
+                    <div class="login-options">
+
+                        <label class="remember">
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                            >
+
+                            <span>Remember me</span>
+                        </label>
+
+                        <a
+                            href="#"
+                            class="forgot-password"
+                            onclick="forgotPassword(event)"
+                        >
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <button
+                        type="submit"
+                        class="btn btn-red auth-submit"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- REGISTER -->
+                <div class="create-account">
+                    Don't have an account?
+                    <a href="register.html">
+                        Create one
+                    </a>
+                </div>
+
+                <div class="security-note">
+                    🔒 Your account will use secure authentication
+                    when the backend and database are connected.
+                </div>
+
+            </section>
+
+            <!-- BACK HOME -->
+            <div class="back-home">
+                <a href="index.html">
+                    ← Back to TikTok Streamers
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- TOAST -->
+    <div
+        id="toast"
+        class="toast"
+        aria-live="polite"
+    ></div>
+
+    <script>
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById("loginPassword");
+
+            const button =
+                document.querySelector(".password-toggle");
+
+            if (!password) return;
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                if (button) {
+                    button.textContent = "🙈";
+                    button.setAttribute(
+                        "aria-label",
+                        "Hide password"
+                    );
+                }
+
+            } else {
+
+                password.type = "password";
+
+                if (button) {
+                    button.textContent = "👁";
+                    button.setAttribute(
+                        "aria-label",
+                        "Show password"
+                    );
+                }
+            }
+        }
+
+        function loginUser(event) {
+
+            event.preventDefault();
+
+            const identifier =
+                document.getElementById("loginIdentifier").value.trim();
+
+            const password =
+                document.getElementById("loginPassword").value;
+
+            if (!identifier || !password) {
+                showMessage("Please complete all fields.");
+                return;
+            }
+
+            /*
+             * Authentication is intentionally not connected yet.
+             *
+             * No fake account is created.
+             * No password is saved in the browser.
+             *
+             * Real authentication will be connected
+             * after the backend/database is added.
+             */
+
+            showMessage(
+                "Login is not connected yet. Backend coming next."
+            );
+        }
+
+        function forgotPassword(event) {
+
+            event.preventDefault();
+
+            showMessage(
+                "Password recovery will be available after authentication is connected."
+            );
+        }
+
+        function showMessage(message) {
+
+            const toast =
+                document.getElementById("toast");
+
+            if (!toast) return;
+
+            toast.textContent = message;
+
+            toast.classList.add("show");
+
+            clearTimeout(window.loginToastTimer);
+
+            window.loginToastTimer =
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 4000);
+        }
+
+    </script>
+
+</body>
+</html>
