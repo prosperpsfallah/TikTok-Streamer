@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Gifts & Coins — TikTok Streamers</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+    .gifts-page {
+        min-height: 100vh;
+        background: #f4f8fc;
+    }
+
+    .gifts-header {
+        background: linear-gradient(135deg, #04101f, #0a2b4d);
+        padding: 20px;
+        color: white;
+    }
+
+    .gifts-header-inner {
+        max-width: 1150px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .gifts-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .gifts-brand-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #0b5cff, #35c9ff);
+        font-weight: 900;
+    }
+
+    .gifts-nav {
+        display: flex;
+        gap: 8px;
+    }
+
+    .gifts-nav a {
+        color: rgba(255,255,255,.85);
+        text-decoration: none;
+        padding: 9px 12px;
+        border-radius: 9px;
+        font-size: 14px;
+    }
+
+    .gifts-nav a:hover {
+        background: rgba(255,255,255,.1);
+        color: white;
+    }
+
+    .gifts-container {
+        max-width: 1150px;
+        margin: auto;
+        padding: 35px 20px 60px;
+    }
+
+    .page-title h1 {
+        margin: 0;
+        color: #071426;
+        font-size: 32px;
+    }
+
+    .page-title p {
+        color: #64748b;
+        margin: 8px 0 25px;
+    }
+
+    .wallet-card {
+        background: linear-gradient(135deg, #071426, #0b5cff);
+        color: white;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 15px 40px rgba(11,92,255,.18);
+    }
+
+    .wallet-label {
+        color: rgba(255,255,255,.75);
+        font-size: 14px;
+    }
+
+    .wallet-balance {
+        font-size: 38px;
+        font-weight: 900;
+        margin: 5px 0 8px;
+    }
+
+    .wallet-balance span {
+        font-size: 18px;
+        font-weight: 700;
+        color: #35c9ff;
+    }
+
+    .wallet-note {
+        color: rgba(255,255,255,.75);
+        font-size: 13px;
+    }
+
+    .section-title {
+        color: #071426;
+        margin: 0 0 18px;
+    }
+
+    .gifts-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+    }
+
+    .gift-card {
+        background: white;
+        border: 1px solid #e3edf6;
+        border-radius: 16px;
+        padding: 20px 14px;
+        text-align: center;
+        box-shadow: 0 7px 22px rgba(4,16,31,.05);
+    }
+
+    .gift-icon {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    .gift-name {
+        color: #071426;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
+
+    .gift-price {
+        color: #0b5cff;
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    .gift-send-button {
+        width: 100%;
+        border: 0;
+        border-radius: 9px;
+        padding: 10px;
+        background: #eaf8ff;
+        color: #0b5cff;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .gift-send-button:hover {
+        background: #d8f2ff;
+    }
+
+    .gift-send-button:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+    .history-section {
+        margin-top: 35px;
+    }
+
+    .history-card {
+        background: white;
+        border: 1px solid #e3edf6;
+        border-radius: 17px;
+        overflow: hidden;
+    }
+
+    .history-item {
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .history-item:last-child {
+        border-bottom: 0;
+    }
+
+    .history-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .history-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        background: #eaf8ff;
+        display: grid;
+        place-items: center;
+        font-size: 21px;
+    }
+
+    .history-name {
+        color: #071426;
+        font-weight: 800;
+    }
+
+    .history-date {
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .history-coins {
+        color: #0b5cff;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .empty-state {
+        padding: 45px 20px;
+        text-align: center;
+        color: #64748b;
+    }
+
+    .message {
+        display: none;
+        padding: 12px 14px;
+        border-radius: 10px;
+        margin: 15px 0;
+        font-size: 14px;
+    }
+
+    .message.error {
+        display: block;
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .message.success {
+        display: block;
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .loading {
+        padding: 30px;
+        text-align: center;
+        color: #64748b;
+    }
+
+    @media (max-width: 900px) {
+        .gifts-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .gifts-nav {
+            display: none;
+        }
+
+        .gifts-container {
+            padding: 25px 14px 45px;
+        }
+
+        .page-title h1 {
+            font-size: 27px;
+        }
+
+        .gifts-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .wallet-balance {
+            font-size: 32px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="gifts-page">
+
+```
+<header class="gifts-header">
+
+    <div class="gifts-header-inner">
+
+        <a href="index.html" class="gifts-brand">
+            <span class="gifts-brand-icon">TS</span>
+            <span>TikTok Streamers</span>
+        </a>
+
+        <nav class="gifts-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="live.html">LIVE</a>
+            <a href="videos.html">Videos</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="gifts-container">
+
+    <div class="page-title">
+        <h1>Gifts & Coins</h1>
+        <p>
+            Send real gifts to streamers using your coin balance.
+        </p>
+    </div>
+
+
+    <!-- WALLET -->
+
+    <section class="wallet-card">
+
+        <div class="wallet-label">
+            Your Coin Balance
+        </div>
+
+        <div
+            class="wallet-balance"
+            id="coinBalance"
+        >
+            0 <span>Coins</span>
+        </div>
+
+        <div class="wallet-note">
+            Coins will be added through the real payment system.
+        </div>
+
+    </section>
+
+
+    <!-- GIFTS -->
+
+    <section>
+
+        <h2 class="section-title">
+            Available Gifts
+        </h2>
+
+        <div
+            id="giftMessage"
+            class="message"
+        ></div>
+
+        <div
+            id="giftsGrid"
+            class="gifts-grid"
+        >
+            <div class="loading">
+                Loading gifts...
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- HISTORY -->
+
+    <section class="history-section">
+
+        <h2 class="section-title">
+            My Gift History
+        </h2>
+
+        <div class="history-card">
+
+            <div
+                id="historyList"
+            >
+                <div class="empty-state">
+                    You have not sent any gifts yet.
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+```
+
+</div>
+
+<script>
+
+    /* =========================================
+       SUPABASE
+    ========================================= */
+
+    const SUPABASE_URL =
+        "https://malrwexkhekripoaubur.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInR5cCI6IkpXVCJ9";
+
+    /*
+       IMPORTANT:
+       Replace the line above with the SAME Supabase
+       anon/public key already used in your login.html,
+       register.html and other pages.
+
+       Do NOT use a service_role key.
+    */
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+    let currentUser = null;
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const coinBalance =
+        document.getElementById("coinBalance");
+
+    const giftsGrid =
+        document.getElementById("giftsGrid");
+
+    const historyList =
+        document.getElementById("historyList");
+
+    const giftMessage =
+        document.getElementById("giftMessage");
+
+
+    /* =========================================
+       MESSAGE
+    ========================================= */
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        giftMessage.textContent =
+            text;
+
+        giftMessage.className =
+            "message " + type;
+    }
+
+
+    /* =========================================
+       LOAD USER
+    ========================================= */
+
+    async function loadUser() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getUser();
+
+
+        if (
+            error ||
+            !data.user
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return null;
+        }
+
+
+        currentUser =
+            data.user;
+
+        return currentUser;
+    }
+
+
+    /* =========================================
+       LOAD WALLET
+    ========================================= */
+
+    async function loadWallet() {
+
+        if (!currentUser) return;
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("wallets")
+            .select("coin_balance")
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "Wallet error:",
+                error
+            );
+
+            return;
+        }
+
+
+        const balance =
+            data?.coin_balance || 0;
+
+
+        coinBalance.innerHTML =
+            `${Number(balance).toLocaleString()} <span>Coins</span>`;
+    }
+
+
+    /* =========================================
+       LOAD GIFTS
+    ========================================= */
+
+    async function loadGifts() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("gifts")
+            .select(
+                "id, name, icon, coin_cost"
+            )
+            .eq(
+                "is_active",
+                true
+            )
+            .order(
+                "coin_cost",
+                { ascending: true }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "Gift loading error:",
+                error
+            );
+
+            giftsGrid.innerHTML =
+                `<div class="empty-state">
+                    Unable to load gifts.
+                </div>`;
+
+            return;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            giftsGrid.innerHTML =
+                `<div class="empty-state">
+                    No gifts are available yet.
+                </div>`;
+
+            return;
+        }
+
+
+        giftsGrid.innerHTML =
+            "";
+
+
+        data.forEach(gift => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "gift-card";
+
+
+            const icon =
+                document.createElement("div");
+
+            icon.className =
+                "gift-icon";
+
+            icon.textContent =
+                gift.icon || "🎁";
+
+
+            const name =
+                document.createElement("div");
+
+            name.className =
+                "gift-name";
+
+            name.textContent =
+                gift.name;
+
+
+            const price =
+                document.createElement("div");
+
+            price.className =
+                "gift-price";
+
+            price.textContent =
+                `${Number(gift.coin_cost).toLocaleString()} coins`;
+
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "gift-send-button";
+
+            button.textContent =
+                "Send Gift";
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    sendGift(gift);
+
+                }
+            );
+
+
+            card.appendChild(icon);
+
+            card.appendChild(name);
+
+            card.appendChild(price);
+
+            card.appendChild(button);
+
+            giftsGrid.appendChild(card);
+
+        });
+
+    }
+
+
+    /* =========================================
+       SEND GIFT
+    ========================================= */
+
+    async function sendGift(gift) {
+
+        if (!currentUser) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        const quantityInput =
+            prompt(
+                `How many ${gift.name} gifts do you want to send?`,
+                "1"
+            );
+
+
+        if (
+            quantityInput === null
+        ) {
+            return;
+        }
+
+
+        const quantity =
+            Number(quantityInput);
+
+
+        if (
+            !Number.isInteger(quantity) ||
+            quantity < 1
+        ) {
+
+            showMessage(
+                "Please enter a valid quantity.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const receiverInput =
+            prompt(
+                "Enter the recipient's User ID:"
+            );
+
+
+        if (!receiverInput) {
+
+            showMessage(
+                "A recipient User ID is required.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const receiverId =
+            receiverInput.trim();
+
+
+        showMessage(
+            "Sending gift...",
+            "success"
+        );
+
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .rpc(
+                    "send_gift",
+                    {
+                        target_receiver_id:
+                            receiverId,
+
+                        target_gift_id:
+                            gift.id,
+
+                        target_stream_id:
+                            null,
+
+                        target_quantity:
+                            quantity
+                    }
+                );
+
+
+            if (error) {
+
+                throw error;
+            }
+
+
+            showMessage(
+                `Gift sent successfully. ${Number(data?.remaining_coins || 0).toLocaleString()} coins remaining.`,
+                "success"
+            );
+
+
+            await loadWallet();
+
+            await loadHistory();
+
+
+        } catch (error) {
+
+            console.error(
+                "Send gift error:",
+                error
+            );
+
+
+            showMessage(
+                error.message ||
+                "Unable to send gift.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       LOAD HISTORY
+    ========================================= */
+
+    async function loadHistory() {
+
+        if (!currentUser) return;
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("gift_transactions")
+            .select(`
+                id,
+                receiver_id,
+                quantity,
+                total_coins,
+                created_at,
+                gifts (
+                    name,
+                    icon
+                )
+            `)
+            .eq(
+                "sender_id",
+                currentUser.id
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            )
+            .limit(50);
+
+
+        if (error) {
+
+            console.error(
+                "Gift history error:",
+                error
+            );
+
+            historyList.innerHTML =
+                `<div class="empty-state">
+                    Unable to load gift history.
+                </div>`;
+
+            return;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            historyList.innerHTML =
+                `<div class="empty-state">
+                    You have not sent any gifts yet.
+                </div>`;
+
+            return;
+        }
+
+
+        historyList.innerHTML =
+            "";
+
+
+        data.forEach(transaction => {
+
+            const gift =
+                transaction.gifts;
+
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "history-item";
+
+
+            const left =
+                document.createElement("div");
+
+            left.className =
+                "history-left";
+
+
+            const icon =
+                document.createElement("div");
+
+            icon.className =
+                "history-icon";
+
+            icon.textContent =
+                gift?.icon || "🎁";
+
+
+            const details =
+                document.createElement("div");
+
+
+            const name =
+                document.createElement("div");
+
+            name.className =
+                "history-name";
+
+            name.textContent =
+                `${gift?.name || "Gift"} × ${transaction.quantity}`;
+
+
+            const date =
+                document.createElement("div");
+
+            date.className =
+                "history-date";
+
+            date.textContent =
+                formatDate(
+                    transaction.created_at
+                );
+
+
+            details.appendChild(name);
+
+            details.appendChild(date);
+
+
+            left.appendChild(icon);
+
+            left.appendChild(details);
+
+
+            const coins =
+                document.createElement("div");
+
+            coins.className =
+                "history-coins";
+
+            coins.textContent =
+                `-${Number(transaction.total_coins).toLocaleString()} coins`;
+
+
+            item.appendChild(left);
+
+            item.appendChild(coins);
+
+            historyList.appendChild(item);
+
+        });
+
+    }
+
+
+    /* =========================================
+       DATE
+    ========================================= */
+
+    function formatDate(date) {
+
+        if (!date) return "";
+
+        return new Date(date)
+            .toLocaleString(
+                undefined,
+                {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+    }
+
+
+    /* =========================================
+       AUTH STATE
+    ========================================= */
+
+    supabaseClient.auth.onAuthStateChange(
+        (event, session) => {
+
+            if (
+                event === "SIGNED_OUT"
+            ) {
+
+                window.location.href =
+                    "login.html";
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    async function initialize() {
+
+        const user =
+            await loadUser();
+
+        if (!user) return;
+
+        await loadWallet();
+
+        await loadGifts();
+
+        await loadHistory();
+
+    }
+
+
+    initialize();
+
+</script>
+
+</body>
+</html>
