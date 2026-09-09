@@ -1,505 +1,789 @@
-// ==========================================
-// TIKTOK STREAMERS
-// MAIN FRONTEND SCRIPT
-// ==========================================
+<!DOCTYPE html>
+<html lang="en">
 
-const API_BASE = "/api";
+<head>
 
-// ==========================================
-// MOBILE MENU
-// ==========================================
+    <meta charset="UTF-8">
 
-function toggleMenu() {
-    const menu = document.getElementById("mobileMenu");
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    if (menu) {
-        menu.classList.toggle("active");
-    }
-}
+    <meta
+        name="description"
+        content="TikTok Streamers — Discover live streamers, creators and new talent."
+    >
 
-function toggleMobileMenu() {
-    toggleMenu();
-}
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
 
-// ==========================================
-// SEARCH
-// ==========================================
+    <title>TikTok Streamers</title>
 
-function openSearch() {
-    const overlay = document.getElementById("searchOverlay");
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
 
-    if (!overlay) return;
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    overlay.classList.add("active");
+</head>
 
-    const input = document.getElementById("streamerSearch");
 
-    if (input) {
-        setTimeout(() => {
-            input.focus();
-        }, 100);
-    }
-}
+<body>
 
-function closeSearch() {
-    const overlay = document.getElementById("searchOverlay");
 
-    if (overlay) {
-        overlay.classList.remove("active");
-    }
-}
+<!-- ==================================================
+     HEADER
+================================================== -->
 
-async function searchStreamers() {
-    const input = document.getElementById("streamerSearch");
-    const results = document.getElementById("searchResults");
+<header class="header">
 
-    if (!input) return;
+    <div class="container nav-container">
 
-    const searchTerm = input.value.trim();
 
-    if (!searchTerm) {
-        if (results) {
-            results.innerHTML = "";
-        }
-        return;
-    }
+        <!-- LOGO -->
 
-    try {
-        const response = await fetch(
-            `${API_BASE}/streamers?search=${encodeURIComponent(searchTerm)}`
-        );
+        <a
+            href="index.html"
+            class="logo"
+        >
 
-        if (!response.ok) {
-            throw new Error("Search request failed.");
-        }
-
-        const data = await response.json();
-
-        const streamers = data.streamers || [];
-
-        if (!results) return;
-
-        if (streamers.length === 0) {
-            results.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">👤</div>
-                    <h3>No streamers found</h3>
-                    <p>There are no matching streamers yet.</p>
-                </div>
-            `;
-            return;
-        }
-
-        results.innerHTML = streamers.map(streamer => `
-            <div class="search-result-item">
-                <strong>
-                    ${escapeHTML(streamer.username || "Streamer")}
-                </strong>
-                <span>
-                    ${escapeHTML(streamer.full_name || "")}
-                </span>
+            <div class="logo-icon">
+                TS
             </div>
-        `).join("");
 
-    } catch (error) {
-        console.error("Search error:", error);
+            <span>
+                TikTok Streamers
+            </span>
 
-        if (results) {
-            results.innerHTML = `
-                <div class="empty-state">
-                    <h3>Search unavailable</h3>
-                    <p>Please try again later.</p>
+        </a>
+
+
+        <!-- DESKTOP NAV -->
+
+        <nav class="nav">
+
+            <a
+                href="index.html"
+                class="active"
+            >
+                Home
+            </a>
+
+            <a href="live.html">
+                Live
+            </a>
+
+            <a href="profile.html">
+                Streamers
+            </a>
+
+            <a href="leaderboard.html">
+                Leaderboard
+            </a>
+
+        </nav>
+
+
+        <!-- HEADER ACTIONS -->
+
+        <div class="header-actions">
+
+            <button
+                class="search-btn"
+                onclick="openSearch()"
+                aria-label="Search"
+            >
+                🔍
+            </button>
+
+            <button
+                class="login-btn"
+                onclick="openLogin()"
+            >
+                Login
+            </button>
+
+            <button
+                class="register-btn"
+                onclick="openRegister()"
+            >
+                Join
+            </button>
+
+        </div>
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <!-- MOBILE NAV -->
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <a
+            href="index.html"
+            onclick="toggleMenu()"
+        >
+            Home
+        </a>
+
+        <a
+            href="live.html"
+            onclick="toggleMenu()"
+        >
+            Live
+        </a>
+
+        <a
+            href="profile.html"
+            onclick="toggleMenu()"
+        >
+            Streamers
+        </a>
+
+        <a
+            href="leaderboard.html"
+            onclick="toggleMenu()"
+        >
+            Leaderboard
+        </a>
+
+        <button
+            onclick="openLogin(); toggleMenu();"
+        >
+            Login
+        </button>
+
+        <button
+            onclick="openRegister(); toggleMenu();"
+        >
+            Create Account
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==================================================
+     SEARCH
+================================================== -->
+
+<div
+    id="searchOverlay"
+    class="search-overlay"
+>
+
+    <div class="search-box">
+
+        <button
+            class="close-search"
+            onclick="closeSearch()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Search Streamers
+        </h2>
+
+
+        <div class="search-input-wrapper">
+
+            <span>
+                🔍
+            </span>
+
+            <input
+                type="text"
+                id="streamerSearch"
+                placeholder="Search streamer username..."
+                oninput="searchStreamers()"
+            >
+
+        </div>
+
+
+        <div
+            id="searchResults"
+            class="search-results"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     HERO
+================================================== -->
+
+<main>
+
+
+<section
+    id="home"
+    class="hero"
+>
+
+    <div class="container hero-container">
+
+
+        <div class="hero-content">
+
+
+            <div class="hero-badge">
+                🎥 STREAMERS COMMUNITY
+            </div>
+
+
+            <h1>
+
+                Discover the
+
+                <span>
+                    Streamers
+                </span>
+
+                You Love.
+
+            </h1>
+
+
+            <p>
+
+                Find live creators, discover new talent,
+                follow your favorite streamers and
+                connect with the community.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+
+                <button
+                    class="primary-btn"
+                    onclick="window.location.href='live.html'"
+                >
+                    🔴 Watch Live
+                </button>
+
+
+                <button
+                    class="secondary-btn"
+                    onclick="openRegister()"
+                >
+                    Become a Streamer
+                </button>
+
+
+            </div>
+
+
+            <!-- PLATFORM STATS -->
+
+            <div class="hero-status">
+
+
+                <div class="status-item">
+
+                    <strong>
+                        0
+                    </strong>
+
+                    <span>
+                        Streamers
+                    </span>
+
                 </div>
-            `;
-        }
-    }
-}
-
-// ==========================================
-// SECTION SCROLL
-// ==========================================
-
-function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-
-    if (section) {
-        section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
-}
-
-// ==========================================
-// LOGIN
-// ==========================================
-
-function openLogin() {
-    window.location.href = "login.html";
-}
-
-function closeLogin() {
-    // Kept for compatibility with older HTML.
-}
-
-async function loginUser(event) {
-    if (event) {
-        event.preventDefault();
-    }
-
-    window.location.href = "login.html";
-}
-
-// ==========================================
-// REGISTER
-// ==========================================
-
-function openRegister() {
-    window.location.href = "register.html";
-}
-
-function closeRegister() {
-    // Kept for compatibility with older HTML.
-}
-
-async function registerUser(event) {
-    if (event) {
-        event.preventDefault();
-    }
-
-    window.location.href = "register.html";
-}
-
-function switchToRegister() {
-    window.location.href = "register.html";
-}
-
-function switchToLogin() {
-    window.location.href = "login.html";
-}
-
-// ==========================================
-// STREAMER ACTIONS
-// ==========================================
-
-function joinStreamer() {
-    window.location.href = "register.html";
-}
-
-function viewProfile(userId) {
-    if (userId) {
-        window.location.href =
-            `profile.html?id=${encodeURIComponent(userId)}`;
-        return;
-    }
-
-    showMessage("No streamer profile is available yet.");
-}
-
-function changeRanking(period) {
-    window.location.href =
-        `leaderboard.html?period=${encodeURIComponent(period)}`;
-}
-
-// ==========================================
-// BACKEND HEALTH CHECK
-// ==========================================
-
-async function checkBackendStatus() {
-    try {
-        const response = await fetch(`${API_BASE}/health`, {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        });
 
-        if (!response.ok) {
-            throw new Error(`Server returned ${response.status}`);
-        }
 
-        const data = await response.json();
+                <div class="status-item">
 
-        console.log("=================================");
-        console.log("TIKTOK STREAMERS BACKEND");
-        console.log("=================================");
-        console.log("Status:", data.status);
-        console.log("Message:", data.message);
-        console.log("Database:", data.database);
-        console.log("Users:", data.users);
-        console.log("Streamers:", data.streamers);
-        console.log("Live streams:", data.liveStreams);
-        console.log("=================================");
+                    <strong>
+                        0
+                    </strong>
 
-        updateBackendStatus(true);
+                    <span>
+                        Live Now
+                    </span>
 
-        return data;
+                </div>
 
-    } catch (error) {
-        console.error("Backend connection failed:", error);
 
-        updateBackendStatus(false);
+                <div class="status-item">
 
-        return null;
-    }
-}
+                    <strong>
+                        0
+                    </strong>
 
-// ==========================================
-// BACKEND STATUS
-// ==========================================
+                    <span>
+                        Members
+                    </span>
 
-function updateBackendStatus(isOnline) {
-    const statusElement =
-        document.getElementById("backendStatus");
+                </div>
 
-    if (!statusElement) return;
 
-    if (isOnline) {
-        statusElement.textContent = "Backend Online";
+            </div>
 
-        statusElement.classList.add("online");
-        statusElement.classList.remove("offline");
+        </div>
 
-    } else {
-        statusElement.textContent = "Backend Offline";
 
-        statusElement.classList.add("offline");
-        statusElement.classList.remove("online");
-    }
-}
 
-// ==========================================
-// LOAD STREAMERS
-// ==========================================
+        <!-- PHONE PREVIEW -->
 
-async function loadStreamers() {
-    try {
-        const response =
-            await fetch(`${API_BASE}/streamers`);
+        <div class="hero-visual">
 
-        if (!response.ok) {
-            throw new Error("Could not load streamers.");
-        }
+            <div class="phone">
 
-        const data = await response.json();
+                <div class="phone-screen">
 
-        console.log("Streamers received:", data);
 
-        return data.streamers || [];
+                    <div class="phone-header">
 
-    } catch (error) {
-        console.error(
-            "Streamer loading error:",
-            error
-        );
+                        <strong>
+                            LIVE
+                        </strong>
 
-        return [];
-    }
-}
+                        <span>
+                            0 watching
+                        </span>
 
-// ==========================================
-// LOAD LIVE STREAMS
-// ==========================================
+                    </div>
 
-async function loadLiveStreams() {
-    try {
-        const response =
-            await fetch(`${API_BASE}/live`);
 
-        if (!response.ok) {
-            throw new Error("Could not load live streams.");
-        }
+                    <div class="empty-phone">
 
-        const data = await response.json();
+                        <div class="empty-icon">
+                            📺
+                        </div>
 
-        console.log("Live streams received:", data);
 
-        return data.liveStreams || [];
+                        <h3>
+                            No LIVE streams
+                        </h3>
 
-    } catch (error) {
-        console.error(
-            "Live stream loading error:",
-            error
-        );
 
-        return [];
-    }
-}
+                        <p>
+                            Streamers will appear here
+                            when they go LIVE.
+                        </p>
 
-// ==========================================
-// LOAD LEADERBOARD
-// ==========================================
+                    </div>
 
-async function loadLeaderboard() {
-    try {
-        const response =
-            await fetch(`${API_BASE}/leaderboard`);
 
-        if (!response.ok) {
-            throw new Error("Could not load leaderboard.");
-        }
+                </div>
 
-        const data = await response.json();
-
-        console.log(
-            "Leaderboard received:",
-            data
-        );
-
-        return data.rankings || [];
-
-    } catch (error) {
-        console.error(
-            "Leaderboard loading error:",
-            error
-        );
-
-        return [];
-    }
-}
-
-// ==========================================
-// TOAST MESSAGE
-// ==========================================
-
-function showMessage(message) {
-    let toast =
-        document.getElementById("toast");
-
-    if (!toast) {
-        toast = document.createElement("div");
-
-        toast.id = "toast";
-
-        toast.style.position = "fixed";
-        toast.style.left = "50%";
-        toast.style.bottom = "30px";
-        toast.style.transform =
-            "translateX(-50%)";
-        toast.style.zIndex = "99999";
-        toast.style.padding =
-            "12px 18px";
-        toast.style.borderRadius =
-            "12px";
-        toast.style.background = "#111";
-        toast.style.color = "#fff";
-        toast.style.fontSize = "14px";
-        toast.style.boxShadow =
-            "0 10px 30px rgba(0,0,0,.2)";
-        toast.style.transition =
-            "opacity .25s ease";
-
-        document.body.appendChild(toast);
-    }
-
-    toast.textContent = message;
-    toast.style.opacity = "1";
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(() => {
-        toast.style.opacity = "0";
-    }, 3000);
-}
-
-// ==========================================
-// ESCAPE KEY
-// ==========================================
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (event.key !== "Escape") {
-            return;
-        }
-
-        closeSearch();
-
-        const mobileMenu =
-            document.getElementById(
-                "mobileMenu"
-            );
-
-        if (mobileMenu) {
-            mobileMenu.classList.remove(
-                "active"
-            );
-        }
-    }
-);
-
-// ==========================================
-// CLOSE SEARCH WHEN CLICKING OUTSIDE
-// ==========================================
-
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const searchOverlay =
-            document.getElementById(
-                "searchOverlay"
-            );
-
-        if (
-            searchOverlay &&
-            event.target === searchOverlay
-        ) {
-            closeSearch();
-        }
-
-        const mobileMenu =
-            document.getElementById(
-                "mobileMenu"
-            );
-
-        if (
-            mobileMenu &&
-            event.target.closest("a")
-        ) {
-            mobileMenu.classList.remove(
-                "active"
-            );
-        }
-    }
-);
-
-// ==========================================
-// HTML SECURITY
-// ==========================================
-
-function escapeHTML(value) {
-    return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-// ==========================================
-// PAGE STARTUP
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
-
-        console.log(
-            "TikTok Streamers frontend loaded."
-        );
-
-        // These are optional.
-        // The homepage still works if the
-        // backend/API is not available yet.
-
-        checkBackendStatus();
-
-        loadStreamers();
-
-        loadLiveStreams();
-
-        loadLeaderboard();
-    }
-);
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     LIVE
+================================================== -->
+
+<section
+    id="live"
+    class="section"
+>
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    🔴 LIVE
+                </span>
+
+
+                <h2>
+                    Live Streamers
+                </h2>
+
+
+                <p>
+                    Watch creators who are streaming right now.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="empty-state">
+
+
+            <div class="empty-state-icon">
+                🔴
+            </div>
+
+
+            <h3>
+                Nobody is LIVE right now
+            </h3>
+
+
+            <p>
+                When a streamer starts a LIVE session,
+                they will appear here.
+            </p>
+
+
+            <button
+                class="primary-btn"
+                onclick="window.location.href='live.html'"
+            >
+                Watch LIVE
+            </button>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     STREAMERS
+================================================== -->
+
+<section
+    id="streamers"
+    class="section light-section"
+>
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    👥 COMMUNITY
+                </span>
+
+
+                <h2>
+                    Streamers
+                </h2>
+
+
+                <p>
+                    Discover creators who join the platform.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="empty-state">
+
+
+            <div class="empty-state-icon">
+                👤
+            </div>
+
+
+            <h3>
+                No streamers yet
+            </h3>
+
+
+            <p>
+                The first creators who join the platform
+                will appear here.
+            </p>
+
+
+            <button
+                class="primary-btn"
+                onclick="openRegister()"
+            >
+                Create Account
+            </button>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     LEADERBOARD
+================================================== -->
+
+<section
+    id="leaderboard"
+    class="section"
+>
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    🏆 RANKINGS
+                </span>
+
+
+                <h2>
+                    Leaderboard
+                </h2>
+
+
+                <p>
+                    Top streamers will be ranked here
+                    using real platform activity.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="leaderboard-empty">
+
+
+            <div class="leaderboard-empty-icon">
+                🏆
+            </div>
+
+
+            <h3>
+                Leaderboard is waiting
+            </h3>
+
+
+            <p>
+                Rankings will appear after real
+                streamers begin using the platform.
+            </p>
+
+
+            <button
+                class="secondary-btn"
+                onclick="window.location.href='leaderboard.html'"
+            >
+                View Leaderboard
+            </button>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     CREATOR CTA
+================================================== -->
+
+<section class="cta-section">
+
+    <div class="container">
+
+
+        <div class="cta-card">
+
+
+            <div class="cta-content">
+
+
+                <span>
+                    🎤 FOR CREATORS
+                </span>
+
+
+                <h2>
+                    Are you a streamer?
+                </h2>
+
+
+                <p>
+                    Create your account and become one
+                    of the first creators on TikTok Streamers.
+                </p>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="openRegister()"
+                >
+                    Join as a Streamer
+                </button>
+
+
+            </div>
+
+
+            <div class="cta-icon">
+                🎥
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     TOAST
+================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+>
+</div>
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer class="footer">
+
+    <div class="container footer-container">
+
+
+        <div class="footer-brand">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <div class="logo-icon">
+                    TS
+                </div>
+
+                <span>
+                    TikTok Streamers
+                </span>
+
+            </a>
+
+
+            <p>
+                A community for streamers
+                and viewers to connect.
+            </p>
+
+
+        </div>
+
+
+
+        <div class="footer-links">
+
+
+            <a href="index.html">
+                Home
+            </a>
+
+
+            <a href="live.html">
+                Live
+            </a>
+
+
+            <a href="leaderboard.html">
+                Leaderboard
+            </a>
+
+
+            <a href="login.html">
+                Login
+            </a>
+
+
+            <a href="register.html">
+                Join
+            </a>
+
+
+        </div>
+
+
+
+        <div class="footer-copy">
+
+            © 2026 TikTok Streamers.
+            All rights reserved.
+
+        </div>
+
+
+    </div>
+
+</footer>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
