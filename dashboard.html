@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard — TikTok Streamers</title>
+
+    <meta
+        name="description"
+        content="TikTok Streamers user and streamer dashboard."
+    >
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#111111">
+
+    <style>
+        /* =========================================
+           DASHBOARD
+        ========================================= */
+
+        .dashboard-page {
+            min-height: 100vh;
+            background: #f7f8fa;
+        }
+
+        .dashboard-container {
+            width: min(1150px, calc(100% - 30px));
+            margin: 0 auto;
+            padding: 45px 0 70px;
+        }
+
+        /* =========================================
+           WELCOME
+        ========================================= */
+
+        .dashboard-welcome {
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(254, 44, 85, 0.32),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 85% 30%,
+                    rgba(37, 244, 238, 0.22),
+                    transparent 35%
+                ),
+                #111111;
+
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 38px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dashboard-welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .dashboard-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-welcome h1 {
+            margin: 0 0 10px;
+            font-size: clamp(30px, 5vw, 48px);
+            font-weight: 900;
+        }
+
+        .dashboard-welcome p {
+            max-width: 650px;
+            margin: 0;
+            color: rgba(255,255,255,0.68);
+            line-height: 1.7;
+        }
+
+        .dashboard-welcome-decoration {
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            right: -80px;
+            top: -100px;
+            background: rgba(254,44,85,0.12);
+        }
+
+        /* =========================================
+           ACCOUNT STATUS
+        ========================================= */
+
+        .dashboard-account {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 18px;
+            padding: 22px 25px;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-account-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dashboard-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #f0f1f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .dashboard-account-info strong {
+            display: block;
+            color: #111111;
+            margin-bottom: 4px;
+        }
+
+        .dashboard-account-info span {
+            color: #888888;
+            font-size: 13px;
+        }
+
+        .dashboard-status {
+            padding: 8px 13px;
+            border-radius: 999px;
+            background: #f0f1f3;
+            color: #777777;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* =========================================
+           STATS
+        ========================================= */
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-stat {
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 18px;
+            padding: 23px;
+        }
+
+        .dashboard-stat-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #f1f2f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            margin-bottom: 17px;
+        }
+
+        .dashboard-stat strong {
+            display: block;
+            font-size: 28px;
+            color: #111111;
+            margin-bottom: 5px;
+        }
+
+        .dashboard-stat span {
+            color: #888888;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           MAIN GRID
+        ========================================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .dashboard-card-header {
+            padding: 22px 24px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .dashboard-card-header h2 {
+            margin: 0 0 5px;
+            color: #111111;
+            font-size: 19px;
+        }
+
+        .dashboard-card-header p {
+            margin: 0;
+            color: #888888;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           EMPTY CONTENT
+        ========================================= */
+
+        .dashboard-empty {
+            text-align: center;
+            padding: 55px 25px;
+        }
+
+        .dashboard-empty-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 17px;
+            border-radius: 50%;
+            background: #f1f2f4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+        }
+
+        .dashboard-empty h3 {
+            margin: 0 0 8px;
+            color: #111111;
+            font-size: 20px;
+        }
+
+        .dashboard-empty p {
+            max-width: 500px;
+            margin: auto;
+            color: #888888;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           QUICK ACTIONS
+        ========================================= */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .quick-action {
+            border: 1px solid #eeeeee;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 18px 15px;
+            text-decoration: none;
+            color: #111111;
+            transition: 0.2s ease;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-2px);
+            border-color: #dddddd;
+        }
+
+        .quick-action-icon {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .quick-action strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .quick-action span {
+            display: block;
+            color: #888888;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* =========================================
+           STREAMER AREA
+        ========================================= */
+
+        .streamer-card {
+            padding: 25px;
+        }
+
+        .streamer-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border-radius: 14px;
+            background: #f7f8fa;
+            margin-bottom: 15px;
+        }
+
+        .streamer-status-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #cccccc;
+        }
+
+        .streamer-status strong {
+            display: block;
+            font-size: 14px;
+            color: #111111;
+            margin-bottom: 3px;
+        }
+
+        .streamer-status span {
+            font-size: 12px;
+            color: #888888;
+        }
+
+        .dashboard-live-button {
+            width: 100%;
+            border: 0;
+            padding: 13px;
+            border-radius: 999px;
+            background: #eeeeee;
+            color: #999999;
+            font-weight: 800;
+            cursor: not-allowed;
+        }
+
+        /* =========================================
+           NOTICE
+        ========================================= */
+
+        .dashboard-notice {
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 18px;
+            background: #111111;
+            color: #ffffff;
+        }
+
+        .dashboard-notice h2 {
+            margin: 0 0 8px;
+            font-size: 21px;
+        }
+
+        .dashboard-notice p {
+            margin: 0;
+            color: rgba(255,255,255,0.65);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .dashboard-notice-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-notice-actions a {
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .dashboard-notice-actions .primary {
+            background: #fe2c55;
+            color: #ffffff;
+        }
+
+        .dashboard-notice-actions .secondary {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .dashboard-container {
+                width: calc(100% - 20px);
+                padding-top: 25px;
+            }
+
+            .dashboard-welcome {
+                padding: 28px 22px;
+                border-radius: 20px;
+            }
+
+            .dashboard-account {
+                align-items: flex-start;
+            }
+
+            .dashboard-status {
+                display: none;
+            }
+
+            .dashboard-stats {
+                gap: 10px;
+            }
+
+            .dashboard-stat {
+                padding: 18px;
+            }
+
+            .dashboard-stat strong {
+                font-size: 24px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard-page">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="site-header">
+
+        <div class="header-inner">
+
+            <a href="index.html" class="brand">
+                <span class="brand-mark">T</span>
+                <span>TikTok Streamers</span>
+            </a>
+
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="live.html">Live</a>
+                <a href="index.html#streamers">Streamers</a>
+                <a href="leaderboard.html">Leaderboard</a>
+            </nav>
+
+            <div class="header-actions">
+
+                <a href="login.html" class="btn btn-secondary">
+                    Login
+                </a>
+
+                <a href="register.html" class="btn btn-primary">
+                    Join
+                </a>
+
+                <button
+                    class="mobile-menu-button"
+                    type="button"
+                    onclick="toggleMobileMenu()"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="mobileMenu" class="mobile-menu">
+
+            <a href="index.html">Home</a>
+            <a href="live.html">Live</a>
+            <a href="index.html#streamers">Streamers</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Join</a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         DASHBOARD
+    ====================================== -->
+
+    <main class="dashboard-container">
+
+        <!-- WELCOME -->
+
+        <section class="dashboard-welcome">
+
+            <div class="dashboard-welcome-decoration"></div>
+
+            <div class="dashboard-welcome-content">
+
+                <div class="dashboard-label">
+                    📊 DASHBOARD
+                </div>
+
+                <h1>
+                    Welcome to your dashboard
+                </h1>
+
+                <p>
+                    Your account activity, streaming information,
+                    followers, gifts and other platform data will
+                    appear here once you create an account and begin
+                    using TikTok Streamers.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCOUNT -->
+
+        <section class="dashboard-account">
+
+            <div class="dashboard-account-info">
+
+                <div class="dashboard-avatar">
+                    👤
+                </div>
+
+                <div>
+
+                    <strong>
+                        No account connected
+                    </strong>
+
+                    <span>
+                        Log in to access your dashboard.
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="dashboard-status">
+                NOT CONNECTED
+            </div>
+
+        </section>
+
+
+        <!-- STATS -->
+
+        <section class="dashboard-stats">
+
+            <div class="dashboard-stat">
+
+                <div class="dashboard-stat-icon">
+                    👥
+                </div>
+
+                <strong>0</strong>
+
+                <span>
+                    Followers
+                </span>
+
+            </div>
+
+
+            <div class="dashboard-stat">
+
+                <div class="dashboard-stat-icon">
+                    ❤️
+                </div>
+
+                <strong>0</strong>
+
+                <span>
+                    Likes
+                </span>
+
+            </div>
+
+
+            <div class="dashboard-stat">
+
+                <div class="dashboard-stat-icon">
+                    🎁
+                </div>
+
+                <strong>0</strong>
+
+                <span>
+                    Gifts
+                </span>
+
+            </div>
+
+
+            <div class="dashboard-stat">
+
+                <div class="dashboard-stat-icon">
+                    👁️
+                </div>
+
+                <strong>0</strong>
+
+                <span>
+                    LIVE Viewers
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAIN GRID -->
+
+        <section class="dashboard-grid">
+
+            <div>
+
+                <!-- ACTIVITY -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h2>
+                            Recent Activity
+                        </h2>
+
+                        <p>
+                            Your latest activity will appear here.
+                        </p>
+
+                    </div>
+
+                    <div class="dashboard-empty">
+
+                        <div class="dashboard-empty-icon">
+                            📋
+                        </div>
+
+                        <h3>
+                            No activity yet
+                        </h3>
+
+                        <p>
+                            There is no account activity to display.
+                            Real follows, likes, gifts, messages and
+                            other activity will appear here after users
+                            begin using the platform.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STREAMING -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h2>
+                            Streaming
+                        </h2>
+
+                        <p>
+                            Manage your LIVE streaming activity.
+                        </p>
+
+                    </div>
+
+                    <div class="streamer-card">
+
+                        <div class="streamer-status">
+
+                            <div class="streamer-status-dot"></div>
+
+                            <div>
+
+                                <strong>
+                                    LIVE is offline
+                                </strong>
+
+                                <span>
+                                    Create an account to start streaming.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            class="dashboard-live-button"
+                            type="button"
+                            disabled
+                        >
+                            Go LIVE
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT COLUMN -->
+
+            <div>
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                        <p>
+                            Platform shortcuts.
+                        </p>
+
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <a
+                            href="profile.html"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-action-icon">
+                                👤
+                            </span>
+
+                            <strong>
+                                My Profile
+                            </strong>
+
+                            <span>
+                                View your profile
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="settings.html"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-action-icon">
+                                ⚙️
+                            </span>
+
+                            <strong>
+                                Settings
+                            </strong>
+
+                            <span>
+                                Account preferences
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="live.html"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-action-icon">
+                                🔴
+                            </span>
+
+                            <strong>
+                                LIVE
+                            </strong>
+
+                            <span>
+                                Discover LIVE streams
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="leaderboard.html"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-action-icon">
+                                🏆
+                            </span>
+
+                            <strong>
+                                Leaderboard
+                            </strong>
+
+                            <span>
+                                View rankings
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACCOUNT INFO -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h2>
+                            Account Information
+                        </h2>
+
+                        <p>
+                            Your platform account.
+                        </p>
+
+                    </div>
+
+                    <div class="dashboard-empty">
+
+                        <div class="dashboard-empty-icon">
+                            🔐
+                        </div>
+
+                        <h3>
+                            Not signed in
+                        </h3>
+
+                        <p>
+                            Account information will become available
+                            after authentication is connected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- NOTICE -->
+
+        <section class="dashboard-notice">
+
+            <h2>
+                Ready to join TikTok Streamers?
+            </h2>
+
+            <p>
+                Create an account to build your profile, follow
+                streamers, watch LIVE sessions and eventually
+                participate in the platform's creator features.
+            </p>
+
+            <div class="dashboard-notice-actions">
+
+                <a
+                    href="register.html"
+                    class="primary"
+                >
+                    Create Account
+                </a>
+
+                <a
+                    href="login.html"
+                    class="secondary"
+                >
+                    Log In
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div>
+
+                <strong>TikTok Streamers</strong>
+
+                <p>
+                    A community platform for discovering and
+                    connecting with streamers.
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="index.html">Home</a>
+                <a href="live.html">Live</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="login.html">Login</a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            © <span id="currentYear"></span>
+            TikTok Streamers.
+            All rights reserved.
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       MOBILE MENU
+    ========================================= */
+
+    function toggleMobileMenu() {
+
+        const menu =
+            document.getElementById("mobileMenu");
+
+        if (!menu) return;
+
+        menu.classList.toggle("open");
+
+    }
+
+
+    /* =========================================
+       CURRENT YEAR
+    ========================================= */
+
+    const yearElement =
+        document.getElementById("currentYear");
+
+    if (yearElement) {
+
+        yearElement.textContent =
+            new Date().getFullYear();
+
+    }
+
+</script>
+
+</body>
+</html>
