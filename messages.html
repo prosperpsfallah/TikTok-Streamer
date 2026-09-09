@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messages — TikTok Streamers</title>
+
+    <meta
+        name="description"
+        content="Messages and conversations on TikTok Streamers."
+    >
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#111111">
+
+    <style>
+        /* =========================================
+           MESSAGES PAGE
+        ========================================= */
+
+        .messages-page {
+            min-height: 100vh;
+            background: #f7f8fa;
+        }
+
+        .messages-container {
+            width: min(1100px, calc(100% - 30px));
+            margin: 0 auto;
+            padding: 45px 0 70px;
+        }
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .messages-heading {
+            margin-bottom: 25px;
+        }
+
+        .messages-heading h1 {
+            margin: 0 0 8px;
+            color: #111111;
+            font-size: clamp(32px, 5vw, 45px);
+            font-weight: 900;
+        }
+
+        .messages-heading p {
+            margin: 0;
+            color: #777777;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           MESSAGES LAYOUT
+        ========================================= */
+
+        .messages-layout {
+            display: grid;
+            grid-template-columns: 330px 1fr;
+            min-height: 620px;
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 22px;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           CONVERSATIONS
+        ========================================= */
+
+        .conversation-panel {
+            border-right: 1px solid #eeeeee;
+        }
+
+        .conversation-header {
+            padding: 22px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .conversation-header h2 {
+            margin: 0 0 15px;
+            font-size: 20px;
+            color: #111111;
+        }
+
+        .message-search {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #eeeeee;
+            background: #f7f8fa;
+            border-radius: 999px;
+            padding: 11px 15px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .message-search:focus {
+            border-color: #cccccc;
+        }
+
+        .conversation-empty {
+            padding: 55px 25px;
+            text-align: center;
+        }
+
+        .conversation-empty-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: #f1f2f4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+        }
+
+        .conversation-empty h3 {
+            margin: 0 0 8px;
+            color: #111111;
+            font-size: 18px;
+        }
+
+        .conversation-empty p {
+            margin: 0;
+            color: #888888;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           CHAT AREA
+        ========================================= */
+
+        .chat-panel {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 18px 22px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #f1f2f4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .chat-header-info strong {
+            display: block;
+            color: #111111;
+            margin-bottom: 4px;
+        }
+
+        .chat-header-info span {
+            color: #999999;
+            font-size: 12px;
+        }
+
+        .chat-empty {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 25px;
+        }
+
+        .chat-empty-inner {
+            max-width: 430px;
+        }
+
+        .chat-empty-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #f1f2f4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 40px;
+        }
+
+        .chat-empty h2 {
+            margin: 0 0 10px;
+            color: #111111;
+            font-size: 25px;
+        }
+
+        .chat-empty p {
+            margin: 0;
+            color: #888888;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 17px 20px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #eeeeee;
+            background: #f7f8fa;
+            border-radius: 999px;
+            padding: 12px 16px;
+            outline: none;
+            color: #555555;
+        }
+
+        .chat-send {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            border: 0;
+            border-radius: 50%;
+            background: #eeeeee;
+            color: #999999;
+            cursor: not-allowed;
+        }
+
+        /* =========================================
+           NOTICE
+        ========================================= */
+
+        .messages-notice {
+            margin-top: 25px;
+            padding: 28px;
+            border-radius: 20px;
+            background: #111111;
+            color: #ffffff;
+        }
+
+        .messages-notice h2 {
+            margin: 0 0 8px;
+            font-size: 22px;
+        }
+
+        .messages-notice p {
+            margin: 0;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .messages-notice-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .messages-notice-actions a {
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .messages-notice-actions .primary {
+            background: #fe2c55;
+            color: #ffffff;
+        }
+
+        .messages-notice-actions .secondary {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .messages-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .conversation-panel {
+                border-right: 0;
+                border-bottom: 1px solid #eeeeee;
+            }
+
+            .conversation-empty {
+                padding: 35px 20px;
+            }
+
+            .chat-panel {
+                min-height: 500px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .messages-container {
+                width: calc(100% - 20px);
+                padding-top: 25px;
+            }
+
+            .messages-layout {
+                border-radius: 18px;
+            }
+
+            .chat-empty {
+                padding: 45px 18px;
+            }
+
+            .chat-input-area {
+                padding: 13px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="messages-page">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="site-header">
+
+        <div class="header-inner">
+
+            <a href="index.html" class="brand">
+                <span class="brand-mark">T</span>
+                <span>TikTok Streamers</span>
+            </a>
+
+            <nav class="desktop-nav">
+
+                <a href="index.html">Home</a>
+
+                <a href="live.html">Live</a>
+
+                <a href="index.html#streamers">
+                    Streamers
+                </a>
+
+                <a href="leaderboard.html">
+                    Leaderboard
+                </a>
+
+            </nav>
+
+            <div class="header-actions">
+
+                <a
+                    href="login.html"
+                    class="btn btn-secondary"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="register.html"
+                    class="btn btn-primary"
+                >
+                    Join
+                </a>
+
+                <button
+                    class="mobile-menu-button"
+                    type="button"
+                    onclick="toggleMobileMenu()"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div id="mobileMenu" class="mobile-menu">
+
+            <a href="index.html">Home</a>
+
+            <a href="live.html">Live</a>
+
+            <a href="index.html#streamers">
+                Streamers
+            </a>
+
+            <a href="leaderboard.html">
+                Leaderboard
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+            <a href="register.html">
+                Join
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="messages-container">
+
+        <div class="messages-heading">
+
+            <h1>
+                Messages
+            </h1>
+
+            <p>
+                Connect and communicate with other members
+                of the TikTok Streamers community.
+            </p>
+
+        </div>
+
+
+        <!-- =================================
+             MESSAGES APPLICATION
+        ================================== -->
+
+        <section class="messages-layout">
+
+
+            <!-- CONVERSATIONS -->
+
+            <aside class="conversation-panel">
+
+                <div class="conversation-header">
+
+                    <h2>
+                        Conversations
+                    </h2>
+
+                    <input
+                        type="search"
+                        class="message-search"
+                        placeholder="Search messages..."
+                        aria-label="Search messages"
+                        disabled
+                    >
+
+                </div>
+
+
+                <div class="conversation-empty">
+
+                    <div class="conversation-empty-icon">
+                        💬
+                    </div>
+
+                    <h3>
+                        No conversations
+                    </h3>
+
+                    <p>
+                        Your conversations will appear here
+                        after real users join the platform
+                        and start communicating.
+                    </p>
+
+                </div>
+
+            </aside>
+
+
+            <!-- CHAT -->
+
+            <div class="chat-panel">
+
+
+                <div class="chat-header">
+
+                    <div class="chat-avatar">
+                        👤
+                    </div>
+
+                    <div class="chat-header-info">
+
+                        <strong>
+                            No conversation selected
+                        </strong>
+
+                        <span>
+                            Select a real conversation to begin.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chat-empty">
+
+                    <div class="chat-empty-inner">
+
+                        <div class="chat-empty-icon">
+                            💬
+                        </div>
+
+                        <h2>
+                            No messages yet
+                        </h2>
+
+                        <p>
+                            There are no messages to display.
+                            Once real members create accounts
+                            and communicate with each other,
+                            conversations will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chat-input-area">
+
+                    <input
+                        class="chat-input"
+                        type="text"
+                        placeholder="Log in to send a message..."
+                        disabled
+                    >
+
+                    <button
+                        class="chat-send"
+                        type="button"
+                        disabled
+                        aria-label="Send message"
+                    >
+                        ➤
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             NOTICE
+        ================================== -->
+
+        <section class="messages-notice">
+
+            <h2>
+                Messaging is waiting for real users
+            </h2>
+
+            <p>
+                Nothing is preloaded into the messaging system.
+                Real conversations, users and messages will be
+                created after authentication and the database
+                are connected.
+            </p>
+
+            <div class="messages-notice-actions">
+
+                <a
+                    href="register.html"
+                    class="primary"
+                >
+                    Create Account
+                </a>
+
+                <a
+                    href="login.html"
+                    class="secondary"
+                >
+                    Log In
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div>
+
+                <strong>
+                    TikTok Streamers
+                </strong>
+
+                <p>
+                    A community platform for discovering
+                    and connecting with streamers.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="live.html">
+                    Live
+                </a>
+
+                <a href="leaderboard.html">
+                    Leaderboard
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © <span id="currentYear"></span>
+            TikTok Streamers.
+            All rights reserved.
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       MOBILE MENU
+    ========================================= */
+
+    function toggleMobileMenu() {
+
+        const menu =
+            document.getElementById("mobileMenu");
+
+        if (!menu) return;
+
+        menu.classList.toggle("open");
+
+    }
+
+
+    /* =========================================
+       CURRENT YEAR
+    ========================================= */
+
+    const yearElement =
+        document.getElementById("currentYear");
+
+    if (yearElement) {
+
+        yearElement.textContent =
+            new Date().getFullYear();
+
+    }
+
+</script>
+
+</body>
+</html>
