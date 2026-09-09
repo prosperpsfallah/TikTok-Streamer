@@ -3,760 +3,1069 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Settings — TikTok Streamers</title>
-    <meta
-        name="description"
-        content="Manage your TikTok Streamers account settings."
-    >
+
+    <meta name="description" content="Manage your TikTok Streamers account settings">
+
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#111111">
+
     <style>
-        /* =========================================
-           SETTINGS PAGE
-        ========================================= */
         .settings-page {
-            min-height: 100vh;
-            background: #f7f8fa;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 35px 20px 70px;
         }
-        .settings-hero {
-            background:
-                radial-gradient(
-                    circle at 15% 25%,
-                    rgba(254, 44, 85, 0.30),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at 85% 25%,
-                    rgba(37, 244, 238, 0.22),
-                    transparent 35%
-                ),
-                #111111;
-            color: #ffffff;
-            padding: 75px 20px 100px;
+
+        .settings-heading {
+            margin-bottom: 25px;
         }
-        .settings-hero-inner {
-            width: min(1000px, 100%);
-            margin: auto;
+
+        .settings-heading h1 {
+            font-size: 32px;
+            margin-bottom: 7px;
         }
-        .settings-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 35px;
+
+        .settings-heading p {
+            color: #777;
         }
-        .settings-back:hover {
-            color: #ffffff;
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
-        .settings-hero h1 {
-            margin: 0 0 12px;
-            font-size: clamp(36px, 6vw, 58px);
-            font-weight: 900;
-        }
-        .settings-hero p {
-            max-width: 650px;
-            margin: 0;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.7;
-            font-size: 16px;
-        }
-        /* =========================================
-           MAIN SETTINGS
-        ========================================= */
-        .settings-container {
-            width: min(1000px, calc(100% - 30px));
-            margin: -55px auto 70px;
-            position: relative;
-        }
+
         .settings-card {
-            background: #ffffff;
+            background: #fff;
             border-radius: 20px;
-            border: 1px solid #eeeeee;
-            overflow: hidden;
-            margin-bottom: 20px;
+            padding: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
         }
-        .settings-card-header {
-            padding: 24px 25px;
-            border-bottom: 1px solid #eeeeee;
+
+        .settings-card.full {
+            grid-column: 1 / -1;
         }
-        .settings-card-header h2 {
-            margin: 0 0 6px;
-            font-size: 20px;
-            color: #111111;
+
+        .settings-card h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
         }
-        .settings-card-header p {
-            margin: 0;
-            color: #777777;
+
+        .settings-description {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 11px;
+            outline: none;
+            font-size: 15px;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #25f4ee;
+            box-shadow: 0 0 0 3px rgba(37,244,238,0.12);
+        }
+
+        .form-group input:disabled,
+        .form-group select:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .settings-button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .save-button {
+            background: #111;
+            color: white;
+        }
+
+        .password-button {
+            background: linear-gradient(
+                135deg,
+                #25f4ee,
+                #fe2c55
+            );
+            color: white;
+        }
+
+        .logout-button {
+            background: #fe2c55;
+            color: white;
+        }
+
+        .disabled-button {
+            background: #eee;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 14px;
+            border-radius: 10px;
             font-size: 14px;
             line-height: 1.5;
         }
-        /* =========================================
-           ACCOUNT STATUS
-        ========================================= */
-        .account-status {
-            margin: 25px;
-            padding: 22px;
-            border-radius: 16px;
-            background: #f7f8fa;
+
+        .status-success {
+            background: #e9fff7;
+            color: #087f5b;
+        }
+
+        .status-error {
+            background: #fff0f2;
+            color: #c9184a;
+        }
+
+        .account-row {
             display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-        .account-status-icon {
-            width: 52px;
-            height: 52px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: #e9eaec;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        .account-status-content {
-            flex: 1;
-        }
-        .account-status-content strong {
-            display: block;
-            color: #111111;
-            margin-bottom: 5px;
-        }
-        .account-status-content span {
-            color: #777777;
-            font-size: 13px;
-        }
-        .status-badge {
-            padding: 7px 12px;
-            border-radius: 999px;
-            background: #eeeeee;
-            color: #666666;
-            font-size: 12px;
-            font-weight: 800;
-        }
-        /* =========================================
-           SETTING ROWS
-        ========================================= */
-        .settings-list {
-            display: flex;
-            flex-direction: column;
-        }
-        .settings-row {
-            display: flex;
-            align-items: center;
             justify-content: space-between;
             gap: 20px;
-            padding: 21px 25px;
-            border-bottom: 1px solid #eeeeee;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
         }
-        .settings-row:last-child {
-            border-bottom: 0;
+
+        .account-row:last-child {
+            border-bottom: none;
         }
-        .settings-row-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .settings-row-icon {
-            width: 44px;
-            height: 44px;
-            flex-shrink: 0;
-            border-radius: 12px;
-            background: #f1f2f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        .settings-row-info strong {
-            display: block;
-            color: #111111;
-            margin-bottom: 4px;
-            font-size: 15px;
-        }
-        .settings-row-info span {
-            display: block;
-            color: #888888;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        .settings-action {
-            flex-shrink: 0;
-            border: 0;
-            background: #111111;
-            color: #ffffff;
-            padding: 9px 16px;
-            border-radius: 999px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .settings-action:hover {
-            opacity: 0.9;
-        }
-        .settings-action.disabled {
-            background: #eeeeee;
-            color: #999999;
-            cursor: not-allowed;
-        }
-        /* =========================================
-           TOGGLE
-        ========================================= */
-        .toggle {
-            width: 48px;
-            height: 27px;
-            border-radius: 999px;
-            background: #dddddd;
-            position: relative;
-            cursor: pointer;
-            border: 0;
-            flex-shrink: 0;
-        }
-        .toggle::after {
-            content: "";
-            position: absolute;
-            width: 21px;
-            height: 21px;
-            border-radius: 50%;
-            background: #ffffff;
-            top: 3px;
-            left: 3px;
-            transition: 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-        }
-        .toggle.active {
-            background: #111111;
-        }
-        .toggle.active::after {
-            transform: translateX(21px);
-        }
-        /* =========================================
-           LOGIN NOTICE
-        ========================================= */
-        .login-notice {
-            background: #111111;
-            color: #ffffff;
-            border-radius: 20px;
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-        .login-notice h2 {
-            margin: 0 0 8px;
-            font-size: 22px;
-        }
-        .login-notice p {
-            margin: 0;
-            color: rgba(255,255,255,0.65);
+
+        .account-label {
+            color: #777;
             font-size: 14px;
+        }
+
+        .account-value {
+            font-weight: 700;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .danger-zone {
+            border: 1px solid rgba(254,44,85,0.25);
+            background: rgba(254,44,85,0.03);
+        }
+
+        .danger-zone h2 {
+            color: #fe2c55;
+        }
+
+        .login-required {
+            max-width: 600px;
+            margin: 70px auto;
+            text-align: center;
+            background: #fff;
+            padding: 45px 25px;
+            border-radius: 24px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+        }
+
+        .login-required-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .login-required h1 {
+            margin-bottom: 10px;
+        }
+
+        .login-required p {
+            color: #777;
             line-height: 1.6;
+            margin-bottom: 25px;
         }
-        .login-notice a {
-            flex-shrink: 0;
-            background: #fe2c55;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 999px;
-            font-weight: 800;
+
+        .login-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
-        /* =========================================
-           DANGER AREA
-        ========================================= */
-        .danger-card {
-            border: 1px solid #ffd6de;
+
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            color: #777;
         }
-        .danger-card .settings-card-header h2 {
-            color: #d81b45;
+
+        .hidden {
+            display: none !important;
         }
-        /* =========================================
-           MOBILE
-        ========================================= */
-        @media (max-width: 700px) {
-            .settings-row {
-                align-items: flex-start;
+
+        @media (max-width: 750px) {
+
+            .settings-grid {
+                grid-template-columns: 1fr;
             }
-            .settings-row-info {
-                align-items: flex-start;
+
+            .settings-card.full {
+                grid-column: auto;
             }
-            .settings-action {
-                margin-top: 3px;
-            }
-            .login-notice {
-                flex-direction: column;
-                align-items: flex-start;
+
+            .settings-heading h1 {
+                font-size: 27px;
             }
         }
+
         @media (max-width: 500px) {
-            .settings-hero {
-                padding: 60px 18px 90px;
+
+            .settings-page {
+                padding: 22px 14px 50px;
             }
-            .settings-container {
-                width: calc(100% - 20px);
+
+            .settings-card {
+                padding: 20px;
             }
-            .account-status {
-                margin: 18px;
-                align-items: flex-start;
+
+            .account-row {
+                flex-direction: column;
+                gap: 5px;
             }
-            .account-status .status-badge {
-                display: none;
-            }
-            .settings-row {
-                padding: 18px;
-                gap: 12px;
-            }
-            .settings-row-icon {
-                width: 40px;
-                height: 40px;
-            }
-            .settings-row-info span {
-                font-size: 12px;
-            }
-            .settings-action {
-                padding: 8px 13px;
-                font-size: 12px;
+
+            .account-value {
+                text-align: left;
             }
         }
     </style>
 </head>
+
 <body>
-<div class="settings-page">
-    <!-- =====================================
-         HEADER
-    ====================================== -->
-    <header class="site-header">
-        <div class="header-inner">
-            <a href="index.html" class="brand">
-                <span class="brand-mark">T</span>
-                <span>TikTok Streamers</span>
-            </a>
-            <nav class="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="live.html">Live</a>
-                <a href="index.html#streamers">Streamers</a>
-                <a href="leaderboard.html">Leaderboard</a>
-            </nav>
-            <div class="header-actions">
-                <a href="login.html" class="btn btn-secondary">
-                    Login
-                </a>
-                <a href="register.html" class="btn btn-primary">
-                    Join
-                </a>
-                <button
-                    class="mobile-menu-button"
-                    type="button"
-                    onclick="toggleMobileMenu()"
-                    aria-label="Open menu"
-                >
-                    ☰
-                </button>
-            </div>
-        </div>
-        <div id="mobileMenu" class="mobile-menu">
+
+<header class="header">
+
+    <div class="container">
+
+        <a href="index.html" class="logo">
+            TikTok <span>Streamers</span>
+        </a>
+
+        <nav class="nav">
+
             <a href="index.html">Home</a>
             <a href="live.html">Live</a>
             <a href="index.html#streamers">Streamers</a>
             <a href="leaderboard.html">Leaderboard</a>
-            <a href="login.html">Login</a>
-            <a href="register.html">Join</a>
-        </div>
-    </header>
-    <!-- =====================================
-         SETTINGS HERO
-    ====================================== -->
-    <section class="settings-hero">
-        <div class="settings-hero-inner">
-            <a href="index.html" class="settings-back">
-                ← Back to Home
+
+        </nav>
+
+        <div class="header-actions">
+
+            <a href="profile.html" class="btn btn-secondary">
+                Profile
             </a>
-            <h1>Settings</h1>
-            <p>
-                Manage your account, security, notifications and
-                privacy preferences. Account controls will become
-                active after the authentication system is connected.
-            </p>
+
+            <button id="topLogout"
+                    class="btn btn-primary">
+                Logout
+            </button>
+
         </div>
+
+    </div>
+
+</header>
+
+
+<main class="settings-page">
+
+    <div id="loading"
+         class="loading">
+
+        <h2>Loading account settings...</h2>
+
+        <p>Please wait.</p>
+
+    </div>
+
+
+    <section id="loginRequired"
+             class="login-required hidden">
+
+        <div class="login-required-icon">
+            🔐
+        </div>
+
+        <h1>Login Required</h1>
+
+        <p>
+            You need to log in before you can manage
+            your TikTok Streamers account.
+        </p>
+
+        <div class="login-actions">
+
+            <a href="login.html"
+               class="settings-button save-button"
+               style="text-decoration:none;">
+                Login
+            </a>
+
+            <a href="register.html"
+               class="settings-button"
+               style="
+                    text-decoration:none;
+                    background:#eee;
+                    color:#111;
+               ">
+                Create Account
+            </a>
+
+        </div>
+
     </section>
-    <!-- =====================================
-         SETTINGS CONTENT
-    ====================================== -->
-    <main class="settings-container">
-        <!-- ACCOUNT STATUS -->
-        <section class="settings-card">
-            <div class="settings-card-header">
+
+
+    <section id="settingsContent"
+             class="hidden">
+
+        <div class="settings-heading">
+
+            <h1>Account Settings</h1>
+
+            <p>
+                Manage your TikTok Streamers account.
+            </p>
+
+        </div>
+
+
+        <div class="settings-grid">
+
+
+            <!-- PROFILE SETTINGS -->
+
+            <div class="settings-card full">
+
+                <h2>Profile Information</h2>
+
+                <p class="settings-description">
+                    Update the information displayed on your
+                    TikTok Streamers profile.
+                </p>
+
+
+                <form id="profileForm">
+
+                    <div class="form-group">
+
+                        <label for="fullName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="settings-button save-button">
+
+                        Save Profile
+
+                    </button>
+
+
+                    <div
+                        id="profileStatus"
+                        class="status-message">
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- ACCOUNT INFORMATION -->
+
+            <div class="settings-card">
+
                 <h2>Account</h2>
-                <p>
-                    Your current TikTok Streamers account.
+
+                <p class="settings-description">
+                    Your account information.
                 </p>
-            </div>
-            <div class="account-status">
-                <div class="account-status-icon">
-                    👤
-                </div>
-                <div class="account-status-content">
-                    <strong>
-                        No account connected
-                    </strong>
-                    <span>
-                        Log in to manage your account settings.
+
+
+                <div class="account-row">
+
+                    <span class="account-label">
+                        Email
                     </span>
+
+                    <span id="email"
+                          class="account-value">
+                        —
+                    </span>
+
                 </div>
-                <div class="status-badge">
-                    NOT CONNECTED
+
+
+                <div class="account-row">
+
+                    <span class="account-label">
+                        Account Type
+                    </span>
+
+                    <span id="accountType"
+                          class="account-value">
+                        —
+                    </span>
+
                 </div>
+
+
+                <div class="account-row">
+
+                    <span class="account-label">
+                        Member Since
+                    </span>
+
+                    <span id="joinedDate"
+                          class="account-value">
+                        —
+                    </span>
+
+                </div>
+
             </div>
-        </section>
-        <!-- PROFILE SETTINGS -->
-        <section class="settings-card">
-            <div class="settings-card-header">
-                <h2>Profile</h2>
-                <p>
-                    Manage information displayed on your public profile.
-                </p>
-            </div>
-            <div class="settings-list">
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            👤
-                        </div>
-                        <div>
-                            <strong>Profile Information</strong>
-                            <span>
-                                Name, username, profile photo and bio.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="settings-action disabled"
-                        type="button"
-                        disabled
-                    >
-                        Edit
-                    </button>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            🔗
-                        </div>
-                        <div>
-                            <strong>Connected Accounts</strong>
-                            <span>
-                                Manage accounts connected to your profile.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="settings-action disabled"
-                        type="button"
-                        disabled
-                    >
-                        Manage
-                    </button>
-                </div>
-            </div>
-        </section>
-        <!-- SECURITY -->
-        <section class="settings-card">
-            <div class="settings-card-header">
+
+
+            <!-- PASSWORD -->
+
+            <div class="settings-card">
+
                 <h2>Security</h2>
-                <p>
-                    Protect your account and control login security.
+
+                <p class="settings-description">
+                    Keep your account secure by using a strong
+                    password.
                 </p>
-            </div>
-            <div class="settings-list">
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            🔐
-                        </div>
-                        <div>
-                            <strong>Password</strong>
-                            <span>
-                                Change your account password.
-                            </span>
-                        </div>
+
+
+                <form id="passwordForm">
+
+                    <div class="form-group">
+
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Enter new password"
+                            minlength="6"
+                            required
+                        >
+
                     </div>
+
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm new password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
                     <button
-                        class="settings-action disabled"
-                        type="button"
-                        disabled
-                    >
-                        Change
+                        type="submit"
+                        class="settings-button password-button">
+
+                        Change Password
+
                     </button>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            🛡️
-                        </div>
-                        <div>
-                            <strong>Two-Factor Authentication</strong>
-                            <span>
-                                Add another layer of protection to your account.
-                            </span>
-                        </div>
+
+
+                    <div
+                        id="passwordStatus"
+                        class="status-message">
                     </div>
-                    <button
-                        class="settings-action disabled"
-                        type="button"
-                        disabled
-                    >
-                        Set Up
-                    </button>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            📱
-                        </div>
-                        <div>
-                            <strong>Login Sessions</strong>
-                            <span>
-                                Review devices currently signed in.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="settings-action disabled"
-                        type="button"
-                        disabled
-                    >
-                        View
-                    </button>
-                </div>
+
+                </form>
+
             </div>
-        </section>
-        <!-- NOTIFICATIONS -->
-        <section class="settings-card">
-            <div class="settings-card-header">
-                <h2>Notifications</h2>
-                <p>
-                    Choose how the platform will notify you.
+
+
+            <!-- LOGOUT -->
+
+            <div class="settings-card">
+
+                <h2>Session</h2>
+
+                <p class="settings-description">
+                    Sign out of your current TikTok Streamers
+                    session on this device.
                 </p>
-            </div>
-            <div class="settings-list">
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            🔔
-                        </div>
-                        <div>
-                            <strong>Push Notifications</strong>
-                            <span>
-                                Receive notifications on supported devices.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="toggle"
-                        type="button"
-                        aria-label="Toggle push notifications"
-                        data-toggle="push"
-                    ></button>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            💬
-                        </div>
-                        <div>
-                            <strong>Messages</strong>
-                            <span>
-                                Notifications for new messages.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="toggle"
-                        type="button"
-                        aria-label="Toggle message notifications"
-                        data-toggle="messages"
-                    ></button>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            🔴
-                        </div>
-                        <div>
-                            <strong>LIVE Notifications</strong>
-                            <span>
-                                Notifications when followed streamers go LIVE.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="toggle"
-                        type="button"
-                        aria-label="Toggle LIVE notifications"
-                        data-toggle="live"
-                    ></button>
-                </div>
-            </div>
-        </section>
-        <!-- PRIVACY -->
-        <section class="settings-card">
-            <div class="settings-card-header">
-                <h2>Privacy</h2>
-                <p>
-                    Control how your account and activity will be displayed.
-                </p>
-            </div>
-            <div class="settings-list">
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            🔒
-                        </div>
-                        <div>
-                            <strong>Private Account</strong>
-                            <span>
-                                Control whether your profile is public.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="toggle"
-                        type="button"
-                        aria-label="Toggle private account"
-                        data-toggle="private"
-                    ></button>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-row-info">
-                        <div class="settings-row-icon">
-                            👁️
-                        </div>
-                        <div>
-                            <strong>Activity Visibility</strong>
-                            <span>
-                                Control visibility of your platform activity.
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        class="settings-action disabled"
-                        type="button"
-                        disabled
-                    >
-                        Manage
-                    </button>
-                </div>
-            </div>
-        </section>
-        <!-- LOGIN NOTICE -->
-        <section class="login-notice">
-            <div>
-                <h2>
-                    No account connected
-                </h2>
-                <p>
-                    Create an account or log in to unlock your
-                    profile and account settings.
-                </p>
-            </div>
-            <a href="login.html">
-                Log In
-            </a>
-        </section>
-        <!-- DANGER AREA -->
-        <section class="settings-card danger-card">
-            <div class="settings-card-header">
-                <h2>Account Actions</h2>
-                <p>
-                    Account deletion and other permanent actions
-                    will only become available when an authenticated
-                    account exists.
-                </p>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="settings-row-icon">
-                        ⚠️
-                    </div>
-                    <div>
-                        <strong>Delete Account</strong>
-                        <span>
-                            Permanently delete your account and its data.
-                        </span>
-                    </div>
-                </div>
+
                 <button
-                    class="settings-action disabled"
-                    type="button"
-                    disabled
-                >
-                    Delete
+                    id="logoutButton"
+                    class="settings-button logout-button">
+
+                    Log Out
+
                 </button>
+
             </div>
-        </section>
-    </main>
-    <!-- =====================================
-         FOOTER
-    ====================================== -->
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <div>
-                <strong>TikTok Streamers</strong>
-                <p>
-                    A community platform for discovering and
-                    connecting with streamers.
+
+
+            <!-- DELETE ACCOUNT -->
+
+            <div class="settings-card danger-zone">
+
+                <h2>Danger Zone</h2>
+
+                <p class="settings-description">
+                    Account deletion will be enabled after the
+                    secure backend account-deletion system is
+                    implemented.
                 </p>
+
+                <button
+                    class="settings-button disabled-button"
+                    disabled>
+
+                    Delete Account
+
+                </button>
+
             </div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="live.html">Live</a>
-                <a href="leaderboard.html">Leaderboard</a>
-                <a href="login.html">Login</a>
-            </div>
+
         </div>
-        <div class="footer-bottom">
-            © <span id="currentYear"></span>
-            TikTok Streamers.
-            All rights reserved.
-        </div>
-    </footer>
-</div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            TikTok Streamers © 2026
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-    /* =========================================
-       MOBILE MENU
-    ========================================= */
-    function toggleMobileMenu() {
-        const menu =
-            document.getElementById("mobileMenu");
-        if (!menu) return;
-        menu.classList.toggle("open");
+
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+
+
+let currentUser = null;
+
+
+/* ELEMENTS */
+
+const loading =
+    document.getElementById("loading");
+
+const loginRequired =
+    document.getElementById("loginRequired");
+
+const settingsContent =
+    document.getElementById("settingsContent");
+
+
+/* STATUS MESSAGE */
+
+function showStatus(elementId, message, success) {
+
+    const element =
+        document.getElementById(elementId);
+
+    element.textContent = message;
+
+    element.className =
+        "status-message " +
+        (success
+            ? "status-success"
+            : "status-error");
+
+    element.style.display = "block";
+}
+
+
+/* LOAD ACCOUNT */
+
+async function loadAccount() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data.session) {
+
+            loading.style.display = "none";
+
+            loginRequired.classList.remove("hidden");
+
+            return;
+        }
+
+
+        currentUser =
+            data.session.user;
+
+
+        const {
+            data: profile,
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, username, account_type, created_at"
+            )
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+
+        if (profileError) {
+            throw profileError;
+        }
+
+
+        if (!profile) {
+
+            throw new Error(
+                "Your profile record was not found."
+            );
+        }
+
+
+        document.getElementById("fullName")
+            .value =
+                profile.full_name || "";
+
+
+        document.getElementById("username")
+            .value =
+                profile.username || "";
+
+
+        document.getElementById("email")
+            .textContent =
+                currentUser.email || "No email";
+
+
+        document.getElementById("accountType")
+            .textContent =
+                profile.account_type || "viewer";
+
+
+        if (profile.created_at) {
+
+            document.getElementById("joinedDate")
+                .textContent =
+                    new Date(
+                        profile.created_at
+                    ).toLocaleDateString(
+                        undefined,
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        }
+                    );
+        }
+
+
+        loading.style.display = "none";
+
+        settingsContent.classList.remove("hidden");
+
+
+    } catch (error) {
+
+        console.error(
+            "Settings error:",
+            error
+        );
+
+        loading.innerHTML = `
+            <h2>Unable to load settings</h2>
+            <p style="margin-top:10px;">
+                ${error.message || "Something went wrong."}
+            </p>
+        `;
     }
-    /* =========================================
-       SETTINGS TOGGLES
-       
-       These are only visual for now.
-       They are NOT saved to an account.
-    ========================================= */
-    const toggles =
-        document.querySelectorAll(".toggle");
-    toggles.forEach(function(toggle) {
-        toggle.addEventListener("click", function() {
-            toggle.classList.toggle("active");
-        });
-    });
-    /* =========================================
-       CURRENT YEAR
-    ========================================= */
-    const yearElement =
-        document.getElementById("currentYear");
-    if (yearElement) {
-        yearElement.textContent =
-            new Date().getFullYear();
+}
+
+
+/* SAVE PROFILE */
+
+document.getElementById("profileForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const fullName =
+                document.getElementById("fullName")
+                    .value
+                    .trim();
+
+
+            const username =
+                document.getElementById("username")
+                    .value
+                    .trim()
+                    .toLowerCase()
+                    .replace(/^@/, "");
+
+
+            if (!fullName || !username) {
+
+                showStatus(
+                    "profileStatus",
+                    "Full name and username are required.",
+                    false
+                );
+
+                return;
+            }
+
+
+            if (username.length < 3) {
+
+                showStatus(
+                    "profileStatus",
+                    "Username must be at least 3 characters.",
+                    false
+                );
+
+                return;
+            }
+
+
+            try {
+
+                /*
+                 * Check whether another profile already
+                 * uses this username.
+                 */
+
+                const {
+                    data: existing,
+                    error: checkError
+                } = await supabaseClient
+                    .from("profiles")
+                    .select("id")
+                    .eq("username", username)
+                    .neq("id", currentUser.id)
+                    .maybeSingle();
+
+
+                if (checkError) {
+                    throw checkError;
+                }
+
+
+                if (existing) {
+
+                    showStatus(
+                        "profileStatus",
+                        "That username is already taken.",
+                        false
+                    );
+
+                    return;
+                }
+
+
+                const {
+                    error
+                } = await supabaseClient
+                    .from("profiles")
+                    .update({
+                        full_name: fullName,
+                        username: username,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq("id", currentUser.id);
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                showStatus(
+                    "profileStatus",
+                    "Profile updated successfully.",
+                    true
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Profile update error:",
+                    error
+                );
+
+
+                showStatus(
+                    "profileStatus",
+                    error.message ||
+                    "Unable to update profile.",
+                    false
+                );
+            }
+        }
+    );
+
+
+/* CHANGE PASSWORD */
+
+document.getElementById("passwordForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const newPassword =
+                document.getElementById("newPassword")
+                    .value;
+
+
+            const confirmPassword =
+                document.getElementById("confirmPassword")
+                    .value;
+
+
+            if (newPassword.length < 6) {
+
+                showStatus(
+                    "passwordStatus",
+                    "Password must be at least 6 characters.",
+                    false
+                );
+
+                return;
+            }
+
+
+            if (newPassword !== confirmPassword) {
+
+                showStatus(
+                    "passwordStatus",
+                    "Passwords do not match.",
+                    false
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const {
+                    error
+                } = await supabaseClient.auth
+                    .updateUser({
+                        password: newPassword
+                    });
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                document.getElementById("passwordForm")
+                    .reset();
+
+
+                showStatus(
+                    "passwordStatus",
+                    "Password changed successfully.",
+                    true
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Password update error:",
+                    error
+                );
+
+
+                showStatus(
+                    "passwordStatus",
+                    error.message ||
+                    "Unable to change password.",
+                    false
+                );
+            }
+        }
+    );
+
+
+/* LOGOUT */
+
+async function logout() {
+
+    const {
+        error
+    } = await supabaseClient.auth.signOut();
+
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
     }
+
+
+    window.location.href =
+        "login.html";
+}
+
+
+document.getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+document.getElementById("topLogout")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+/* AUTH STATE */
+
+supabaseClient.auth.onAuthStateChange(
+    (event) => {
+
+        if (event === "SIGNED_OUT") {
+
+            window.location.href =
+                "login.html";
+        }
+
+    }
+);
+
+
+/* START */
+
+loadAccount();
+
 </script>
+
 </body>
 </html>
