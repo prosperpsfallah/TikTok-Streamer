@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings — TikTok Streamers</title>
+
+    <meta name="description" content="Manage your TikTok Streamers account settings">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        .settings-page {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 35px 20px 70px;
+        }
+
+        .settings-heading {
+            margin-bottom: 25px;
+        }
+
+        .settings-heading h1 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .settings-heading p {
+            color: #777;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .settings-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+        .settings-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .settings-card h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .settings-description {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 11px;
+            outline: none;
+            font-size: 15px;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #25f4ee;
+            box-shadow: 0 0 0 3px rgba(37,244,238,0.12);
+        }
+
+        .form-group input:disabled,
+        .form-group select:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .settings-button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .save-button {
+            background: #111;
+            color: white;
+        }
+
+        .password-button {
+            background: linear-gradient(
+                135deg,
+                #25f4ee,
+                #fe2c55
+            );
+            color: white;
+        }
+
+        .logout-button {
+            background: #fe2c55;
+            color: white;
+        }
+
+        .disabled-button {
+            background: #eee;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .status-success {
+            background: #e9fff7;
+            color: #087f5b;
+        }
+
+        .status-error {
+            background: #fff0f2;
+            color: #c9184a;
+        }
+
+        .account-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .account-row:last-child {
+            border-bottom: none;
+        }
+
+        .account-label {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .account-value {
+            font-weight: 700;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .danger-zone {
+            border: 1px solid rgba(254,44,85,0.25);
+            background: rgba(254,44,85,0.03);
+        }
+
+        .danger-zone h2 {
+            color: #fe2c55;
+        }
+
+        .login-required {
+            max-width: 600px;
+            margin: 70px auto;
+            text-align: center;
+            background: #fff;
+            padding: 45px 25px;
+            border-radius: 24px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+        }
+
+        .login-required-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .login-required h1 {
+            margin-bottom: 10px;
+        }
+
+        .login-required p {
+            color: #777;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .login-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            color: #777;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 750px) {
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-card.full {
+                grid-column: auto;
+            }
+
+            .settings-heading h1 {
+                font-size: 27px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .settings-page {
+                padding: 22px 14px 50px;
+            }
+
+            .settings-card {
+                padding: 20px;
+            }
+
+            .account-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .account-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container">
+
+        <a href="index.html" class="logo">
+            TikTok <span>Streamers</span>
+        </a>
+
+        <nav class="nav">
+
+            <a href="index.html">Home</a>
+            <a href="live.html">Live</a>
+            <a href="index.html#streamers">Streamers</a>
+            <a href="leaderboard.html">Leaderboard</a>
+
+        </nav>
+
+        <div class="header-actions">
+
+            <a href="profile.html" class="btn btn-secondary">
+                Profile
+            </a>
+
+            <button id="topLogout"
+                    class="btn btn-primary">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="settings-page">
+
+    <div id="loading"
+         class="loading">
+
+        <h2>Loading account settings...</h2>
+
+        <p>Please wait.</p>
+
+    </div>
+
+
+    <section id="loginRequired"
+             class="login-required hidden">
+
+        <div class="login-required-icon">
+            🔐
+        </div>
+
+        <h1>Login Required</h1>
+
+        <p>
+            You need to log in before you can manage
+            your TikTok Streamers account.
+        </p>
+
+        <div class="login-actions">
+
+            <a href="login.html"
+               class="settings-button save-button"
+               style="text-decoration:none;">
+                Login
+            </a>
+
+            <a href="register.html"
+               class="settings-button"
+               style="
+                    text-decoration:none;
+                    background:#eee;
+                    color:#111;
+               ">
+                Create Account
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section id="settingsContent"
+             class="hidden">
+
+        <div class="settings-heading">
+
+            <h1>Account Settings</h1>
+
+            <p>
+                Manage your TikTok Streamers account.
+            </p>
+
+        </div>
+
+
+        <div class="settings-grid">
+
+
+            <!-- PROFILE SETTINGS -->
+
+            <div class="settings-card full">
+
+                <h2>Profile Information</h2>
+
+                <p class="settings-description">
+                    Update the information displayed on your
+                    TikTok Streamers profile.
+                </p>
+
+
+                <form id="profileForm">
+
+                    <div class="form-group">
+
+                        <label for="fullName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="settings-button save-button">
+
+                        Save Profile
+
+                    </button>
+
+
+                    <div
+                        id="profileStatus"
+                        class="status-message">
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- ACCOUNT INFORMATION -->
+
+            <div class="settings-card">
+
+                <h2>Account</h2>
+
+                <p class="settings-description">
+                    Your account information.
+                </p>
+
+
+                <div class="account-row">
+
+                    <span class="account-label">
+                        Email
+                    </span>
+
+                    <span id="email"
+                          class="account-value">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="account-row">
+
+                    <span class="account-label">
+                        Account Type
+                    </span>
+
+                    <span id="accountType"
+                          class="account-value">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="account-row">
+
+                    <span class="account-label">
+                        Member Since
+                    </span>
+
+                    <span id="joinedDate"
+                          class="account-value">
+                        —
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="settings-card">
+
+                <h2>Security</h2>
+
+                <p class="settings-description">
+                    Keep your account secure by using a strong
+                    password.
+                </p>
+
+
+                <form id="passwordForm">
+
+                    <div class="form-group">
+
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Enter new password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm new password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="settings-button password-button">
+
+                        Change Password
+
+                    </button>
+
+
+                    <div
+                        id="passwordStatus"
+                        class="status-message">
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- LOGOUT -->
+
+            <div class="settings-card">
+
+                <h2>Session</h2>
+
+                <p class="settings-description">
+                    Sign out of your current TikTok Streamers
+                    session on this device.
+                </p>
+
+                <button
+                    id="logoutButton"
+                    class="settings-button logout-button">
+
+                    Log Out
+
+                </button>
+
+            </div>
+
+
+            <!-- DELETE ACCOUNT -->
+
+            <div class="settings-card danger-zone">
+
+                <h2>Danger Zone</h2>
+
+                <p class="settings-description">
+                    Account deletion will be enabled after the
+                    secure backend account-deletion system is
+                    implemented.
+                </p>
+
+                <button
+                    class="settings-button disabled-button"
+                    disabled>
+
+                    Delete Account
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            TikTok Streamers © 2026
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+
+
+let currentUser = null;
+
+
+/* ELEMENTS */
+
+const loading =
+    document.getElementById("loading");
+
+const loginRequired =
+    document.getElementById("loginRequired");
+
+const settingsContent =
+    document.getElementById("settingsContent");
+
+
+/* STATUS MESSAGE */
+
+function showStatus(elementId, message, success) {
+
+    const element =
+        document.getElementById(elementId);
+
+    element.textContent = message;
+
+    element.className =
+        "status-message " +
+        (success
+            ? "status-success"
+            : "status-error");
+
+    element.style.display = "block";
+}
+
+
+/* LOAD ACCOUNT */
+
+async function loadAccount() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data.session) {
+
+            loading.style.display = "none";
+
+            loginRequired.classList.remove("hidden");
+
+            return;
+        }
+
+
+        currentUser =
+            data.session.user;
+
+
+        const {
+            data: profile,
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, username, account_type, created_at"
+            )
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+
+        if (profileError) {
+            throw profileError;
+        }
+
+
+        if (!profile) {
+
+            throw new Error(
+                "Your profile record was not found."
+            );
+        }
+
+
+        document.getElementById("fullName")
+            .value =
+                profile.full_name || "";
+
+
+        document.getElementById("username")
+            .value =
+                profile.username || "";
+
+
+        document.getElementById("email")
+            .textContent =
+                currentUser.email || "No email";
+
+
+        document.getElementById("accountType")
+            .textContent =
+                profile.account_type || "viewer";
+
+
+        if (profile.created_at) {
+
+            document.getElementById("joinedDate")
+                .textContent =
+                    new Date(
+                        profile.created_at
+                    ).toLocaleDateString(
+                        undefined,
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        }
+                    );
+        }
+
+
+        loading.style.display = "none";
+
+        settingsContent.classList.remove("hidden");
+
+
+    } catch (error) {
+
+        console.error(
+            "Settings error:",
+            error
+        );
+
+        loading.innerHTML = `
+            <h2>Unable to load settings</h2>
+            <p style="margin-top:10px;">
+                ${error.message || "Something went wrong."}
+            </p>
+        `;
+    }
+}
+
+
+/* SAVE PROFILE */
+
+document.getElementById("profileForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const fullName =
+                document.getElementById("fullName")
+                    .value
+                    .trim();
+
+
+            const username =
+                document.getElementById("username")
+                    .value
+                    .trim()
+                    .toLowerCase()
+                    .replace(/^@/, "");
+
+
+            if (!fullName || !username) {
+
+                showStatus(
+                    "profileStatus",
+                    "Full name and username are required.",
+                    false
+                );
+
+                return;
+            }
+
+
+            if (username.length < 3) {
+
+                showStatus(
+                    "profileStatus",
+                    "Username must be at least 3 characters.",
+                    false
+                );
+
+                return;
+            }
+
+
+            try {
+
+                /*
+                 * Check whether another profile already
+                 * uses this username.
+                 */
+
+                const {
+                    data: existing,
+                    error: checkError
+                } = await supabaseClient
+                    .from("profiles")
+                    .select("id")
+                    .eq("username", username)
+                    .neq("id", currentUser.id)
+                    .maybeSingle();
+
+
+                if (checkError) {
+                    throw checkError;
+                }
+
+
+                if (existing) {
+
+                    showStatus(
+                        "profileStatus",
+                        "That username is already taken.",
+                        false
+                    );
+
+                    return;
+                }
+
+
+                const {
+                    error
+                } = await supabaseClient
+                    .from("profiles")
+                    .update({
+                        full_name: fullName,
+                        username: username,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq("id", currentUser.id);
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                showStatus(
+                    "profileStatus",
+                    "Profile updated successfully.",
+                    true
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Profile update error:",
+                    error
+                );
+
+
+                showStatus(
+                    "profileStatus",
+                    error.message ||
+                    "Unable to update profile.",
+                    false
+                );
+            }
+        }
+    );
+
+
+/* CHANGE PASSWORD */
+
+document.getElementById("passwordForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const newPassword =
+                document.getElementById("newPassword")
+                    .value;
+
+
+            const confirmPassword =
+                document.getElementById("confirmPassword")
+                    .value;
+
+
+            if (newPassword.length < 6) {
+
+                showStatus(
+                    "passwordStatus",
+                    "Password must be at least 6 characters.",
+                    false
+                );
+
+                return;
+            }
+
+
+            if (newPassword !== confirmPassword) {
+
+                showStatus(
+                    "passwordStatus",
+                    "Passwords do not match.",
+                    false
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const {
+                    error
+                } = await supabaseClient.auth
+                    .updateUser({
+                        password: newPassword
+                    });
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                document.getElementById("passwordForm")
+                    .reset();
+
+
+                showStatus(
+                    "passwordStatus",
+                    "Password changed successfully.",
+                    true
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Password update error:",
+                    error
+                );
+
+
+                showStatus(
+                    "passwordStatus",
+                    error.message ||
+                    "Unable to change password.",
+                    false
+                );
+            }
+        }
+    );
+
+
+/* LOGOUT */
+
+async function logout() {
+
+    const {
+        error
+    } = await supabaseClient.auth.signOut();
+
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
+    }
+
+
+    window.location.href =
+        "login.html";
+}
+
+
+document.getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+document.getElementById("topLogout")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+/* AUTH STATE */
+
+supabaseClient.auth.onAuthStateChange(
+    (event) => {
+
+        if (event === "SIGNED_OUT") {
+
+            window.location.href =
+                "login.html";
+        }
+
+    }
+);
+
+
+/* START */
+
+loadAccount();
+
+</script>
+
+</body>
+</html>

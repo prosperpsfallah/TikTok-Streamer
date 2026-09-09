@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Notifications — TikTok Streamers</title>
 
@@ -12,13 +16,14 @@
     >
 
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         .notifications-page {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 50px 20px 80px;
+            padding: 40px 20px;
         }
 
         .notifications-header {
@@ -26,49 +31,46 @@
             justify-content: space-between;
             align-items: center;
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .notifications-title h1 {
-            margin: 0 0 8px;
-            font-size: 34px;
-            color: #111;
-        }
-
-        .notifications-title p {
+        .notifications-header h1 {
             margin: 0;
+            font-size: 32px;
+        }
+
+        .notifications-header p {
+            margin: 7px 0 0;
             color: #777;
-            font-size: 15px;
         }
 
         .notification-count {
-            display: inline-flex;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 12px;
+            border-radius: 20px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 42px;
-            height: 42px;
-            padding: 0 12px;
-            border-radius: 50px;
-            background: #111;
-            color: #fff;
-            font-weight: 700;
+            background: #fe2c55;
+            color: white;
+            font-weight: 800;
         }
 
         .notification-tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #e5e5e5;
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
         }
 
         .notification-tab {
             border: none;
             background: transparent;
-            padding: 10px 18px;
-            border-radius: 30px;
+            padding: 10px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
             font-weight: 700;
             color: #777;
         }
@@ -78,104 +80,159 @@
             color: #fff;
         }
 
-        .notification-empty {
-            background: #fff;
-            border: 1px solid #e8e8e8;
-            border-radius: 20px;
-            padding: 70px 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .notification-empty-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
+        .notification-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 16px;
+            padding: 18px;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0,0,0,.07);
+        }
+
+        .notification-card.unread {
+            border-left: 4px solid #fe2c55;
+            background: #fff9fa;
+        }
+
+        .notification-icon {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
             border-radius: 50%;
-            background: #f2f2f2;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 34px;
+            background: #111;
+            color: #fff;
+            font-size: 20px;
         }
 
-        .notification-empty h2 {
-            margin: 0 0 10px;
-            color: #111;
-            font-size: 24px;
+        .notification-content {
+            flex: 1;
         }
 
-        .notification-empty p {
-            max-width: 520px;
+        .notification-title {
+            margin: 0 0 5px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .notification-message {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .notification-time {
+            display: block;
+            margin-top: 8px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .unread-dot {
+            width: 9px;
+            height: 9px;
+            min-width: 9px;
+            border-radius: 50%;
+            background: #fe2c55;
+            margin-top: 8px;
+        }
+
+        .empty-notifications {
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 20px;
+            padding: 60px 25px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .empty-notifications h2 {
+            margin: 0 0 8px;
+        }
+
+        .empty-notifications p {
+            max-width: 500px;
             margin: 0 auto;
             color: #777;
-            line-height: 1.7;
-            font-size: 15px;
-        }
-
-        .notification-info {
-            margin-top: 25px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .notification-info-card {
-            background: #fff;
-            border: 1px solid #e8e8e8;
-            border-radius: 18px;
-            padding: 22px;
-        }
-
-        .notification-info-card strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #111;
-        }
-
-        .notification-info-card span {
-            color: #777;
-            font-size: 14px;
             line-height: 1.6;
         }
 
-        @media (max-width: 700px) {
-            .notifications-page {
-                padding: 35px 15px 60px;
-            }
-
-            .notifications-header {
-                align-items: flex-start;
-            }
-
-            .notifications-title h1 {
-                font-size: 28px;
-            }
-
-            .notification-info {
-                grid-template-columns: 1fr;
-            }
-
-            .notification-empty {
-                padding: 55px 20px;
-            }
+        .login-required {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid #e7e7e7;
+            padding: 50px 25px;
+            text-align: center;
         }
 
-        @media (max-width: 480px) {
-            .notifications-header {
-                flex-direction: column;
+        .login-required h2 {
+            margin-top: 0;
+        }
+
+        .login-required a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: #111;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .loading-notifications {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+
+        .notification-error {
+            background: #fff0f2;
+            color: #c90032;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            .notifications-page {
+                padding: 25px 15px;
             }
 
-            .notification-count {
-                align-self: flex-start;
+            .notifications-header h1 {
+                font-size: 26px;
             }
 
-            .notification-tabs {
-                overflow-x: auto;
+            .notification-card {
+                padding: 14px;
             }
 
-            .notification-tab {
-                white-space: nowrap;
+            .notification-icon {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
             }
         }
     </style>
@@ -186,138 +243,119 @@
     <!-- HEADER -->
     <header class="site-header">
 
-        <div class="header-inner">
+        <div class="container">
 
             <a href="index.html" class="logo">
-                <span class="logo-icon">TS</span>
-                <span>TikTok Streamers</span>
+                TikTok Streamers
             </a>
 
-            <nav class="desktop-nav">
+            <nav class="nav-menu">
+
                 <a href="index.html">Home</a>
+
                 <a href="live.html">LIVE</a>
+
                 <a href="streamer.html">Streamers</a>
+
                 <a href="leaderboard.html">Leaderboard</a>
+
+                <a href="profile.html">Profile</a>
+
+                <a href="dashboard.html">Dashboard</a>
+
             </nav>
 
-            <div class="header-actions">
-                <a href="login.html" class="btn btn-outline">Login</a>
-                <a href="register.html" class="btn btn-primary">Join</a>
-
-                <button
-                    class="mobile-menu-btn"
-                    onclick="toggleMobileMenu()"
-                    aria-label="Open menu"
-                >
-                    ☰
-                </button>
-            </div>
-
-        </div>
-
-        <div id="mobileMenu" class="mobile-menu">
-            <a href="index.html">Home</a>
-            <a href="live.html">LIVE</a>
-            <a href="streamer.html">Streamers</a>
-            <a href="leaderboard.html">Leaderboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="messages.html">Messages</a>
-            <a href="settings.html">Settings</a>
-            <a href="login.html">Login</a>
-            <a href="register.html">Join</a>
         </div>
 
     </header>
 
 
     <!-- MAIN -->
-    <main class="notifications-page">
+    <main>
 
-        <div class="notifications-header">
+        <div class="notifications-page">
 
-            <div class="notifications-title">
-                <h1>Notifications</h1>
+            <div class="notifications-header">
+
+                <div>
+                    <h1>Notifications</h1>
+
+                    <p>
+                        Stay updated with activity on your account.
+                    </p>
+                </div>
+
+                <div
+                    id="notificationCount"
+                    class="notification-count"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div
+                id="errorBox"
+                class="notification-error"
+                style="display:none;"
+            ></div>
+
+
+            <div
+                id="loginRequired"
+                class="login-required"
+                style="display:none;"
+            >
+
+                <h2>Login Required</h2>
+
                 <p>
-                    Stay updated with activity from your account.
+                    Please log in to see your notifications.
                 </p>
+
+                <a href="login.html">
+                    Login
+                </a>
+
             </div>
 
-            <div class="notification-count" id="notificationCount">
-                0
+
+            <div id="notificationArea">
+
+                <div class="notification-tabs">
+
+                    <button
+                        class="notification-tab active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="notification-tab"
+                        data-filter="unread"
+                    >
+                        Unread
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="notificationsList"
+                    class="notifications-list"
+                >
+
+                    <div class="loading-notifications">
+                        Loading notifications...
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
-
-
-        <!-- TABS -->
-        <div class="notification-tabs">
-
-            <button
-                class="notification-tab active"
-                onclick="changeNotificationTab('all', this)"
-            >
-                All
-            </button>
-
-            <button
-                class="notification-tab"
-                onclick="changeNotificationTab('unread', this)"
-            >
-                Unread
-            </button>
-
-        </div>
-
-
-        <!-- EMPTY STATE -->
-        <section class="notification-empty">
-
-            <div class="notification-empty-icon">
-                🔔
-            </div>
-
-            <h2 id="emptyTitle">
-                No notifications yet
-            </h2>
-
-            <p id="emptyText">
-                When you receive follows, messages, LIVE activity,
-                gifts, battles, or other account updates, they will
-                appear here.
-            </p>
-
-        </section>
-
-
-        <!-- INFORMATION -->
-        <section class="notification-info">
-
-            <div class="notification-info-card">
-                <strong>New Followers</strong>
-                <span>
-                    Notifications can appear when real users
-                    follow your account.
-                </span>
-            </div>
-
-            <div class="notification-info-card">
-                <strong>LIVE Activity</strong>
-                <span>
-                    Stay informed about real LIVE activity,
-                    streamers, and interactions.
-                </span>
-            </div>
-
-            <div class="notification-info-card">
-                <strong>Messages & Gifts</strong>
-                <span>
-                    Real messages, gifts, and other account
-                    activity will appear here later.
-                </span>
-            </div>
-
-        </section>
 
     </main>
 
@@ -325,72 +363,597 @@
     <!-- FOOTER -->
     <footer class="site-footer">
 
-        <div class="footer-inner">
+        <div class="container">
 
-            <div>
-                <strong>TikTok Streamers</strong>
-                <p>
-                    Discover streamers, LIVE creators,
-                    and communities.
-                </p>
-            </div>
+            <p>
+                © 2026 TikTok Streamers. All rights reserved.
+            </p>
 
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="live.html">LIVE</a>
-                <a href="leaderboard.html">Leaderboard</a>
-                <a href="profile.html">Profile</a>
-                <a href="settings.html">Settings</a>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            © 2026 TikTok Streamers. All rights reserved.
         </div>
 
     </footer>
 
 
-    <!-- JAVASCRIPT -->
-    <script src="script.js"></script>
+<script>
 
-    <script>
+    // ============================================
+    // SUPABASE
+    // ============================================
 
-        function changeNotificationTab(type, button) {
+    const SUPABASE_URL =
+        "https://malrwexkhekripoaubur.supabase.co";
 
-            document
-                .querySelectorAll(".notification-tab")
-                .forEach(tab => {
-                    tab.classList.remove("active");
-                });
+    const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoibWFsdndleGtoZWtyaXBvYXVidXIiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODk0NTAyOSwiZXhwIjoyMTA0NTIxMDI5fQ.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
 
-            button.classList.add("active");
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
 
-            const title = document.getElementById("emptyTitle");
-            const text = document.getElementById("emptyText");
 
-            if (type === "unread") {
+    // ============================================
+    // VARIABLES
+    // ============================================
 
-                title.textContent = "No unread notifications";
+    let currentUser = null;
 
-                text.textContent =
-                    "You currently have no unread notifications. " +
-                    "New activity from real users will appear here.";
+    let allNotifications = [];
 
-            } else {
+    let currentFilter = "all";
 
-                title.textContent = "No notifications yet";
 
-                text.textContent =
-                    "When you receive follows, messages, LIVE activity, " +
-                    "gifts, battles, or other account updates, they will " +
-                    "appear here.";
+    // ============================================
+    // ELEMENTS
+    // ============================================
 
+    const list =
+        document.getElementById(
+            "notificationsList"
+        );
+
+    const count =
+        document.getElementById(
+            "notificationCount"
+        );
+
+    const loginRequired =
+        document.getElementById(
+            "loginRequired"
+        );
+
+    const notificationArea =
+        document.getElementById(
+            "notificationArea"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    // ============================================
+    // INITIALIZE
+    // ============================================
+
+    async function initializeNotifications() {
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth.getUser();
+
+
+            if (error) {
+
+                throw error;
             }
+
+
+            currentUser = data.user;
+
+
+            if (!currentUser) {
+
+                notificationArea.style.display =
+                    "none";
+
+                loginRequired.style.display =
+                    "block";
+
+                return;
+            }
+
+
+            await loadNotifications();
+
+            await loadUnreadCount();
+
+            setupRealtime();
+
+        } catch (error) {
+
+            console.error(
+                "Notification initialization error:",
+                error
+            );
+
+            showError(
+                error.message ||
+                "Unable to load notifications."
+            );
+        }
+    }
+
+
+    // ============================================
+    // LOAD NOTIFICATIONS
+    // ============================================
+
+    async function loadNotifications() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("notifications")
+            .select(`
+                id,
+                user_id,
+                actor_id,
+                type,
+                title,
+                message,
+                is_read,
+                created_at
+            `)
+            .eq("user_id", currentUser.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+
+        if (error) {
+
+            throw error;
         }
 
-    </script>
+
+        allNotifications =
+            data || [];
+
+
+        renderNotifications();
+    }
+
+
+    // ============================================
+    // UNREAD COUNT
+    // ============================================
+
+    async function loadUnreadCount() {
+
+        const {
+            count: unreadCount,
+            error
+        } = await supabaseClient
+            .from("notifications")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .eq(
+                "is_read",
+                false
+            );
+
+
+        if (error) {
+
+            throw error;
+        }
+
+
+        count.textContent =
+            unreadCount || 0;
+    }
+
+
+    // ============================================
+    // RENDER
+    // ============================================
+
+    function renderNotifications() {
+
+        let notifications =
+            allNotifications;
+
+
+        if (currentFilter === "unread") {
+
+            notifications =
+                allNotifications.filter(
+                    notification =>
+                        !notification.is_read
+                );
+        }
+
+
+        if (!notifications.length) {
+
+            list.innerHTML = `
+
+                <div class="empty-notifications">
+
+                    <div class="empty-icon">
+                        🔔
+                    </div>
+
+                    <h2>
+                        ${
+                            currentFilter === "unread"
+                            ? "No unread notifications"
+                            : "No notifications yet"
+                        }
+                    </h2>
+
+                    <p>
+                        ${
+                            currentFilter === "unread"
+                            ? "You're all caught up."
+                            : "When something happens on your account, your notifications will appear here."
+                        }
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        list.innerHTML =
+            notifications
+                .map(createNotificationHTML)
+                .join("");
+    }
+
+
+    // ============================================
+    // NOTIFICATION HTML
+    // ============================================
+
+    function createNotificationHTML(notification) {
+
+        const unreadClass =
+            notification.is_read
+                ? ""
+                : "unread";
+
+
+        const unreadDot =
+            notification.is_read
+                ? ""
+                : `<div class="unread-dot"></div>`;
+
+
+        return `
+
+            <article
+                class="notification-card ${unreadClass}"
+                data-id="${escapeHTML(notification.id)}"
+            >
+
+                <div class="notification-icon">
+                    ${getNotificationIcon(notification.type)}
+                </div>
+
+
+                <div class="notification-content">
+
+                    <h3 class="notification-title">
+                        ${escapeHTML(notification.title)}
+                    </h3>
+
+                    <p class="notification-message">
+                        ${escapeHTML(notification.message)}
+                    </p>
+
+                    <span class="notification-time">
+                        ${formatDate(notification.created_at)}
+                    </span>
+
+                </div>
+
+                ${unreadDot}
+
+            </article>
+
+        `;
+    }
+
+
+    // ============================================
+    // ICONS
+    // ============================================
+
+    function getNotificationIcon(type) {
+
+        const icons = {
+
+            follow: "👤",
+
+            like: "❤️",
+
+            comment: "💬",
+
+            gift: "🎁",
+
+            live: "🔴",
+
+            battle: "⚔️",
+
+            message: "✉️",
+
+            system: "🔔"
+
+        };
+
+
+        return icons[type] || "🔔";
+    }
+
+
+    // ============================================
+    // MARK AS READ
+    // ============================================
+
+    async function markAsRead(notificationId) {
+
+        const notification =
+            allNotifications.find(
+                item =>
+                    item.id === notificationId
+            );
+
+
+        if (!notification ||
+            notification.is_read) {
+
+            return;
+        }
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("notifications")
+            .update({
+                is_read: true
+            })
+            .eq(
+                "id",
+                notificationId
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+        if (error) {
+
+            console.error(
+                "Unable to mark notification as read:",
+                error
+            );
+
+            return;
+        }
+
+
+        notification.is_read = true;
+
+
+        renderNotifications();
+
+        await loadUnreadCount();
+    }
+
+
+    // ============================================
+    // CLICK NOTIFICATION
+    // ============================================
+
+    list.addEventListener(
+        "click",
+        async function(event) {
+
+            const card =
+                event.target.closest(
+                    ".notification-card"
+                );
+
+
+            if (!card) {
+                return;
+            }
+
+
+            const notificationId =
+                card.dataset.id;
+
+
+            await markAsRead(
+                notificationId
+            );
+        }
+    );
+
+
+    // ============================================
+    // TABS
+    // ============================================
+
+    document
+        .querySelectorAll(".notification-tab")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .querySelectorAll(
+                            ".notification-tab"
+                        )
+                        .forEach(tab => {
+
+                            tab.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    this.classList.add(
+                        "active"
+                    );
+
+
+                    currentFilter =
+                        this.dataset.filter;
+
+
+                    renderNotifications();
+                }
+            );
+
+        });
+
+
+    // ============================================
+    // REALTIME
+    // ============================================
+
+    function setupRealtime() {
+
+        supabaseClient
+            .channel(
+                "user-notifications-" +
+                currentUser.id
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "notifications",
+                    filter:
+                        "user_id=eq." +
+                        currentUser.id
+                },
+                async function() {
+
+                    await loadNotifications();
+
+                    await loadUnreadCount();
+
+                }
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "UPDATE",
+                    schema: "public",
+                    table: "notifications",
+                    filter:
+                        "user_id=eq." +
+                        currentUser.id
+                },
+                async function() {
+
+                    await loadNotifications();
+
+                    await loadUnreadCount();
+
+                }
+            )
+
+            .subscribe();
+    }
+
+
+    // ============================================
+    // DATE FORMAT
+    // ============================================
+
+    function formatDate(dateString) {
+
+        const date =
+            new Date(dateString);
+
+
+        return new Intl.DateTimeFormat(
+            undefined,
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }
+        ).format(date);
+    }
+
+
+    // ============================================
+    // HTML SAFETY
+    // ============================================
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    // ============================================
+    // ERROR
+    // ============================================
+
+    function showError(message) {
+
+        errorBox.textContent =
+            message;
+
+        errorBox.style.display =
+            "block";
+    }
+
+
+    // ============================================
+    // START
+    // ============================================
+
+    initializeNotifications();
+
+</script>
 
 </body>
 </html>

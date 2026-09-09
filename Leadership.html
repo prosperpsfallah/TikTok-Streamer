@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard | TikTok Streamers</title>
+    <meta
+        name="description"
+        content="See the top TikTok Streamers based on real activity, followers, gifts, battles and live performance."
+    >
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ================================
+           LEADERBOARD PAGE
+        ================================= */
+        .leaderboard-page {
+            min-height: 100vh;
+            background: #f7f8fa;
+        }
+        .leaderboard-hero {
+            background:
+                radial-gradient(circle at 20% 20%, rgba(254, 44, 85, 0.28), transparent 35%),
+                radial-gradient(circle at 80% 20%, rgba(37, 244, 238, 0.22), transparent 35%),
+                #111111;
+            color: white;
+            padding: 90px 20px 70px;
+            text-align: center;
+        }
+        .leaderboard-hero h1 {
+            margin: 0 0 15px;
+            font-size: clamp(38px, 7vw, 68px);
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+        .leaderboard-hero h1 span {
+            background: linear-gradient(90deg, #fe2c55, #25f4ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .leaderboard-hero p {
+            max-width: 650px;
+            margin: 0 auto;
+            color: #c9c9c9;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+        .leaderboard-container {
+            width: min(1100px, calc(100% - 30px));
+            margin: -35px auto 70px;
+            position: relative;
+        }
+        /* ================================
+           FILTERS
+        ================================= */
+        .ranking-filters {
+            background: white;
+            border-radius: 18px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+        .ranking-filter {
+            border: none;
+            background: transparent;
+            padding: 13px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #666;
+            transition: 0.2s ease;
+        }
+        .ranking-filter:hover {
+            background: #f2f2f2;
+            color: #111;
+        }
+        .ranking-filter.active {
+            background: #111;
+            color: white;
+        }
+        /* ================================
+           EMPTY PODIUM
+        ================================= */
+        .empty-ranking {
+            background: white;
+            border-radius: 24px;
+            padding: 65px 25px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+        }
+        .empty-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            background: linear-gradient(
+                135deg,
+                rgba(254, 44, 85, 0.12),
+                rgba(37, 244, 238, 0.12)
+            );
+        }
+        .empty-ranking h2 {
+            margin: 0 0 12px;
+            color: #111;
+            font-size: 28px;
+        }
+        .empty-ranking p {
+            max-width: 620px;
+            margin: 0 auto;
+            color: #777;
+            line-height: 1.7;
+        }
+        /* ================================
+           RANKING AREA
+        ================================= */
+        .ranking-section {
+            margin-top: 25px;
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+        }
+        .ranking-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .ranking-header h2 {
+            margin: 0;
+            color: #111;
+            font-size: 24px;
+        }
+        .ranking-header span {
+            color: #888;
+            font-size: 14px;
+        }
+        .ranking-empty-row {
+            border: 2px dashed #e6e6e6;
+            border-radius: 18px;
+            padding: 35px 20px;
+            text-align: center;
+            color: #888;
+        }
+        .ranking-empty-row strong {
+            display: block;
+            color: #333;
+            margin-bottom: 7px;
+        }
+        /* ================================
+           INFO CARDS
+        ================================= */
+        .ranking-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 25px;
+        }
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+        .info-card .icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .info-card h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: #111;
+        }
+        .info-card p {
+            margin: 0;
+            color: #777;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        /* ================================
+           CTA
+        ================================= */
+        .leaderboard-cta {
+            margin-top: 25px;
+            border-radius: 24px;
+            padding: 45px 25px;
+            text-align: center;
+            color: white;
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(254, 44, 85, 0.95),
+                    rgba(17, 17, 17, 0.98),
+                    rgba(37, 244, 238, 0.9)
+                );
+        }
+        .leaderboard-cta h2 {
+            margin: 0 0 10px;
+            font-size: 30px;
+        }
+        .leaderboard-cta p {
+            margin: 0 auto 22px;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.88);
+            line-height: 1.6;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 14px 25px;
+            border-radius: 999px;
+            background: white;
+            color: #111;
+            text-decoration: none;
+            font-weight: 800;
+            transition: transform 0.2s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        /* ================================
+           FOOTER
+        ================================= */
+        .leaderboard-footer {
+            background: #111;
+            color: #aaa;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 14px;
+        }
+        .leaderboard-footer strong {
+            color: white;
+        }
+        /* ================================
+           MOBILE
+        ================================= */
+        @media (max-width: 700px) {
+            .leaderboard-hero {
+                padding: 70px 18px 60px;
+            }
+            .leaderboard-hero h1 {
+                letter-spacing: -1px;
+            }
+            .ranking-filters {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+            .ranking-filter {
+                white-space: nowrap;
+                padding: 12px 20px;
+            }
+            .ranking-section {
+                padding: 22px;
+            }
+            .ranking-info {
+                grid-template-columns: 1fr;
+            }
+            .ranking-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 400px) {
+            .empty-ranking {
+                padding: 50px 18px;
+            }
+            .empty-ranking h2 {
+                font-size: 24px;
+            }
+            .leaderboard-cta h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="leaderboard-page">
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">TS</span>
+                <span>TikTok Streamers</span>
+            </a>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#live">Live</a>
+                <a href="index.html#streamers">Streamers</a>
+                <a href="leaderboard.html" class="active">Leaderboard</a>
+            </nav>
+            <div class="header-actions">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Join</a>
+            </div>
+            <button
+                class="mobile-menu-btn"
+                onclick="toggleMobileMenu()"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="index.html">Home</a>
+            <a href="index.html#live">Live</a>
+            <a href="index.html#streamers">Streamers</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Join</a>
+        </div>
+    </header>
+    <!-- HERO -->
+    <section class="leaderboard-hero">
+        <h1>Top <span>Streamers</span></h1>
+        <p>
+            The leaderboard will rank real streamers based on activity,
+            followers, gifts, battles and live performance.
+        </p>
+    </section>
+    <!-- MAIN -->
+    <main class="leaderboard-container">
+        <!-- FILTERS -->
+        <div class="ranking-filters">
+            <button
+                class="ranking-filter active"
+                onclick="changePeriod('Weekly', this)"
+            >
+                Weekly
+            </button>
+            <button
+                class="ranking-filter"
+                onclick="changePeriod('Monthly', this)"
+            >
+                Monthly
+            </button>
+            <button
+                class="ranking-filter"
+                onclick="changePeriod('All Time', this)"
+            >
+                All Time
+            </button>
+        </div>
+        <!-- EMPTY RANKING -->
+        <section class="empty-ranking">
+            <div class="empty-icon">
+                🏆
+            </div>
+            <h2 id="emptyTitle">No Rankings Yet</h2>
+            <p id="emptyDescription">
+                There are no streamers on the leaderboard yet.
+                Once real streamers join the platform and start
+                receiving activity, rankings will appear here automatically.
+            </p>
+        </section>
+        <!-- RANKING LIST -->
+        <section class="ranking-section">
+            <div class="ranking-header">
+                <h2 id="rankingPeriod">
+                    Weekly Rankings
+                </h2>
+                <span>
+                    Real activity only
+                </span>
+            </div>
+            <div class="ranking-empty-row">
+                <strong>No streamer data available</strong>
+                Rankings will be generated automatically when
+                real streamer activity becomes available.
+            </div>
+        </section>
+        <!-- INFORMATION -->
+        <section class="ranking-info">
+            <div class="info-card">
+                <div class="icon">🎁</div>
+                <h3>Gift Points</h3>
+                <p>
+                    Streamers can earn ranking points from
+                    real gifts received during their LIVE sessions.
+                </p>
+            </div>
+            <div class="info-card">
+                <div class="icon">👥</div>
+                <h3>Followers</h3>
+                <p>
+                    Real follower growth can contribute to
+                    a streamer's overall platform ranking.
+                </p>
+            </div>
+            <div class="info-card">
+                <div class="icon">⚔️</div>
+                <h3>LIVE & Battles</h3>
+                <p>
+                    LIVE activity and battles can be included
+                    in future ranking calculations.
+                </p>
+            </div>
+        </section>
+        <!-- CTA -->
+        <section class="leaderboard-cta">
+            <h2>Want to be on the leaderboard?</h2>
+            <p>
+                Create your account and start building your
+                streamer profile. Your real activity can appear
+                here once the platform is connected to the database.
+            </p>
+            <a href="register.html" class="cta-button">
+                Become a Streamer
+            </a>
+        </section>
+    </main>
+    <!-- FOOTER -->
+    <footer class="leaderboard-footer">
+        <p>
+            © <span id="year"></span>
+            <strong>TikTok Streamers</strong>.
+            All rights reserved.
+        </p>
+    </footer>
+</div>
+<script>
+    /* ================================
+       MOBILE MENU
+    ================================= */
+    function toggleMobileMenu() {
+        const menu = document.getElementById("mobileMenu");
+        if (!menu) return;
+        menu.classList.toggle("open");
+    }
+    /* ================================
+       RANKING PERIOD
+    ================================= */
+    function changePeriod(period, button) {
+        document.querySelectorAll(".ranking-filter")
+            .forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        const rankingPeriod =
+            document.getElementById("rankingPeriod");
+        const emptyTitle =
+            document.getElementById("emptyTitle");
+        const emptyDescription =
+            document.getElementById("emptyDescription");
+        rankingPeriod.textContent =
+            period + " Rankings";
+        emptyTitle.textContent =
+            "No " + period + " Rankings Yet";
+        emptyDescription.textContent =
+            "There are no streamer rankings available for " +
+            period.toLowerCase() +
+            " yet. Real rankings will appear automatically when streamer activity becomes available.";
+    }
+    /* ================================
+       YEAR
+    ================================= */
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+</script>
+</body>
+</html>

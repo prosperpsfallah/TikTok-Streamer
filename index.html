@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
 
     <meta
         name="description"
-        content="TikTok Streamers — Discover live streamers, creators, battles and trending talent."
+        content="TikTok Streamers — Discover live streamers, creators and new talent."
     >
 
     <meta
@@ -21,13 +22,11 @@
 
     <title>TikTok Streamers</title>
 
-    <!-- PWA -->
     <link
         rel="manifest"
         href="manifest.json"
     >
 
-    <!-- Stylesheet -->
     <link
         rel="stylesheet"
         href="style.css"
@@ -46,6 +45,7 @@
 <header class="header">
 
     <div class="container nav-container">
+
 
         <!-- LOGO -->
 
@@ -70,21 +70,21 @@
         <nav class="nav">
 
             <a
-                href="#home"
+                href="index.html"
                 class="active"
             >
                 Home
             </a>
 
-            <a href="#live">
+            <a href="live.html">
                 Live
             </a>
 
-            <a href="#streamers">
+            <a href="profile.html">
                 Streamers
             </a>
 
-            <a href="#leaderboard">
+            <a href="leaderboard.html">
                 Leaderboard
             </a>
 
@@ -120,7 +120,7 @@
         </div>
 
 
-        <!-- MOBILE MENU BUTTON -->
+        <!-- MOBILE MENU -->
 
         <button
             class="menu-btn"
@@ -141,28 +141,28 @@
     >
 
         <a
-            href="#home"
+            href="index.html"
             onclick="toggleMenu()"
         >
             Home
         </a>
 
         <a
-            href="#live"
+            href="live.html"
             onclick="toggleMenu()"
         >
             Live
         </a>
 
         <a
-            href="#streamers"
+            href="profile.html"
             onclick="toggleMenu()"
         >
             Streamers
         </a>
 
         <a
-            href="#leaderboard"
+            href="leaderboard.html"
             onclick="toggleMenu()"
         >
             Leaderboard
@@ -187,7 +187,7 @@
 
 
 <!-- ==================================================
-     SEARCH OVERLAY
+     SEARCH
 ================================================== -->
 
 <div
@@ -204,9 +204,11 @@
             ×
         </button>
 
+
         <h2>
             Search Streamers
         </h2>
+
 
         <div class="search-input-wrapper">
 
@@ -222,6 +224,7 @@
             >
 
         </div>
+
 
         <div
             id="searchResults"
@@ -239,16 +242,19 @@
      HERO
 ================================================== -->
 
-<main id="home">
+<main>
 
-<section class="hero">
+
+<section
+    id="home"
+    class="hero"
+>
 
     <div class="container hero-container">
 
 
-        <!-- HERO TEXT -->
-
         <div class="hero-content">
+
 
             <div class="hero-badge">
                 🎥 STREAMERS COMMUNITY
@@ -256,27 +262,37 @@
 
 
             <h1>
+
                 Discover the
-                <span>Streamers</span>
+
+                <span>
+                    Streamers
+                </span>
+
                 You Love.
+
             </h1>
 
 
             <p>
+
                 Find live creators, discover new talent,
                 follow your favorite streamers and
                 connect with the community.
+
             </p>
 
 
             <div class="hero-buttons">
 
+
                 <button
                     class="primary-btn"
-                    onclick="scrollToSection('live')"
+                    onclick="window.location.href='live.html'"
                 >
                     🔴 Watch Live
                 </button>
+
 
                 <button
                     class="secondary-btn"
@@ -285,12 +301,14 @@
                     Become a Streamer
                 </button>
 
+
             </div>
 
 
-            <!-- REAL APP STATUS -->
+            <!-- PLATFORM STATS -->
 
             <div class="hero-status">
+
 
                 <div class="status-item">
 
@@ -330,18 +348,21 @@
 
                 </div>
 
+
             </div>
 
         </div>
 
 
-        <!-- HERO VISUAL -->
+
+        <!-- PHONE PREVIEW -->
 
         <div class="hero-visual">
 
             <div class="phone">
 
                 <div class="phone-screen">
+
 
                     <div class="phone-header">
 
@@ -362,9 +383,11 @@
                             📺
                         </div>
 
+
                         <h3>
                             No LIVE streams
                         </h3>
+
 
                         <p>
                             Streamers will appear here
@@ -373,11 +396,13 @@
 
                     </div>
 
+
                 </div>
 
             </div>
 
         </div>
+
 
     </div>
 
@@ -386,7 +411,7 @@
 
 
 <!-- ==================================================
-     LIVE STREAMERS
+     LIVE
 ================================================== -->
 
 <section
@@ -405,9 +430,11 @@
                     🔴 LIVE
                 </span>
 
+
                 <h2>
                     Live Streamers
                 </h2>
+
 
                 <p>
                     Watch creators who are streaming right now.
@@ -418,29 +445,33 @@
         </div>
 
 
-        <!-- EMPTY STATE -->
 
         <div class="empty-state">
+
 
             <div class="empty-state-icon">
                 🔴
             </div>
 
+
             <h3>
                 Nobody is LIVE right now
             </h3>
+
 
             <p>
                 When a streamer starts a LIVE session,
                 they will appear here.
             </p>
 
+
             <button
                 class="primary-btn"
-                onclick="openRegister()"
+                onclick="window.location.href='live.html'"
             >
-                Become the First Streamer
+                Watch LIVE
             </button>
+
 
         </div>
 
@@ -470,9 +501,11 @@
                     👥 COMMUNITY
                 </span>
 
+
                 <h2>
                     Streamers
                 </h2>
+
 
                 <p>
                     Discover creators who join the platform.
@@ -483,29 +516,33 @@
         </div>
 
 
-        <!-- EMPTY STATE -->
 
         <div class="empty-state">
+
 
             <div class="empty-state-icon">
                 👤
             </div>
 
+
             <h3>
                 No streamers yet
             </h3>
 
+
             <p>
-                The first people who create streamer
-                accounts will appear here.
+                The first creators who join the platform
+                will appear here.
             </p>
+
 
             <button
                 class="primary-btn"
                 onclick="openRegister()"
             >
-                Create Streamer Account
+                Create Account
             </button>
+
 
         </div>
 
@@ -535,13 +572,15 @@
                     🏆 RANKINGS
                 </span>
 
+
                 <h2>
                     Leaderboard
                 </h2>
 
+
                 <p>
                     Top streamers will be ranked here
-                    based on real activity.
+                    using real platform activity.
                 </p>
 
             </div>
@@ -549,22 +588,33 @@
         </div>
 
 
-        <!-- EMPTY LEADERBOARD -->
 
         <div class="leaderboard-empty">
+
 
             <div class="leaderboard-empty-icon">
                 🏆
             </div>
 
+
             <h3>
                 Leaderboard is waiting
             </h3>
+
 
             <p>
                 Rankings will appear after real
                 streamers begin using the platform.
             </p>
+
+
+            <button
+                class="secondary-btn"
+                onclick="window.location.href='leaderboard.html'"
+            >
+                View Leaderboard
+            </button>
+
 
         </div>
 
@@ -575,29 +625,35 @@
 
 
 <!-- ==================================================
-     STREAMER CTA
+     CREATOR CTA
 ================================================== -->
 
 <section class="cta-section">
 
     <div class="container">
 
+
         <div class="cta-card">
 
+
             <div class="cta-content">
+
 
                 <span>
                     🎤 FOR CREATORS
                 </span>
 
+
                 <h2>
                     Are you a streamer?
                 </h2>
+
 
                 <p>
                     Create your account and become one
                     of the first creators on TikTok Streamers.
                 </p>
+
 
                 <button
                     class="primary-btn"
@@ -606,6 +662,7 @@
                     Join as a Streamer
                 </button>
 
+
             </div>
 
 
@@ -613,248 +670,15 @@
                 🎥
             </div>
 
+
         </div>
 
     </div>
 
 </section>
 
+
 </main>
-
-
-
-<!-- ==================================================
-     LOGIN MODAL
-================================================== -->
-
-<div
-    id="loginModal"
-    class="modal"
->
-
-    <div class="modal-content">
-
-        <button
-            class="modal-close"
-            onclick="closeLogin()"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-header">
-
-            <div class="modal-icon">
-                🔐
-            </div>
-
-            <h2>
-                Welcome Back
-            </h2>
-
-            <p>
-                Login to your streamer account.
-            </p>
-
-        </div>
-
-
-        <form
-            onsubmit="loginUser(event)"
-        >
-
-            <div class="form-group">
-
-                <label>
-                    Username
-                </label>
-
-                <input
-                    type="text"
-                    id="loginUsername"
-                    placeholder="Enter username"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="loginPassword"
-                    placeholder="Enter password"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="primary-btn full-btn"
-            >
-                Login
-            </button>
-
-
-            <p class="switch-auth">
-
-                Don't have an account?
-
-                <button
-                    type="button"
-                    onclick="switchToRegister()"
-                >
-                    Create one
-                </button>
-
-            </p>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-
-<!-- ==================================================
-     REGISTER MODAL
-================================================== -->
-
-<div
-    id="registerModal"
-    class="modal"
->
-
-    <div class="modal-content">
-
-        <button
-            class="modal-close"
-            onclick="closeRegister()"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-header">
-
-            <div class="modal-icon">
-                🎤
-            </div>
-
-            <h2>
-                Join TikTok Streamers
-            </h2>
-
-            <p>
-                Create your streamer account.
-            </p>
-
-        </div>
-
-
-        <form
-            onsubmit="registerUser(event)"
-        >
-
-            <div class="form-group">
-
-                <label>
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="registerName"
-                    placeholder="Your full name"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Username
-                </label>
-
-                <input
-                    type="text"
-                    id="registerUsername"
-                    placeholder="@username"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="registerEmail"
-                    placeholder="you@example.com"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="registerPassword"
-                    placeholder="Create a password"
-                    minlength="6"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="primary-btn full-btn"
-            >
-                Create Account
-            </button>
-
-
-            <p class="switch-auth">
-
-                Already have an account?
-
-                <button
-                    type="button"
-                    onclick="switchToLogin()"
-                >
-                    Login
-                </button>
-
-            </p>
-
-        </form>
-
-    </div>
-
-</div>
 
 
 
@@ -881,7 +705,11 @@
 
         <div class="footer-brand">
 
-            <div class="logo">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
 
                 <div class="logo-icon">
                     TS
@@ -891,35 +719,49 @@
                     TikTok Streamers
                 </span>
 
-            </div>
+            </a>
+
 
             <p>
-                A community for streamers and
-                viewers to connect.
+                A community for streamers
+                and viewers to connect.
             </p>
 
+
         </div>
+
 
 
         <div class="footer-links">
 
-            <a href="#home">
+
+            <a href="index.html">
                 Home
             </a>
 
-            <a href="#live">
+
+            <a href="live.html">
                 Live
             </a>
 
-            <a href="#streamers">
-                Streamers
-            </a>
 
-            <a href="#leaderboard">
+            <a href="leaderboard.html">
                 Leaderboard
             </a>
 
+
+            <a href="login.html">
+                Login
+            </a>
+
+
+            <a href="register.html">
+                Join
+            </a>
+
+
         </div>
+
 
 
         <div class="footer-copy">
@@ -929,15 +771,19 @@
 
         </div>
 
+
     </div>
 
 </footer>
 
 
 
-<!-- JAVASCRIPT -->
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
