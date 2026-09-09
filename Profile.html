@@ -4,264 +4,337 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Profile — TikTok Streamers</title>
+    <title>Profile — TikTok Streamers</title>
 
+    <meta name="description" content="TikTok Streamers profile">
+
+    <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* Profile page additions only.
+           Main app design remains in style.css. */
+
+        .profile-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 35px 20px 70px;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f8fa;
-            color: #111;
+        .profile-hero {
+            background:
+                linear-gradient(135deg,
+                    rgba(37, 244, 238, 0.12),
+                    rgba(254, 44, 85, 0.12));
+            border: 1px solid rgba(17, 17, 17, 0.08);
+            border-radius: 24px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
         }
 
-        header {
-            background: #111;
-            color: white;
-            padding: 15px 20px;
+        .profile-hero::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: #25f4ee;
+            opacity: 0.08;
+            border-radius: 50%;
+            right: -80px;
+            top: -100px;
+        }
+
+        .profile-main {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            gap: 25px;
+            position: relative;
+            z-index: 1;
         }
 
-        .logo {
-            font-size: 21px;
-            font-weight: 800;
-        }
-
-        .logo span {
-            color: #25f4ee;
-        }
-
-        .back {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        main {
-            max-width: 850px;
-            margin: 30px auto;
-            padding: 0 18px;
-        }
-
-        .profile-card {
-            background: white;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
-
-        .profile-top {
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            margin-bottom: 25px;
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            min-width: 120px;
             border-radius: 50%;
             background: linear-gradient(135deg, #25f4ee, #fe2c55);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 38px;
-            font-weight: 800;
+            color: #fff;
+            font-size: 42px;
+            font-weight: 900;
             overflow: hidden;
-            flex-shrink: 0;
+            border: 5px solid #fff;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.18);
         }
 
-        .avatar img {
+        .profile-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        h1 {
-            font-size: 27px;
+        .profile-details h1 {
+            font-size: 32px;
             margin-bottom: 5px;
         }
 
-        .username {
+        .profile-username {
             color: #666;
-            margin-bottom: 8px;
+            font-size: 16px;
+            margin-bottom: 12px;
         }
 
-        .account-type {
-            display: inline-block;
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 13px;
+            border-radius: 30px;
             background: #111;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
+            color: #fff;
             font-size: 12px;
+            font-weight: 700;
             text-transform: capitalize;
         }
 
-        .stats {
+        .profile-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-action {
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-action.primary {
+            background: #111;
+            color: #fff;
+        }
+
+        .profile-action.secondary {
+            background: #fff;
+            color: #111;
+            border: 1px solid #ddd;
+        }
+
+        .profile-action.logout {
+            background: #fe2c55;
+            color: #fff;
+        }
+
+        .profile-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 25px 0;
+            margin-top: 30px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
-        .stat {
-            background: #f5f5f5;
-            padding: 18px;
+        .profile-stat {
+            padding: 20px;
             text-align: center;
-            border-radius: 14px;
+            border-right: 1px solid #eee;
         }
 
-        .stat strong {
+        .profile-stat:last-child {
+            border-right: none;
+        }
+
+        .profile-stat strong {
             display: block;
-            font-size: 22px;
+            font-size: 25px;
             margin-bottom: 5px;
         }
 
-        .stat span {
+        .profile-stat span {
             color: #777;
             font-size: 13px;
         }
 
-        .info {
-            border-top: 1px solid #eee;
-            padding-top: 20px;
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
         }
 
-        .info-row {
+        .profile-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #eee;
+        }
+
+        .profile-card h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .profile-info-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
+            gap: 15px;
             padding: 14px 0;
             border-bottom: 1px solid #eee;
-            gap: 20px;
         }
 
-        .info-row span:first-child {
+        .profile-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .profile-info-label {
             color: #777;
+            font-size: 14px;
         }
 
-        .info-row span:last-child {
-            font-weight: 600;
+        .profile-info-value {
+            font-weight: 700;
             text-align: right;
             word-break: break-word;
         }
 
-        .actions {
+        .empty-profile-content {
+            min-height: 190px;
             display: flex;
-            gap: 12px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        button,
-        .button {
-            border: none;
-            padding: 13px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .primary {
-            background: #111;
-            color: white;
-        }
-
-        .secondary {
-            background: #eee;
-            color: #111;
-        }
-
-        .logout {
-            background: #fe2c55;
-            color: white;
-        }
-
-        .login-required {
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 60px 20px;
+            color: #777;
+            padding: 20px;
         }
 
-        .login-required h2 {
+        .empty-profile-content .empty-icon {
+            font-size: 42px;
             margin-bottom: 10px;
         }
 
-        .login-required p {
-            color: #666;
+        .login-screen {
+            max-width: 600px;
+            margin: 60px auto;
+            text-align: center;
+            background: #fff;
+            padding: 45px 25px;
+            border-radius: 24px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+        }
+
+        .login-screen h1 {
+            margin-bottom: 10px;
+        }
+
+        .login-screen p {
+            color: #777;
             margin-bottom: 25px;
         }
 
-        .message {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #111;
-            color: white;
-            padding: 13px 20px;
-            border-radius: 10px;
-            display: none;
-            z-index: 999;
+        .login-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        footer {
+        .loading-profile {
             text-align: center;
-            padding: 35px 20px;
+            padding: 80px 20px;
             color: #777;
-            font-size: 13px;
         }
 
-        @media (max-width: 600px) {
-            .profile-card {
-                padding: 20px;
-            }
+        .profile-error {
+            max-width: 650px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
 
-            .profile-top {
+        .profile-error h2 {
+            margin-bottom: 10px;
+        }
+
+        .profile-error p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 800px) {
+
+            .profile-main {
                 align-items: flex-start;
+                flex-wrap: wrap;
             }
 
-            .avatar {
-                width: 75px;
-                height: 75px;
-                font-size: 28px;
+            .profile-actions {
+                width: 100%;
+                margin-left: 0;
             }
 
-            h1 {
-                font-size: 22px;
+            .profile-action {
+                flex: 1;
             }
 
-            .stats {
-                grid-template-columns: repeat(3, 1fr);
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .profile-page {
+                padding: 20px 14px 50px;
             }
 
-            .stat {
-                padding: 14px 5px;
+            .profile-hero {
+                padding: 22px 18px;
+                border-radius: 20px;
             }
 
-            .stat strong {
-                font-size: 18px;
+            .profile-avatar {
+                width: 85px;
+                height: 85px;
+                min-width: 85px;
+                font-size: 30px;
             }
 
-            .info-row {
-                flex-direction: column;
-                gap: 5px;
+            .profile-details h1 {
+                font-size: 24px;
             }
 
-            .info-row span:last-child {
-                text-align: left;
+            .profile-stats {
+                margin-top: 22px;
+            }
+
+            .profile-stat {
+                padding: 16px 5px;
+            }
+
+            .profile-stat strong {
+                font-size: 20px;
+            }
+
+            .profile-stat span {
+                font-size: 11px;
             }
         }
     </style>
@@ -269,97 +342,31 @@
 
 <body>
 
-<header>
-    <div class="logo">TikTok <span>Streamers</span></div>
-    <a class="back" href="dashboard.html">← Dashboard</a>
-</header>
+<!-- APP HEADER -->
+<header class="header">
 
-<main>
+    <div class="container">
 
-    <div id="loading" class="profile-card">
-        Loading profile...
-    </div>
-
-    <div id="loginRequired" class="profile-card login-required" style="display:none;">
-        <h2>Login Required</h2>
-        <p>You must be logged in to view your profile.</p>
-
-        <a href="login.html" class="button primary">
-            Login
+        <a href="index.html" class="logo">
+            TikTok <span>Streamers</span>
         </a>
 
-        <a href="register.html" class="button secondary">
-            Create Account
-        </a>
-    </div>
+        <nav class="nav">
 
-    <div id="profileContent" class="profile-card" style="display:none;">
+            <a href="index.html">Home</a>
+            <a href="live.html">Live</a>
+            <a href="index.html#streamers">Streamers</a>
+            <a href="leaderboard.html">Leaderboard</a>
 
-        <div class="profile-top">
+        </nav>
 
-            <div class="avatar" id="avatar">
-                ?
-            </div>
+        <div class="header-actions">
 
-            <div>
-                <h1 id="fullName">Loading...</h1>
-                <div class="username" id="username">@username</div>
-                <span class="account-type" id="accountType">
-                    viewer
-                </span>
-            </div>
-
-        </div>
-
-        <div class="stats">
-
-            <div class="stat">
-                <strong>0</strong>
-                <span>Followers</span>
-            </div>
-
-            <div class="stat">
-                <strong>0</strong>
-                <span>Following</span>
-            </div>
-
-            <div class="stat">
-                <strong>0</strong>
-                <span>Videos</span>
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <div class="info-row">
-                <span>Email</span>
-                <span id="email">—</span>
-            </div>
-
-            <div class="info-row">
-                <span>Account Type</span>
-                <span id="accountTypeInfo">—</span>
-            </div>
-
-            <div class="info-row">
-                <span>Joined</span>
-                <span id="joinedDate">—</span>
-            </div>
-
-        </div>
-
-        <div class="actions">
-
-            <a href="settings.html" class="button primary">
-                Settings
-            </a>
-
-            <a href="dashboard.html" class="button secondary">
+            <a href="dashboard.html" class="btn btn-secondary">
                 Dashboard
             </a>
 
-            <button class="button logout" id="logoutButton">
+            <button id="logoutTop" class="btn btn-primary">
                 Logout
             </button>
 
@@ -367,24 +374,323 @@
 
     </div>
 
+</header>
+
+
+<!-- MOBILE MENU -->
+
+<div id="mobileMenu" class="mobile-menu">
+
+    <a href="index.html">Home</a>
+    <a href="live.html">Live</a>
+    <a href="index.html#streamers">Streamers</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="dashboard.html">Dashboard</a>
+
+</div>
+
+
+<main class="profile-page">
+
+    <!-- LOADING -->
+
+    <section id="loadingProfile" class="loading-profile">
+
+        <h2>Loading your profile...</h2>
+
+        <p>Please wait.</p>
+
+    </section>
+
+
+    <!-- LOGIN REQUIRED -->
+
+    <section id="loginScreen"
+             class="login-screen"
+             style="display:none;">
+
+        <div style="font-size:50px;margin-bottom:15px;">
+            👤
+        </div>
+
+        <h1>Welcome to TikTok Streamers</h1>
+
+        <p>
+            Log in to view your profile and manage your account.
+        </p>
+
+        <div class="login-buttons">
+
+            <a href="login.html"
+               class="profile-action primary">
+                Login
+            </a>
+
+            <a href="register.html"
+               class="profile-action secondary">
+                Create Account
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- REAL PROFILE -->
+
+    <section id="profileContent"
+             style="display:none;">
+
+        <div class="profile-hero">
+
+            <div class="profile-main">
+
+                <div id="avatar"
+                     class="profile-avatar">
+                    ?
+                </div>
+
+                <div class="profile-details">
+
+                    <h1 id="fullName">
+                        No Name
+                    </h1>
+
+                    <div id="username"
+                         class="profile-username">
+                        @username
+                    </div>
+
+                    <span id="accountType"
+                          class="profile-badge">
+                        viewer
+                    </span>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <a href="settings.html"
+                       class="profile-action primary">
+                        ⚙ Settings
+                    </a>
+
+                    <button id="logoutButton"
+                            class="profile-action logout">
+                        Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-stats">
+
+                <div class="profile-stat">
+
+                    <strong>0</strong>
+
+                    <span>Followers</span>
+
+                </div>
+
+                <div class="profile-stat">
+
+                    <strong>0</strong>
+
+                    <span>Following</span>
+
+                </div>
+
+                <div class="profile-stat">
+
+                    <strong>0</strong>
+
+                    <span>Videos</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-grid">
+
+
+            <!-- ACCOUNT INFORMATION -->
+
+            <div class="profile-card">
+
+                <h2>Account Information</h2>
+
+                <div class="profile-info-row">
+
+                    <span class="profile-info-label">
+                        Email
+                    </span>
+
+                    <span id="email"
+                          class="profile-info-value">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="profile-info-row">
+
+                    <span class="profile-info-label">
+                        Username
+                    </span>
+
+                    <span id="usernameInfo"
+                          class="profile-info-value">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="profile-info-row">
+
+                    <span class="profile-info-label">
+                        Account Type
+                    </span>
+
+                    <span id="accountTypeInfo"
+                          class="profile-info-value">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="profile-info-row">
+
+                    <span class="profile-info-label">
+                        Joined
+                    </span>
+
+                    <span id="joinedDate"
+                          class="profile-info-value">
+                        —
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="profile-card">
+
+                <h2>My Content</h2>
+
+                <div class="empty-profile-content">
+
+                    <div>
+
+                        <div class="empty-icon">
+                            🎬
+                        </div>
+
+                        <strong>No content yet</strong>
+
+                        <p style="margin-top:8px;">
+                            Your videos, LIVE streams and battles
+                            will appear here when you start using
+                            TikTok Streamers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- PROFILE INFORMATION -->
+
+        <div class="profile-card"
+             style="margin-top:20px;">
+
+            <h2>About Your Account</h2>
+
+            <p style="color:#777;line-height:1.7;">
+
+                This is your TikTok Streamers account profile.
+                Your real account information is loaded securely
+                from Supabase. Your followers, videos, LIVE streams,
+                gifts and other activity will appear here once
+                those features are used.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ERROR -->
+
+    <section id="profileError"
+             class="profile-error"
+             style="display:none;">
+
+        <h2>Unable to load profile</h2>
+
+        <p id="errorMessage">
+            Something went wrong while loading your profile.
+        </p>
+
+        <br>
+
+        <a href="profile.html"
+           class="profile-action primary">
+            Try Again
+        </a>
+
+    </section>
+
 </main>
 
-<footer>
-    TikTok Streamers © 2026
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            TikTok Streamers © 2026
+        </p>
+
+    </div>
+
 </footer>
 
-<div id="message" class="message"></div>
+
+<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
-    const SUPABASE_URL = "https://malrwexkhekripoaubur.supabase.co";
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
 
-    const SUPABASE_ANON_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
 
-    const supabaseClient = window.supabase.createClient(
+
+const supabaseClient =
+    window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY,
         {
@@ -397,134 +703,126 @@
     );
 
 
-    const loading = document.getElementById("loading");
-    const loginRequired = document.getElementById("loginRequired");
-    const profileContent = document.getElementById("profileContent");
+const loadingProfile =
+    document.getElementById("loadingProfile");
+
+const loginScreen =
+    document.getElementById("loginScreen");
+
+const profileContent =
+    document.getElementById("profileContent");
+
+const profileError =
+    document.getElementById("profileError");
 
 
-    function showMessage(text) {
+async function loadProfile() {
 
-        const message = document.getElementById("message");
+    try {
 
-        message.textContent = text;
-        message.style.display = "block";
-
-        setTimeout(() => {
-            message.style.display = "none";
-        }, 3000);
-    }
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
 
 
-    async function loadProfile() {
-
-        try {
-
-            const {
-                data: {
-                    session
-                },
-                error: sessionError
-            } = await supabaseClient.auth.getSession();
+        if (error) {
+            throw error;
+        }
 
 
-            if (sessionError) {
-                throw sessionError;
-            }
+        const session = data.session;
 
 
-            if (!session || !session.user) {
+        if (!session) {
 
-                loading.style.display = "none";
-                loginRequired.style.display = "block";
+            loadingProfile.style.display = "none";
 
-                return;
-            }
+            loginScreen.style.display = "block";
 
-
-            const user = session.user;
+            return;
+        }
 
 
-            const {
-                data: profile,
-                error: profileError
-            } = await supabaseClient
-                .from("profiles")
-                .select(`
-                    id,
-                    full_name,
-                    username,
-                    account_type,
-                    avatar_url,
-                    created_at
-                `)
-                .eq("id", user.id)
-                .maybeSingle();
+        const user = session.user;
 
 
-            if (profileError) {
-                throw profileError;
-            }
+        const {
+            data: profile,
+            error: profileErrorData
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, username, account_type, avatar_url, created_at"
+            )
+            .eq("id", user.id)
+            .maybeSingle();
 
 
-            if (!profile) {
-
-                loading.innerHTML = `
-                    <div style="padding:20px;">
-                        <h2>Profile Not Found</h2>
-                        <p style="margin-top:10px;color:#666;">
-                            Your account exists, but your profile record has not been created yet.
-                        </p>
-                    </div>
-                `;
-
-                return;
-            }
+        if (profileErrorData) {
+            throw profileErrorData;
+        }
 
 
-            const fullName =
-                profile.full_name ||
-                "No Name";
+        if (!profile) {
+
+            throw new Error(
+                "Your account does not have a profile record yet."
+            );
+        }
 
 
-            const username =
-                profile.username ||
-                "No Username";
+        const fullName =
+            profile.full_name || "No Name";
+
+        const username =
+            profile.username || "No Username";
+
+        const accountType =
+            profile.account_type || "viewer";
 
 
-            const accountType =
-                profile.account_type ||
-                "viewer";
+        document.getElementById("fullName")
+            .textContent = fullName;
 
 
-            document.getElementById("fullName").textContent =
-                fullName;
-
-
-            document.getElementById("username").textContent =
+        document.getElementById("username")
+            .textContent =
                 username.startsWith("@")
                     ? username
                     : "@" + username;
 
 
-            document.getElementById("accountType").textContent =
+        document.getElementById("usernameInfo")
+            .textContent =
+                username.startsWith("@")
+                    ? username
+                    : "@" + username;
+
+
+        document.getElementById("accountType")
+            .textContent =
                 accountType;
 
 
-            document.getElementById("accountTypeInfo").textContent =
+        document.getElementById("accountTypeInfo")
+            .textContent =
                 accountType;
 
 
-            document.getElementById("email").textContent =
+        document.getElementById("email")
+            .textContent =
                 user.email || "No email";
 
 
-            if (profile.created_at) {
+        if (profile.created_at) {
 
-                const date =
-                    new Date(profile.created_at);
+            const joined =
+                new Date(profile.created_at);
 
-                document.getElementById("joinedDate").textContent =
-                    date.toLocaleDateString(
+            document.getElementById("joinedDate")
+                .textContent =
+                    joined.toLocaleDateString(
                         undefined,
                         {
                             year: "numeric",
@@ -532,80 +830,108 @@
                             day: "numeric"
                         }
                     );
-            }
-
-
-            const avatar =
-                document.getElementById("avatar");
-
-
-            if (profile.avatar_url) {
-
-                avatar.innerHTML =
-                    `<img src="${profile.avatar_url}" alt="Profile avatar">`;
-
-            } else {
-
-                const firstLetter =
-                    fullName.trim().charAt(0).toUpperCase() || "?";
-
-                avatar.textContent =
-                    firstLetter;
-            }
-
-
-            loading.style.display = "none";
-            profileContent.style.display = "block";
-
-
-        } catch (error) {
-
-            console.error("Profile error:", error);
-
-            loading.innerHTML = `
-                <div style="padding:20px;">
-                    <h2>Unable to load profile</h2>
-                    <p style="margin-top:10px;color:#666;">
-                        ${error.message || "An unexpected error occurred."}
-                    </p>
-                </div>
-            `;
         }
+
+
+        const avatar =
+            document.getElementById("avatar");
+
+
+        if (profile.avatar_url) {
+
+            avatar.innerHTML =
+                `<img src="${profile.avatar_url}"
+                      alt="Profile photo">`;
+
+        } else {
+
+            avatar.textContent =
+                fullName
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase() || "?";
+        }
+
+
+        loadingProfile.style.display = "none";
+
+        profileContent.style.display = "block";
+
+
+    } catch (error) {
+
+        console.error(
+            "Profile loading error:",
+            error
+        );
+
+
+        loadingProfile.style.display = "none";
+
+        profileError.style.display = "block";
+
+        document.getElementById("errorMessage")
+            .textContent =
+                error.message ||
+                "Something went wrong.";
+    }
+}
+
+
+/* LOGOUT */
+
+async function logout() {
+
+    const {
+        error
+    } = await supabaseClient.auth.signOut();
+
+
+    if (error) {
+
+        alert(error.message);
+
+        return;
     }
 
 
-    document.getElementById("logoutButton")
-        .addEventListener("click", async () => {
-
-            const {
-                error
-            } = await supabaseClient.auth.signOut();
-
-            if (error) {
-
-                showMessage(error.message);
-
-                return;
-            }
-
-            window.location.href = "login.html";
-        });
+    window.location.href =
+        "login.html";
+}
 
 
-    supabaseClient.auth.onAuthStateChange(
-        (event, session) => {
-
-            if (event === "SIGNED_OUT") {
-
-                window.location.href = "login.html";
-
-            }
-
-        }
+document.getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        logout
     );
 
 
-    loadProfile();
+document.getElementById("logoutTop")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+/* AUTH STATE */
+
+supabaseClient.auth.onAuthStateChange(
+    (event) => {
+
+        if (event === "SIGNED_OUT") {
+
+            window.location.href =
+                "login.html";
+        }
+
+    }
+);
+
+
+/* START */
+
+loadProfile();
 
 </script>
 
