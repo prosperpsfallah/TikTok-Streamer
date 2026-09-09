@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LIVE | TikTok Streamers</title>
+
+    <meta
+        name="description"
+        content="Discover creators who are LIVE on TikTok Streamers."
+    >
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        .live-page {
+            min-height: 100vh;
+            background: #f7f7f8;
+        }
+
+        .live-topbar {
+            background: #111111;
+            color: white;
+            padding: 18px 20px;
+        }
+
+        .live-topbar-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .live-brand {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .live-home {
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .live-hero {
+            background: #111111;
+            color: white;
+            padding: 65px 20px 75px;
+        }
+
+        .live-hero-inner {
+            max-width: 1200px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(254, 44, 85, 0.14);
+            border: 1px solid rgba(254, 44, 85, 0.3);
+            color: #ff5275;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 17px;
+        }
+
+        .live-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #fe2c55;
+            border-radius: 50%;
+        }
+
+        .live-hero h1 {
+            font-size: clamp(38px, 6vw, 64px);
+            letter-spacing: -2px;
+            margin-bottom: 12px;
+        }
+
+        .live-hero p {
+            color: #999;
+            max-width: 570px;
+            margin: auto;
+            font-size: 15px;
+        }
+
+        .live-content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 20px 80px;
+        }
+
+        .live-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .live-count {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .live-count strong {
+            color: #111;
+        }
+
+        .refresh-button {
+            border: 1px solid #ddd;
+            background: white;
+            color: #111;
+            border-radius: 11px;
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .refresh-button:hover {
+            border-color: #111;
+            transform: translateY(-1px);
+        }
+
+        .live-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .live-empty {
+            grid-column: 1 / -1;
+            background: white;
+            border: 1px dashed #d5d5d5;
+            border-radius: 20px;
+            padding: 80px 25px;
+            text-align: center;
+        }
+
+        .live-empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 31px;
+        }
+
+        .live-empty h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .live-empty p {
+            color: #777;
+            max-width: 520px;
+            margin: auto;
+            font-size: 14px;
+        }
+
+        .live-empty .btn {
+            margin-top: 24px;
+        }
+
+        .info-section {
+            margin-top: 45px;
+        }
+
+        .info-section h2 {
+            font-size: 23px;
+            margin-bottom: 17px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 17px;
+            padding: 22px;
+        }
+
+        .info-icon {
+            width: 43px;
+            height: 43px;
+            background: #f1f1f1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 13px;
+            font-size: 19px;
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .info-card p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .live-cta {
+            margin-top: 50px;
+            background: #111;
+            color: white;
+            border-radius: 22px;
+            padding: 45px 25px;
+            text-align: center;
+        }
+
+        .live-cta h2 {
+            font-size: 29px;
+            margin-bottom: 8px;
+        }
+
+        .live-cta p {
+            color: #999;
+            max-width: 550px;
+            margin: auto;
+        }
+
+        .live-cta .btn {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .live-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .live-hero {
+                padding: 50px 18px 60px;
+            }
+
+            .live-content {
+                padding: 40px 18px 65px;
+            }
+
+            .live-toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .live-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .live-empty {
+                padding: 60px 18px;
+            }
+
+            .live-cta {
+                padding: 38px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="live-page">
+
+        <!-- TOP BAR -->
+
+        <nav class="live-topbar">
+
+            <div class="live-topbar-inner">
+
+                <a
+                    href="index.html"
+                    class="live-brand"
+                >
+                    TikTok Streamers
+                </a>
+
+                <a
+                    href="index.html"
+                    class="live-home"
+                >
+                    ← Home
+                </a>
+
+            </div>
+
+        </nav>
+
+
+        <!-- HERO -->
+
+        <header class="live-hero">
+
+            <div class="live-hero-inner">
+
+                <div class="live-badge">
+
+                    <span class="live-badge-dot"></span>
+
+                    LIVE NOW
+
+                </div>
+
+                <h1>
+                    Watch LIVE
+                </h1>
+
+                <p>
+                    Discover real creators as they go LIVE.
+                    Streams will appear here automatically when
+                    streamers start broadcasting.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- MAIN -->
+
+        <main class="live-content">
+
+            <div class="live-toolbar">
+
+                <div class="live-count">
+
+                    <strong id="liveCount">
+                        0
+                    </strong>
+
+                    LIVE right now
+
+                </div>
+
+                <button
+                    class="refresh-button"
+                    onclick="refreshLiveStreams()"
+                >
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+
+            <!-- LIVE GRID -->
+
+            <section
+                id="liveGrid"
+                class="live-grid"
+            >
+
+                <div class="live-empty">
+
+                    <div class="live-empty-icon">
+                        📺
+                    </div>
+
+                    <h2>
+                        Nobody is LIVE right now
+                    </h2>
+
+                    <p>
+                        There are currently no active streams.
+                        When real streamers start a LIVE session,
+                        their streams will appear here.
+                    </p>
+
+                    <a
+                        href="register.html"
+                        class="btn btn-red"
+                    >
+                        Become a Streamer
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- INFORMATION -->
+
+            <section class="info-section">
+
+                <h2>
+                    What happens here?
+                </h2>
+
+                <div class="info-grid">
+
+                    <article class="info-card">
+
+                        <div class="info-icon">
+                            🎥
+                        </div>
+
+                        <h3>
+                            Real LIVE Streams
+                        </h3>
+
+                        <p>
+                            Only real streams from registered
+                            creators will be displayed.
+                        </p>
+
+                    </article>
+
+
+                    <article class="info-card">
+
+                        <div class="info-icon">
+                            👥
+                        </div>
+
+                        <h3>
+                            Real Viewers
+                        </h3>
+
+                        <p>
+                            Viewer counts will come from actual
+                            people watching the stream.
+                        </p>
+
+                    </article>
+
+
+                    <article class="info-card">
+
+                        <div class="info-icon">
+                            🎁
+                        </div>
+
+                        <h3>
+                            Gifts & Support
+                        </h3>
+
+                        <p>
+                            Gift activity will appear after the
+                            real gifting system is connected.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- CTA -->
+
+            <section class="live-cta">
+
+                <h2>
+                    Ready to go LIVE?
+                </h2>
+
+                <p>
+                    Create a streamer account and start building
+                    your audience when the LIVE system is ready.
+                </p>
+
+                <a
+                    href="register.html"
+                    class="btn btn-red"
+                >
+                    Create Streamer Account
+                </a>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        async function refreshLiveStreams() {
+
+            const count =
+                document.getElementById("liveCount");
+
+            const grid =
+                document.getElementById("liveGrid");
+
+            if (count) {
+                count.textContent = "0";
+            }
+
+            if (grid) {
+
+                grid.innerHTML = `
+                    <div class="live-empty">
+
+                        <div class="live-empty-icon">
+                            📺
+                        </div>
+
+                        <h2>
+                            Nobody is LIVE right now
+                        </h2>
+
+                        <p>
+                            There are currently no active streams.
+                            When real streamers start a LIVE session,
+                            their streams will appear here.
+                        </p>
+
+                        <a
+                            href="register.html"
+                            class="btn btn-red"
+                        >
+                            Become a Streamer
+                        </a>
+
+                    </div>
+                `;
+
+            }
+
+            showMessage(
+                "LIVE streams refreshed."
+            );
+
+            /*
+             * Real LIVE streams will be loaded from the backend
+             * after the database and streaming system are connected.
+             */
+        }
+
+
+        function showMessage(message) {
+
+            let toast =
+                document.getElementById("toast");
+
+            if (!toast) {
+
+                toast =
+                    document.createElement("div");
+
+                toast.id = "toast";
+
+                toast.className = "toast";
+
+                document.body.appendChild(toast);
+
+            }
+
+            toast.textContent = message;
+
+            toast.classList.add("show");
+
+            clearTimeout(window.liveToastTimer);
+
+            window.liveToastTimer =
+                setTimeout(function () {
+
+                    toast.classList.remove("show");
+
+                }, 3000);
+
+        }
+
+    </script>
+
+</body>
+</html>
