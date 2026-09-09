@@ -1,522 +1,910 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Streamer Profile | TikTok Streamers</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
 
     <meta
         name="description"
-        content="View a TikTok Streamers creator profile."
+        content="TikTok Streamers creator profile."
     >
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <title>Streamer Profile — TikTok Streamers</title>
+
 
     <style>
-        .profile-page {
-            min-height: 100vh;
-            background: #f7f7f8;
+
+        * {
+            box-sizing: border-box;
         }
 
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #111;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================== */
+
         .profile-header {
-            background: #111111;
-            color: white;
-            padding: 70px 20px 90px;
+            background: #111;
+            color: #fff;
+            padding: 16px 0;
         }
 
         .profile-header-inner {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: auto;
-            text-align: center;
+            padding: 0 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            text-decoration: none;
+            color: #fff;
+
+            font-weight: 900;
+        }
+
+        .profile-logo {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #fe2c55,
+                #111,
+                #25f4ee
+            );
+
+            font-weight: 900;
+        }
+
+        .back-button {
+            text-decoration: none;
+            color: #fff;
+
+            border: 1px solid #444;
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           PROFILE HERO
+        ========================================== */
+
+        .profile-page {
+            min-height: 100vh;
+        }
+
+        .profile-cover {
+            height: 250px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #111,
+                    #252525,
+                    #111
+                );
+
+            position: relative;
+        }
+
+        .profile-cover-pattern {
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 20% 50%,
+                    rgba(254, 44, 85, .3),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 80% 50%,
+                    rgba(37, 244, 238, .25),
+                    transparent 30%
+                );
+        }
+
+
+        /* =========================================
+           PROFILE CARD
+        ========================================== */
+
+        .profile-container {
+            max-width: 1100px;
+            margin: -80px auto 0;
+
+            padding: 0 20px 60px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-card {
+            background: #fff;
+
+            border: 1px solid #e5e5e5;
+
+            border-radius: 22px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, .08);
+        }
+
+
+        /* =========================================
+           PROFILE TOP
+        ========================================== */
+
+        .profile-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
         }
 
         .profile-avatar {
             width: 120px;
             height: 120px;
+
+            min-width: 120px;
+
             border-radius: 50%;
-            margin: 0 auto 20px;
-            background: #292929;
-            border: 4px solid rgba(255,255,255,0.15);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fe2c55,
+                    #111,
+                    #25f4ee
+                );
+
+            border: 6px solid #fff;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
+            color: #fff;
+
             font-size: 42px;
-            font-weight: 800;
-            color: #777;
+            font-weight: 900;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, .15);
         }
 
-        .profile-header h1 {
-            font-size: 32px;
-            margin-bottom: 4px;
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 5px;
+        }
+
+        .profile-name {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .verified {
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+
+            background: #25a9f4;
+            color: #fff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+            font-weight: 900;
         }
 
         .profile-username {
-            color: #999;
+            margin: 0 0 12px;
+
+            color: #777;
+
             font-size: 15px;
         }
 
         .profile-bio {
-            max-width: 550px;
-            margin: 18px auto 0;
-            color: #bbb;
-            font-size: 14px;
+            color: #666;
+
+            max-width: 650px;
+
+            line-height: 1.6;
+
+            margin: 0;
         }
+
+
+        /* =========================================
+           FOLLOW
+        ========================================== */
 
         .profile-actions {
             display: flex;
-            justify-content: center;
             gap: 10px;
-            margin-top: 25px;
-            flex-wrap: wrap;
+
+            margin-top: 20px;
         }
 
+        .follow-button,
+        .message-button {
+
+            border: 0;
+
+            border-radius: 11px;
+
+            padding: 12px 22px;
+
+            cursor: pointer;
+
+            font-weight: 800;
+        }
+
+        .follow-button {
+            background: #fe2c55;
+            color: #fff;
+        }
+
+        .message-button {
+            background: #111;
+            color: #fff;
+        }
+
+
+        /* =========================================
+           STATS
+        ========================================== */
+
         .profile-stats {
-            max-width: 850px;
-            margin: -45px auto 0;
-            position: relative;
-            padding: 25px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            text-align: center;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-top: 28px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #eee;
         }
 
         .profile-stat {
-            padding: 12px;
-            border-right: 1px solid #eeeeee;
-        }
-
-        .profile-stat:last-child {
-            border-right: none;
+            text-align: center;
         }
 
         .profile-stat strong {
             display: block;
-            font-size: 24px;
-        }
 
-        .profile-stat span {
-            display: block;
-            color: #777;
-            font-size: 12px;
-            margin-top: 3px;
-        }
+            font-size: 23px;
 
-        .profile-content {
-            max-width: 1000px;
-            margin: auto;
-            padding: 60px 20px;
-        }
-
-        .profile-section {
-            margin-bottom: 45px;
-        }
-
-        .profile-section h2 {
-            font-size: 24px;
-            margin-bottom: 18px;
-        }
-
-        .offline-card {
-            background: white;
-            border: 1px solid #e8e8e8;
-            border-radius: 18px;
-            padding: 45px 25px;
-            text-align: center;
-        }
-
-        .offline-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: #f1f1f1;
-            color: #777;
-            padding: 7px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .offline-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #999;
-        }
-
-        .offline-card h3 {
-            margin-bottom: 7px;
-        }
-
-        .offline-card p {
-            color: #777;
-            max-width: 500px;
-            margin: auto;
-            font-size: 14px;
-        }
-
-        .content-empty {
-            background: white;
-            border: 1px dashed #d8d8d8;
-            border-radius: 18px;
-            padding: 45px 20px;
-            text-align: center;
-        }
-
-        .content-empty-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #f0f0f0;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .content-empty h3 {
-            font-size: 18px;
             margin-bottom: 5px;
         }
 
-        .content-empty p {
-            color: #777;
-            font-size: 14px;
+        .profile-stat span {
+            color: #888;
+
+            font-size: 12px;
         }
 
-        .profile-notice {
-            background: rgba(37,244,238,0.08);
-            border: 1px solid rgba(37,244,238,0.25);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 30px;
-            color: #555;
-            font-size: 13px;
-            text-align: center;
+
+        /* =========================================
+           CONTENT
+        ========================================== */
+
+        .profile-content {
+            max-width: 1100px;
+
+            margin: 25px auto 0;
+
+            padding: 0 20px 60px;
         }
 
-        .top-nav {
-            background: #111;
-            color: white;
-            padding: 18px 20px;
+        .content-card {
+            background: #fff;
+
+            border: 1px solid #e5e5e5;
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
         }
 
-        .top-nav-inner {
-            max-width: 1000px;
-            margin: auto;
+        .content-card h2 {
+            margin: 0 0 18px;
+
+            font-size: 20px;
+        }
+
+
+        /* =========================================
+           EMPTY CONTENT
+        ========================================== */
+
+        .empty-profile {
+
+            min-height: 240px;
+
             display: flex;
+
             align-items: center;
-            justify-content: space-between;
-            gap: 15px;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            text-align: center;
+
+            padding: 30px;
         }
 
-        .top-nav a {
-            font-weight: 800;
+        .empty-profile-icon {
+
+            width: 70px;
+            height: 70px;
+
+            border-radius: 20px;
+
+            background: #f1f1f1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            margin-bottom: 15px;
         }
 
-        .top-nav-home {
-            color: #aaa;
-            font-size: 13px;
+        .empty-profile h3 {
+            margin: 0 0 8px;
         }
+
+        .empty-profile p {
+
+            color: #888;
+
+            max-width: 450px;
+
+            line-height: 1.6;
+
+            margin: 0;
+        }
+
+
+        /* =========================================
+           LIVE AREA
+        ========================================== */
+
+        .live-status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 7px 11px;
+
+            background: #f3f3f3;
+
+            border-radius: 20px;
+
+            color: #777;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .live-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #888;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
 
         @media (max-width: 700px) {
 
-            .profile-header {
-                padding: 55px 18px 80px;
+            .profile-cover {
+                height: 200px;
             }
 
-            .profile-header h1 {
-                font-size: 27px;
+            .profile-container {
+                margin-top: -60px;
             }
 
-            .profile-avatar {
-                width: 105px;
-                height: 105px;
-                font-size: 36px;
+            .profile-card {
+                padding: 22px;
+            }
+
+            .profile-top {
+                flex-direction: column;
+                align-items: center;
+
+                text-align: center;
+            }
+
+            .profile-info {
+                width: 100%;
+            }
+
+            .profile-name-row {
+                justify-content: center;
+            }
+
+            .profile-actions {
+                justify-content: center;
+            }
+
+            .profile-bio {
+                margin-left: auto;
+                margin-right: auto;
             }
 
             .profile-stats {
-                margin-left: 18px;
-                margin-right: 18px;
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                row-gap: 22px;
             }
 
-            .profile-stat {
-                border-right: none;
-                border-bottom: 1px solid #eeeeee;
-            }
-
-            .profile-stat:nth-child(3),
-            .profile-stat:nth-child(4) {
-                border-bottom: none;
-            }
-
-            .profile-content {
-                padding: 45px 18px;
-            }
         }
+
+
+        @media (max-width: 430px) {
+
+            .profile-header-inner {
+                padding: 0 15px;
+            }
+
+            .profile-brand span {
+                display: none;
+            }
+
+            .profile-container,
+            .profile-content {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .profile-name {
+                font-size: 25px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="profile-page">
 
-        <!-- TOP NAVIGATION -->
+<div class="profile-page">
 
-        <nav class="top-nav">
 
-            <div class="top-nav-inner">
+    <!-- =========================================
+         HEADER
+    ========================================== -->
 
-                <a href="index.html">
+    <header class="profile-header">
+
+        <div class="profile-header-inner">
+
+            <a
+                href="index.html"
+                class="profile-brand"
+            >
+
+                <div class="profile-logo">
+                    TS
+                </div>
+
+                <span>
                     TikTok Streamers
-                </a>
+                </span>
 
-                <a
-                    href="index.html"
-                    class="top-nav-home"
-                >
-                    ← Home
-                </a>
-
-            </div>
-
-        </nav>
+            </a>
 
 
-        <!-- PROFILE HEADER -->
-
-        <header class="profile-header">
-
-            <div class="profile-header-inner">
-
-                <div class="profile-avatar">
-                    ?
-                </div>
-
-                <h1>
-                    No Streamer
-                </h1>
-
-                <div class="profile-username">
-                    No profile selected
-                </div>
-
-                <p class="profile-bio">
-                    Real streamer profile information will appear
-                    here when creators join the platform.
-                </p>
-
-                <div class="profile-actions">
-
-                    <button
-                        class="btn btn-red"
-                        onclick="followStreamer()"
-                    >
-                        Follow
-                    </button>
-
-                    <button
-                        class="btn btn-outline"
-                        onclick="messageStreamer()"
-                    >
-                        Message
-                    </button>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-        <!-- PROFILE STATS -->
-
-        <div class="profile-stats">
-
-            <div class="profile-stat">
-                <strong>0</strong>
-                <span>Followers</span>
-            </div>
-
-            <div class="profile-stat">
-                <strong>0</strong>
-                <span>Following</span>
-            </div>
-
-            <div class="profile-stat">
-                <strong>0</strong>
-                <span>Likes</span>
-            </div>
-
-            <div class="profile-stat">
-                <strong>0</strong>
-                <span>Gift Points</span>
-            </div>
+            <a
+                href="index.html"
+                class="back-button"
+            >
+                ← Back
+            </a>
 
         </div>
 
-
-        <!-- CONTENT -->
-
-        <main class="profile-content">
-
-            <div class="profile-notice">
-                This is an empty platform right now.
-                Streamer information, videos, battles and LIVE
-                activity will appear automatically as real creators
-                join and use TikTok Streamers.
-            </div>
+    </header>
 
 
-            <!-- LIVE -->
 
-            <section class="profile-section">
+    <!-- =========================================
+         COVER
+    ========================================== -->
 
-                <h2>LIVE</h2>
+    <div class="profile-cover">
 
-                <div class="offline-card">
-
-                    <div class="offline-badge">
-
-                        <span class="offline-dot"></span>
-
-                        OFFLINE
-
-                    </div>
-
-                    <h3>
-                        No LIVE stream
-                    </h3>
-
-                    <p>
-                        This streamer is not currently LIVE.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- VIDEOS -->
-
-            <section class="profile-section">
-
-                <h2>Videos</h2>
-
-                <div class="content-empty">
-
-                    <div class="content-empty-icon">
-                        ▶
-                    </div>
-
-                    <h3>
-                        No videos yet
-                    </h3>
-
-                    <p>
-                        Videos will appear here when this streamer
-                        starts creating content.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- BATTLES -->
-
-            <section class="profile-section">
-
-                <h2>LIVE Battles</h2>
-
-                <div class="content-empty">
-
-                    <div class="content-empty-icon">
-                        ⚔
-                    </div>
-
-                    <h3>
-                        No battles yet
-                    </h3>
-
-                    <p>
-                        LIVE battle history will appear here when
-                        real streamers participate.
-                    </p>
-
-                </div>
-
-            </section>
-
-        </main>
+        <div class="profile-cover-pattern"></div>
 
     </div>
 
 
-    <!-- JAVASCRIPT -->
 
-    <script>
+    <!-- =========================================
+         PROFILE
+    ========================================== -->
 
-        function followStreamer() {
+    <div class="profile-container">
 
-            showMessage(
-                "Please sign in before following a streamer."
-            );
-
-        }
+        <section class="profile-card">
 
 
-        function messageStreamer() {
-
-            showMessage(
-                "Messaging will be available when accounts are connected."
-            );
-
-        }
+            <div class="profile-top">
 
 
-        function showMessage(message) {
+                <!-- AVATAR -->
 
-            let toast =
-                document.getElementById("toast");
+                <div
+                    class="profile-avatar"
+                    id="profileAvatar"
+                >
+                    ?
+                </div>
 
-            if (!toast) {
 
-                toast =
-                    document.createElement("div");
 
-                toast.id = "toast";
+                <!-- INFO -->
 
-                toast.className = "toast";
+                <div class="profile-info">
 
-                document.body.appendChild(toast);
+                    <div class="profile-name-row">
 
-            }
+                        <h1
+                            class="profile-name"
+                            id="profileName"
+                        >
+                            No Streamer
+                        </h1>
 
-            toast.textContent = message;
+                    </div>
 
-            toast.classList.add("show");
 
-            clearTimeout(window.profileToastTimer);
+                    <p
+                        class="profile-username"
+                        id="profileUsername"
+                    >
+                        No profile selected
+                    </p>
 
-            window.profileToastTimer =
-                setTimeout(function () {
 
-                    toast.classList.remove("show");
+                    <p class="profile-bio">
 
-                }, 3500);
+                        This streamer profile is currently
+                        empty. Real profile information will
+                        appear here when a streamer joins
+                        the platform.
 
-        }
+                    </p>
 
-    </script>
+
+                    <div class="profile-actions">
+
+                        <button
+                            class="follow-button"
+                            onclick="followStreamer()"
+                        >
+                            Follow
+                        </button>
+
+                        <button
+                            class="message-button"
+                            onclick="messageStreamer()"
+                        >
+                            Message
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 STATS
+            ================================== -->
+
+            <div class="profile-stats">
+
+
+                <div class="profile-stat">
+
+                    <strong>
+                        0
+                    </strong>
+
+                    <span>
+                        Followers
+                    </span>
+
+                </div>
+
+
+                <div class="profile-stat">
+
+                    <strong>
+                        0
+                    </strong>
+
+                    <span>
+                        Following
+                    </span>
+
+                </div>
+
+
+                <div class="profile-stat">
+
+                    <strong>
+                        0
+                    </strong>
+
+                    <span>
+                        Likes
+                    </span>
+
+                </div>
+
+
+                <div class="profile-stat">
+
+                    <strong>
+                        0
+                    </strong>
+
+                    <span>
+                        Gifts
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =========================================
+         CONTENT
+    ========================================== -->
+
+    <div class="profile-content">
+
+
+        <!-- LIVE -->
+
+        <section class="content-card">
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap:10px;
+                    margin-bottom:18px;
+                "
+            >
+
+                <h2>
+                    LIVE
+                </h2>
+
+                <span class="live-status">
+
+                    <span class="live-dot"></span>
+
+                    OFFLINE
+
+                </span>
+
+            </div>
+
+
+            <div class="empty-profile">
+
+                <div class="empty-profile-icon">
+                    🔴
+                </div>
+
+                <h3>
+                    Not LIVE
+                </h3>
+
+                <p>
+                    This streamer is not currently
+                    broadcasting.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- VIDEOS -->
+
+        <section class="content-card">
+
+            <h2>
+                Videos
+            </h2>
+
+
+            <div class="empty-profile">
+
+                <div class="empty-profile-icon">
+                    🎬
+                </div>
+
+                <h3>
+                    No videos yet
+                </h3>
+
+                <p>
+                    Videos uploaded by this streamer
+                    will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- BATTLES -->
+
+        <section class="content-card">
+
+            <h2>
+                Battles
+            </h2>
+
+
+            <div class="empty-profile">
+
+                <div class="empty-profile-icon">
+                    ⚔️
+                </div>
+
+                <h3>
+                    No battles yet
+                </h3>
+
+                <p>
+                    Streamer battles and results will
+                    appear here after real activity.
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   PROFILE ACTIONS
+========================================= */
+
+function followStreamer() {
+
+    alert(
+        "You need to be logged in before following a streamer."
+    );
+
+}
+
+
+function messageStreamer() {
+
+    alert(
+        "Messaging will be available after the account system is connected."
+    );
+
+}
+
+
+console.log(
+    "Streamer profile loaded — waiting for a real streamer."
+);
+
+</script>
+
 
 </body>
 </html>
