@@ -6,7 +6,7 @@
 
     <title>Profile — TikTok Streamers</title>
 
-    <meta name="description" content="TikTok Streamers profile">
+    <meta name="description" content="TikTok Streamers user profile">
 
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
@@ -20,10 +20,12 @@
 
         .profile-hero {
             background:
-                linear-gradient(135deg,
-                    rgba(37, 244, 238, 0.12),
-                    rgba(254, 44, 85, 0.12));
-            border: 1px solid rgba(17, 17, 17, 0.08);
+                linear-gradient(
+                    135deg,
+                    rgba(37,244,238,.12),
+                    rgba(254,44,85,.12)
+                );
+            border: 1px solid rgba(17,17,17,.08);
             border-radius: 24px;
             padding: 35px;
             position: relative;
@@ -36,7 +38,7 @@
             width: 220px;
             height: 220px;
             background: #25f4ee;
-            opacity: 0.08;
+            opacity: .08;
             border-radius: 50%;
             right: -80px;
             top: -100px;
@@ -55,16 +57,21 @@
             height: 120px;
             min-width: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #25f4ee, #fe2c55);
+            background:
+                linear-gradient(
+                    135deg,
+                    #25f4ee,
+                    #fe2c55
+                );
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: white;
             font-size: 42px;
             font-weight: 900;
             overflow: hidden;
-            border: 5px solid #fff;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+            border: 5px solid white;
+            box-shadow: 0 10px 35px rgba(0,0,0,.18);
         }
 
         .profile-avatar img {
@@ -87,11 +94,10 @@
         .profile-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
             padding: 7px 13px;
             border-radius: 30px;
             background: #111;
-            color: #fff;
+            color: white;
             font-size: 12px;
             font-weight: 700;
             text-transform: capitalize;
@@ -103,6 +109,7 @@
             gap: 10px;
             position: relative;
             z-index: 2;
+            flex-wrap: wrap;
         }
 
         .profile-action {
@@ -119,25 +126,40 @@
 
         .profile-action.primary {
             background: #111;
-            color: #fff;
+            color: white;
         }
 
         .profile-action.secondary {
-            background: #fff;
+            background: white;
             color: #111;
             border: 1px solid #ddd;
         }
 
+        .profile-action.follow {
+            background: #fe2c55;
+            color: white;
+        }
+
+        .profile-action.following {
+            background: #111;
+            color: white;
+        }
+
         .profile-action.logout {
             background: #fe2c55;
-            color: #fff;
+            color: white;
+        }
+
+        .profile-action:disabled {
+            opacity: .6;
+            cursor: not-allowed;
         }
 
         .profile-stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3,1fr);
             margin-top: 30px;
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,.8);
             border-radius: 18px;
             overflow: hidden;
             position: relative;
@@ -173,10 +195,10 @@
         }
 
         .profile-card {
-            background: #fff;
+            background: white;
             border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            box-shadow: 0 8px 25px rgba(0,0,0,.06);
             border: 1px solid #eee;
         }
 
@@ -219,7 +241,7 @@
             padding: 20px;
         }
 
-        .empty-profile-content .empty-icon {
+        .empty-icon {
             font-size: 42px;
             margin-bottom: 10px;
         }
@@ -228,10 +250,10 @@
             max-width: 600px;
             margin: 60px auto;
             text-align: center;
-            background: #fff;
+            background: white;
             padding: 45px 25px;
             border-radius: 24px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
         }
 
         .login-screen h1 {
@@ -259,11 +281,11 @@
         .profile-error {
             max-width: 650px;
             margin: 60px auto;
-            background: #fff;
+            background: white;
             border-radius: 20px;
             padding: 35px 25px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,.08);
         }
 
         .profile-error h2 {
@@ -275,14 +297,14 @@
             line-height: 1.6;
         }
 
-        .follow-status {
-            font-size: 13px;
+        .profile-status {
             color: #777;
-            margin-top: 10px;
-            display: none;
+            font-size: 13px;
+            margin-top: 8px;
+            min-height: 18px;
         }
 
-        @media (max-width: 800px) {
+        @media(max-width:800px) {
 
             .profile-main {
                 align-items: flex-start;
@@ -303,7 +325,7 @@
             }
         }
 
-        @media (max-width: 550px) {
+        @media(max-width:550px) {
 
             .profile-page {
                 padding: 20px 14px 50px;
@@ -363,11 +385,13 @@
 
         <div class="header-actions">
 
-            <a href="dashboard.html" class="btn btn-secondary">
+            <a href="dashboard.html"
+               class="btn btn-secondary">
                 Dashboard
             </a>
 
-            <button id="logoutTop" class="btn btn-primary">
+            <button id="logoutTop"
+                    class="btn btn-primary">
                 Logout
             </button>
 
@@ -378,7 +402,8 @@
 </header>
 
 
-<div id="mobileMenu" class="mobile-menu">
+<div id="mobileMenu"
+     class="mobile-menu">
 
     <a href="index.html">Home</a>
     <a href="live.html">Live</a>
@@ -391,9 +416,10 @@
 
 <main class="profile-page">
 
-    <section id="loadingProfile" class="loading-profile">
+    <section id="loadingProfile"
+             class="loading-profile">
 
-        <h2>Loading your profile...</h2>
+        <h2>Loading profile...</h2>
 
         <p>Please wait.</p>
 
@@ -411,7 +437,7 @@
         <h1>Welcome to TikTok Streamers</h1>
 
         <p>
-            Log in to view your profile and manage your account.
+            Log in to view profiles and interact with users.
         </p>
 
         <div class="login-buttons">
@@ -443,6 +469,7 @@
                     ?
                 </div>
 
+
                 <div class="profile-details">
 
                     <h1 id="fullName">
@@ -459,13 +486,31 @@
                         viewer
                     </span>
 
+                    <div id="profileStatus"
+                         class="profile-status">
+                    </div>
+
                 </div>
 
 
                 <div class="profile-actions">
 
-                    <a href="settings.html"
-                       class="profile-action primary">
+                    <button id="followButton"
+                            class="profile-action follow"
+                            style="display:none;">
+                        Follow
+                    </button>
+
+                    <button id="messageButton"
+                            class="profile-action secondary"
+                            style="display:none;">
+                        💬 Message
+                    </button>
+
+                    <a id="settingsButton"
+                       href="settings.html"
+                       class="profile-action primary"
+                       style="display:none;">
                         ⚙ Settings
                     </a>
 
@@ -487,9 +532,12 @@
                         0
                     </strong>
 
-                    <span>Followers</span>
+                    <span>
+                        Followers
+                    </span>
 
                 </div>
+
 
                 <div class="profile-stat">
 
@@ -497,9 +545,12 @@
                         0
                     </strong>
 
-                    <span>Following</span>
+                    <span>
+                        Following
+                    </span>
 
                 </div>
+
 
                 <div class="profile-stat">
 
@@ -507,7 +558,9 @@
                         0
                     </strong>
 
-                    <span>Videos</span>
+                    <span>
+                        Videos
+                    </span>
 
                 </div>
 
@@ -521,7 +574,10 @@
 
             <div class="profile-card">
 
-                <h2>Account Information</h2>
+                <h2>
+                    Account Information
+                </h2>
+
 
                 <div class="profile-info-row">
 
@@ -583,7 +639,9 @@
 
             <div class="profile-card">
 
-                <h2>My Content</h2>
+                <h2>
+                    Content
+                </h2>
 
                 <div class="empty-profile-content">
 
@@ -593,12 +651,14 @@
                             🎬
                         </div>
 
-                        <strong>No content yet</strong>
+                        <strong>
+                            No content yet
+                        </strong>
 
                         <p style="margin-top:8px;">
-                            Your videos, LIVE streams and battles
-                            will appear here when you start using
-                            TikTok Streamers.
+                            Videos, LIVE streams and battles
+                            will appear here when this user
+                            starts using TikTok Streamers.
                         </p>
 
                     </div>
@@ -607,22 +667,22 @@
 
             </div>
 
-
         </div>
 
 
         <div class="profile-card"
              style="margin-top:20px;">
 
-            <h2>About Your Account</h2>
+            <h2>
+                About This Account
+            </h2>
 
             <p style="color:#777;line-height:1.7;">
 
-                This is your TikTok Streamers account profile.
-                Your real account information is loaded securely
-                from Supabase. Your followers, videos, LIVE streams,
-                gifts and other activity will appear here once
-                those features are used.
+                Real profile information is loaded from
+                Supabase. Followers, videos, LIVE streams,
+                gifts and other activity will appear as
+                real users begin using the platform.
 
             </p>
 
@@ -635,10 +695,12 @@
              class="profile-error"
              style="display:none;">
 
-        <h2>Unable to load profile</h2>
+        <h2>
+            Unable to load profile
+        </h2>
 
         <p id="errorMessage">
-            Something went wrong while loading your profile.
+            Something went wrong while loading this profile.
         </p>
 
         <br>
@@ -668,6 +730,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
 const SUPABASE_URL =
@@ -675,6 +738,7 @@ const SUPABASE_URL =
 
 const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraW5rZXJpcG9hdWJ1ciIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg4OTQ1MDI5LCJleHAiOjIxMDQ1MjEwMjl9.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -691,21 +755,49 @@ const supabaseClient =
 
 
 const loadingProfile =
-    document.getElementById("loadingProfile");
+    document.getElementById(
+        "loadingProfile"
+    );
 
 const loginScreen =
-    document.getElementById("loginScreen");
+    document.getElementById(
+        "loginScreen"
+    );
 
 const profileContent =
-    document.getElementById("profileContent");
+    document.getElementById(
+        "profileContent"
+    );
 
 const profileError =
-    document.getElementById("profileError");
+    document.getElementById(
+        "profileError"
+    );
+
+
+let currentUser = null;
+let viewedProfile = null;
+let isFollowing = false;
+
+
+/* GET PROFILE ID FROM URL */
+
+function getProfileIdFromUrl() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    return params.get("id");
+}
 
 
 /* LOAD FOLLOW COUNTS */
 
-async function loadFollowCounts(userId) {
+async function loadFollowCounts(
+    userId
+) {
 
     const followersResult =
         await supabaseClient
@@ -762,6 +854,270 @@ async function loadFollowCounts(userId) {
 }
 
 
+/* CHECK FOLLOW STATUS */
+
+async function checkFollowStatus() {
+
+    if (
+        !currentUser ||
+        !viewedProfile ||
+        currentUser.id === viewedProfile.id
+    ) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("follows")
+            .select(
+                "follower_id, following_id"
+            )
+            .eq(
+                "follower_id",
+                currentUser.id
+            )
+            .eq(
+                "following_id",
+                viewedProfile.id
+            )
+            .maybeSingle();
+
+
+    if (error) {
+        throw error;
+    }
+
+
+    isFollowing =
+        !!data;
+
+
+    updateFollowButton();
+}
+
+
+/* UPDATE FOLLOW BUTTON */
+
+function updateFollowButton() {
+
+    const button =
+        document.getElementById(
+            "followButton"
+        );
+
+
+    if (isFollowing) {
+
+        button.textContent =
+            "Following";
+
+        button.classList.remove(
+            "follow"
+        );
+
+        button.classList.add(
+            "following"
+        );
+
+    } else {
+
+        button.textContent =
+            "Follow";
+
+        button.classList.remove(
+            "following"
+        );
+
+        button.classList.add(
+            "follow"
+        );
+    }
+}
+
+
+/* FOLLOW / UNFOLLOW */
+
+async function toggleFollow() {
+
+    if (!currentUser) {
+
+        alert(
+            "Please log in first."
+        );
+
+        return;
+    }
+
+
+    if (
+        !viewedProfile ||
+        currentUser.id === viewedProfile.id
+    ) {
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "followButton"
+        );
+
+
+    button.disabled = true;
+
+
+    try {
+
+        if (isFollowing) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("follows")
+                    .delete()
+                    .eq(
+                        "follower_id",
+                        currentUser.id
+                    )
+                    .eq(
+                        "following_id",
+                        viewedProfile.id
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            isFollowing = false;
+
+        } else {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("follows")
+                    .insert({
+                        follower_id:
+                            currentUser.id,
+
+                        following_id:
+                            viewedProfile.id
+                    });
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            isFollowing = true;
+        }
+
+
+        updateFollowButton();
+
+        await loadFollowCounts(
+            viewedProfile.id
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Follow error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to update follow status."
+        );
+
+    } finally {
+
+        button.disabled = false;
+    }
+}
+
+
+/* MESSAGE USER */
+
+async function messageUser() {
+
+    if (!currentUser) {
+
+        alert(
+            "Please log in first."
+        );
+
+        return;
+    }
+
+
+    if (!viewedProfile) {
+        return;
+    }
+
+
+    try {
+
+        const {
+            data: conversationId,
+            error
+        } =
+            await supabaseClient
+                .rpc(
+                    "get_or_create_conversation",
+                    {
+                        other_user_id:
+                            viewedProfile.id
+                    }
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!conversationId) {
+
+            throw new Error(
+                "Unable to open conversation."
+            );
+        }
+
+
+        window.location.href =
+            "messages.html?conversation=" +
+            encodeURIComponent(
+                conversationId
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Message error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to start conversation."
+        );
+    }
+}
+
+
 /* LOAD PROFILE */
 
 async function loadProfile() {
@@ -771,7 +1127,10 @@ async function loadProfile() {
         const {
             data,
             error
-        } = await supabaseClient.auth.getSession();
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
 
 
         if (error) {
@@ -795,23 +1154,33 @@ async function loadProfile() {
         }
 
 
-        const user =
+        currentUser =
             session.user;
+
+
+        const requestedProfileId =
+            getProfileIdFromUrl();
+
+
+        const profileId =
+            requestedProfileId ||
+            currentUser.id;
 
 
         const {
             data: profile,
             error: profileErrorData
-        } = await supabaseClient
-            .from("profiles")
-            .select(
-                "id, full_name, username, account_type, avatar_url, created_at"
-            )
-            .eq(
-                "id",
-                user.id
-            )
-            .maybeSingle();
+        } =
+            await supabaseClient
+                .from("profiles")
+                .select(
+                    "id, full_name, username, account_type, avatar_url, created_at"
+                )
+                .eq(
+                    "id",
+                    profileId
+                )
+                .maybeSingle();
 
 
         if (profileErrorData) {
@@ -822,9 +1191,18 @@ async function loadProfile() {
         if (!profile) {
 
             throw new Error(
-                "Your account does not have a profile record yet."
+                "This profile could not be found."
             );
         }
+
+
+        viewedProfile =
+            profile;
+
+
+        const isOwnProfile =
+            currentUser.id ===
+            profile.id;
 
 
         const fullName =
@@ -881,8 +1259,12 @@ async function loadProfile() {
         document.getElementById(
             "email"
         ).textContent =
-            user.email ||
-            "No email";
+            isOwnProfile
+                ? (
+                    currentUser.email ||
+                    "No email"
+                )
+                : "Private";
 
 
         if (profile.created_at) {
@@ -930,11 +1312,71 @@ async function loadProfile() {
         }
 
 
-        /* REAL FOLLOW COUNTS */
-
         await loadFollowCounts(
-            user.id
+            profile.id
         );
+
+
+        const followButton =
+            document.getElementById(
+                "followButton"
+            );
+
+        const messageButton =
+            document.getElementById(
+                "messageButton"
+            );
+
+        const settingsButton =
+            document.getElementById(
+                "settingsButton"
+            );
+
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
+
+
+        if (isOwnProfile) {
+
+            settingsButton.style.display =
+                "inline-flex";
+
+            logoutButton.style.display =
+                "inline-flex";
+
+            followButton.style.display =
+                "none";
+
+            messageButton.style.display =
+                "none";
+
+            document.title =
+                "My Profile — TikTok Streamers";
+
+        } else {
+
+            followButton.style.display =
+                "inline-flex";
+
+            messageButton.style.display =
+                "inline-flex";
+
+            settingsButton.style.display =
+                "none";
+
+            logoutButton.style.display =
+                "none";
+
+
+            await checkFollowStatus();
+
+
+            document.title =
+                fullName +
+                " — TikTok Streamers";
+        }
 
 
         loadingProfile.style.display =
@@ -942,7 +1384,6 @@ async function loadProfile() {
 
         profileContent.style.display =
             "block";
-
 
     } catch (error) {
 
@@ -975,7 +1416,9 @@ async function logout() {
     const {
         error
     } =
-        await supabaseClient.auth.signOut();
+        await supabaseClient
+            .auth
+            .signOut();
 
 
     if (error) {
@@ -991,6 +1434,24 @@ async function logout() {
     window.location.href =
         "login.html";
 }
+
+
+/* EVENTS */
+
+document.getElementById(
+    "followButton"
+).addEventListener(
+    "click",
+    toggleFollow
+);
+
+
+document.getElementById(
+    "messageButton"
+).addEventListener(
+    "click",
+    messageUser
+);
 
 
 document.getElementById(
