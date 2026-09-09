@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>LIVE — TikTok Streamers</title>
 
@@ -14,10 +18,6 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* =========================================
-           LIVE PAGE
-        ========================================= */
-
         .live-page {
             min-height: 100vh;
             background: #f7f8fa;
@@ -70,13 +70,10 @@
             box-shadow: 0 0 10px rgba(254, 44, 85, .5);
         }
 
-        /* =========================================
-           LIVE GRID
-        ========================================= */
-
         .live-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns:
+                repeat(auto-fill, minmax(250px, 1fr));
             gap: 22px;
         }
 
@@ -86,12 +83,15 @@
             overflow: hidden;
             border: 1px solid #e9e9e9;
             cursor: pointer;
-            transition: transform .2s ease, box-shadow .2s ease;
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
         }
 
         .live-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, .09);
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, .09);
         }
 
         .live-thumbnail {
@@ -125,7 +125,6 @@
             border-radius: 7px;
             font-size: 12px;
             font-weight: 800;
-            letter-spacing: .4px;
         }
 
         .viewer-badge {
@@ -155,10 +154,6 @@
             font-size: 14px;
         }
 
-        /* =========================================
-           EMPTY STATE
-        ========================================= */
-
         .empty-live {
             display: none;
             text-align: center;
@@ -182,7 +177,8 @@
             justify-content: center;
             background: #111;
             color: #fff;
-            font-size: 30px;
+            font-size: 24px;
+            font-weight: 800;
         }
 
         .empty-live h2 {
@@ -194,10 +190,6 @@
             color: #777;
             margin-bottom: 25px;
         }
-
-        /* =========================================
-           WATCH PANEL
-        ========================================= */
 
         .watch-panel {
             display: none;
@@ -227,10 +219,6 @@
             font-weight: 700;
         }
 
-        .back-live-btn:hover {
-            opacity: .9;
-        }
-
         .watch-info {
             display: flex;
             align-items: center;
@@ -255,7 +243,8 @@
             overflow: hidden;
             position: relative;
             aspect-ratio: 16 / 9;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .18);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, .18);
         }
 
         #remoteVideo {
@@ -338,9 +327,11 @@
             color: #c81f43;
         }
 
-        /* =========================================
-           LOGIN REQUIRED
-        ========================================= */
+        .viewer-count-display {
+            margin-top: 12px;
+            color: #555;
+            font-size: 14px;
+        }
 
         .login-required {
             display: none;
@@ -376,10 +367,6 @@
             font-weight: 700;
         }
 
-        /* =========================================
-           ERROR MESSAGE
-        ========================================= */
-
         .live-error {
             display: none;
             background: #fff0f2;
@@ -396,10 +383,6 @@
             display: block;
         }
 
-        /* =========================================
-           MOBILE
-        ========================================= */
-
         @media (max-width: 700px) {
 
             .live-main {
@@ -415,7 +398,8 @@
             }
 
             .live-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
                 gap: 12px;
             }
 
@@ -458,1768 +442,1900 @@
 
 <body>
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
+<header class="site-header">
 
-    <header class="site-header">
+    <div class="header-inner">
 
-        <div class="header-inner">
+        <a href="index.html" class="brand">
+            TikTok Streamers
+        </a>
 
-            <a href="index.html" class="brand">
-                TikTok Streamers
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a
+                href="live.html"
+                class="active"
+            >
+                Live
+            </a>
+            <a href="streamer.html">
+                Streamers
+            </a>
+            <a href="leaderboard.html">
+                Leaderboard
+            </a>
+        </nav>
+
+        <div class="header-actions">
+
+            <a
+                href="login.html"
+                class="login-btn"
+            >
+                Login
             </a>
 
-            <nav class="main-nav">
-                <a href="index.html">Home</a>
-                <a href="live.html" class="active">Live</a>
-                <a href="streamer.html">Streamers</a>
-                <a href="leaderboard.html">Leaderboard</a>
-            </nav>
+            <a
+                href="register.html"
+                class="join-btn"
+            >
+                Join
+            </a>
 
-            <div class="header-actions">
+        </div>
 
-                <a href="login.html" class="login-btn">
-                    Login
-                </a>
+    </div>
 
-                <a href="register.html" class="join-btn">
-                    Join
-                </a>
+</header>
+
+
+<main class="live-page">
+
+    <div class="live-main">
+
+        <section class="live-page-header">
+
+            <h1>LIVE Streams</h1>
+
+            <p>
+                Watch streamers who are live right now.
+            </p>
+
+            <div
+                class="live-status"
+                id="liveStatus"
+            >
+
+                <span class="live-status-dot"></span>
+
+                <span id="liveStatusText">
+                    Checking live streams...
+                </span>
 
             </div>
 
-        </div>
-
-    </header>
+        </section>
 
 
-    <!-- =========================================
-         MAIN
-    ========================================== -->
+        <section
+            class="login-required"
+            id="loginRequired"
+        >
 
-    <main class="live-page">
+            <h2>Login Required</h2>
 
-        <div class="live-main">
+            <p>
+                Please log in to watch LIVE streams.
+            </p>
 
-            <!-- PAGE HEADER -->
+            <a href="login.html">
+                Login
+            </a>
 
-            <section class="live-page-header">
-
-                <h1>LIVE Streams</h1>
-
-                <p>
-                    Watch streamers who are live right now.
-                </p>
-
-                <div
-                    class="live-status"
-                    id="liveStatus"
-                >
-                    <span class="live-status-dot"></span>
-                    <span id="liveStatusText">
-                        Checking live streams...
-                    </span>
-                </div>
-
-            </section>
+        </section>
 
 
-            <!-- LOGIN REQUIRED -->
-
-            <section
-                class="login-required"
-                id="loginRequired"
-            >
-
-                <h2>Login Required</h2>
-
-                <p>
-                    Please log in to watch LIVE streams.
-                </p>
-
-                <a href="login.html">
-                    Login
-                </a>
-
-            </section>
+        <div
+            class="live-error"
+            id="liveError"
+        ></div>
 
 
-            <!-- ERROR -->
+        <section id="liveListSection">
 
             <div
-                class="live-error"
-                id="liveError"
+                class="live-grid"
+                id="liveGrid"
             ></div>
 
 
-            <!-- =====================================
-                 LIVE LIST
-            ====================================== -->
-
-            <section id="liveListSection">
-
-                <div
-                    class="live-grid"
-                    id="liveGrid"
-                ></div>
-
-                <div
-                    class="empty-live"
-                    id="emptyLive"
-                >
-
-                    <div class="empty-live-icon">
-                        LIVE
-                    </div>
-
-                    <h2>Nobody is LIVE right now</h2>
-
-                    <p>
-                        When streamers start broadcasting,
-                        their LIVE streams will appear here.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================
-                 WATCH PANEL
-            ====================================== -->
-
-            <section
-                class="watch-panel"
-                id="watchPanel"
+            <div
+                class="empty-live"
+                id="emptyLive"
             >
 
-                <div class="watch-topbar">
-
-                    <button
-                        type="button"
-                        class="back-live-btn"
-                        id="backLiveBtn"
-                    >
-                        ← Back to LIVE
-                    </button>
-
-                    <div class="watch-info">
-
-                        <span class="watch-live-dot"></span>
-
-                        <span id="watchViewerText">
-                            Connecting...
-                        </span>
-
-                    </div>
-
+                <div class="empty-live-icon">
+                    LIVE
                 </div>
 
+                <h2>
+                    Nobody is LIVE right now
+                </h2>
 
-                <div class="video-wrapper">
+                <p>
+                    When streamers start broadcasting,
+                    their LIVE streams will appear here.
+                </p>
 
-                    <video
-                        id="remoteVideo"
-                        autoplay
-                        playsinline
-                        controls
-                    ></video>
+            </div>
 
-                    <div
-                        class="video-loading"
-                        id="videoLoading"
-                    >
-
-                        <div class="spinner"></div>
-
-                        <strong>
-                            Connecting to LIVE...
-                        </strong>
-
-                        <span>
-                            Please wait.
-                        </span>
-
-                    </div>
-
-                </div>
+        </section>
 
 
-                <div class="watch-details">
+        <section
+            class="watch-panel"
+            id="watchPanel"
+        >
 
-                    <h2 id="watchTitle">
-                        LIVE Stream
-                    </h2>
+            <div class="watch-topbar">
 
-                    <p id="watchStreamer">
-                        Connecting to streamer...
-                    </p>
+                <button
+                    type="button"
+                    class="back-live-btn"
+                    id="backLiveBtn"
+                >
+                    ← Back to LIVE
+                </button>
 
-                    <div
-                        class="connection-status"
-                        id="connectionStatus"
-                    >
+                <div class="watch-info">
+
+                    <span class="watch-live-dot"></span>
+
+                    <span id="watchViewerText">
                         Connecting...
-                    </div>
+                    </span>
 
                 </div>
 
-            </section>
-
-        </div>
-
-    </main>
+            </div>
 
 
-    <!-- =========================================
-         SUPABASE
-    ========================================== -->
+            <div class="video-wrapper">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+                <video
+                    id="remoteVideo"
+                    autoplay
+                    playsinline
+                    controls
+                ></video>
+
+                <div
+                    class="video-loading"
+                    id="videoLoading"
+                >
+
+                    <div class="spinner"></div>
+
+                    <strong>
+                        Connecting to LIVE...
+                    </strong>
+
+                    <span>
+                        Please wait.
+                    </span>
+
+                </div>
+
+            </div>
 
 
-    <script>
+            <div class="watch-details">
 
-        /* =========================================
-           SUPABASE CONFIG
-        ========================================== */
+                <h2 id="watchTitle">
+                    LIVE Stream
+                </h2>
 
-        const SUPABASE_URL =
-            "https://malrwexkhekripoaubur.supabase.co";
+                <p id="watchStreamer">
+                    Connecting to streamer...
+                </p>
 
-        const SUPABASE_ANON_KEY =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhra2Vrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+                <div
+                    class="connection-status"
+                    id="connectionStatus"
+                >
+                    Connecting...
+                </div>
+
+                <div
+                    class="viewer-count-display"
+                    id="viewerCountDisplay"
+                >
+                    Viewers: 0
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
 
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY,
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://malrwexkhekripoaubur.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIiwiaXNzIjoic3VwYWJhc2UiLCJyZWYiOiJtYWxyd2V4a2hla3JpcG9hdWJ1ciIsImlhdCI6MTc4ODk0NTAyOSwiZXhwIjoyMTA0NTIxMDI5fQ.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+
+
+/* =========================================
+   STATE
+========================================= */
+
+let currentUser = null;
+
+let currentStream = null;
+
+let viewerPeer = null;
+
+let liveSignalChannel = null;
+
+let viewerRealtimeChannel = null;
+
+let streamCheckTimer = null;
+
+let liveRefreshTimer = null;
+
+let viewerHeartbeatTimer = null;
+
+let pendingIceCandidates = [];
+
+let isWatching = false;
+
+let isClosing = false;
+
+
+/* =========================================
+   DOM
+========================================= */
+
+const liveGrid =
+    document.getElementById("liveGrid");
+
+const emptyLive =
+    document.getElementById("emptyLive");
+
+const liveListSection =
+    document.getElementById("liveListSection");
+
+const watchPanel =
+    document.getElementById("watchPanel");
+
+const backLiveBtn =
+    document.getElementById("backLiveBtn");
+
+const remoteVideo =
+    document.getElementById("remoteVideo");
+
+const videoLoading =
+    document.getElementById("videoLoading");
+
+const watchTitle =
+    document.getElementById("watchTitle");
+
+const watchStreamer =
+    document.getElementById("watchStreamer");
+
+const connectionStatus =
+    document.getElementById("connectionStatus");
+
+const watchViewerText =
+    document.getElementById("watchViewerText");
+
+const viewerCountDisplay =
+    document.getElementById(
+        "viewerCountDisplay"
+    );
+
+const liveStatus =
+    document.getElementById("liveStatus");
+
+const liveStatusText =
+    document.getElementById(
+        "liveStatusText"
+    );
+
+const loginRequired =
+    document.getElementById(
+        "loginRequired"
+    );
+
+const liveError =
+    document.getElementById(
+        "liveError"
+    );
+
+
+/* =========================================
+   UI HELPERS
+========================================= */
+
+function showError(message) {
+
+    liveError.textContent = message;
+
+    liveError.classList.add("show");
+}
+
+
+function hideError() {
+
+    liveError.textContent = "";
+
+    liveError.classList.remove("show");
+}
+
+
+function setConnectionStatus(
+    message,
+    type = ""
+) {
+
+    connectionStatus.textContent =
+        message;
+
+    connectionStatus.className =
+        "connection-status";
+
+    if (type) {
+
+        connectionStatus.classList.add(
+            type
+        );
+
+    }
+}
+
+
+function setLiveStatus(
+    message,
+    active = false
+) {
+
+    liveStatusText.textContent =
+        message;
+
+    if (active) {
+
+        liveStatus.classList.add(
+            "active"
+        );
+
+    } else {
+
+        liveStatus.classList.remove(
+            "active"
+        );
+
+    }
+}
+
+
+/* =========================================
+   AUTH
+========================================= */
+
+async function checkAuthentication() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+        showError(
+            "Unable to verify your login."
+        );
+
+        return false;
+    }
+
+
+    if (!data.session) {
+
+        currentUser = null;
+
+        loginRequired.classList.add(
+            "show"
+        );
+
+        liveListSection.style.display =
+            "none";
+
+        setLiveStatus(
+            "Login required"
+        );
+
+        return false;
+    }
+
+
+    currentUser =
+        data.session.user;
+
+
+    loginRequired.classList.remove(
+        "show"
+    );
+
+    liveListSection.style.display =
+        "block";
+
+
+    return true;
+}
+
+
+/* =========================================
+   LOAD LIVE STREAMS
+========================================= */
+
+async function loadLiveStreams() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    if (isWatching) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .select(`
+            id,
+            streamer_id,
+            title,
+            room_id,
+            thumbnail_url,
+            is_live,
+            viewer_count,
+            started_at,
+            profiles:streamer_id (
+                id,
+                full_name,
+                username,
+                avatar_url,
+                account_type,
+                is_live
+            )
+        `)
+        .eq("is_live", true)
+        .order(
+            "started_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Live streams error:",
+            error
+        );
+
+        showError(
+            "Unable to load LIVE streams."
+        );
+
+        return;
+    }
+
+
+    liveGrid.innerHTML = "";
+
+
+    if (!data || data.length === 0) {
+
+        emptyLive.classList.add(
+            "show"
+        );
+
+        setLiveStatus(
+            "Nobody is LIVE",
+            false
+        );
+
+        return;
+    }
+
+
+    emptyLive.classList.remove(
+        "show"
+    );
+
+
+    setLiveStatus(
+        `${data.length} LIVE stream${data.length === 1 ? "" : "s"}`,
+        true
+    );
+
+
+    data.forEach(
+        stream => {
+
+            liveGrid.appendChild(
+                createLiveCard(stream)
+            );
+
+        }
+    );
+}
+
+
+/* =========================================
+   LIVE CARD
+========================================= */
+
+function createLiveCard(stream) {
+
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "live-card";
+
+
+    const thumbnail =
+        document.createElement("div");
+
+    thumbnail.className =
+        "live-thumbnail";
+
+
+    if (stream.thumbnail_url) {
+
+        const image =
+            document.createElement("img");
+
+        image.src =
+            stream.thumbnail_url;
+
+        image.alt =
+            stream.title ||
+            "LIVE stream";
+
+        image.loading =
+            "lazy";
+
+        thumbnail.appendChild(
+            image
+        );
+    }
+
+
+    const liveBadge =
+        document.createElement("div");
+
+    liveBadge.className =
+        "live-badge";
+
+    liveBadge.textContent =
+        "LIVE";
+
+
+    thumbnail.appendChild(
+        liveBadge
+    );
+
+
+    const viewerBadge =
+        document.createElement("div");
+
+    viewerBadge.className =
+        "viewer-badge";
+
+
+    const count =
+        Number(
+            stream.viewer_count || 0
+        );
+
+
+    viewerBadge.textContent =
+        `${count} viewer${count === 1 ? "" : "s"}`;
+
+
+    thumbnail.appendChild(
+        viewerBadge
+    );
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "live-card-content";
+
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "live-card-title";
+
+    title.textContent =
+        stream.title ||
+        "LIVE Stream";
+
+
+    const streamer =
+        document.createElement("div");
+
+    streamer.className =
+        "live-streamer";
+
+
+    const profile =
+        stream.profiles;
+
+
+    if (profile) {
+
+        const name =
+            profile.full_name ||
+            profile.username ||
+            "Streamer";
+
+        const username =
+            profile.username
+                ? `@${profile.username}`
+                : "";
+
+        streamer.textContent =
+            username
+                ? `${name} · ${username}`
+                : name;
+
+    } else {
+
+        streamer.textContent =
+            "Streamer";
+
+    }
+
+
+    content.appendChild(
+        title
+    );
+
+    content.appendChild(
+        streamer
+    );
+
+
+    card.appendChild(
+        thumbnail
+    );
+
+    card.appendChild(
+        content
+    );
+
+
+    card.addEventListener(
+        "click",
+        () => watchStream(stream)
+    );
+
+
+    return card;
+}
+
+
+/* =========================================
+   JOIN VIEWER SESSION
+========================================= */
+
+async function joinViewerSession(
+    streamId
+) {
+
+    if (
+        !currentUser ||
+        !streamId
+    ) {
+
+        return false;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("live_viewers")
+        .upsert(
+            {
+                stream_id:
+                    streamId,
+
+                viewer_id:
+                    currentUser.id,
+
+                last_seen_at:
+                    new Date().toISOString()
+            },
+            {
+                onConflict:
+                    "stream_id,viewer_id"
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Viewer join error:",
+            error
+        );
+
+        return false;
+    }
+
+
+    console.log(
+        "Viewer session joined:",
+        streamId
+    );
+
+
+    await refreshViewerCount(
+        streamId
+    );
+
+
+    startViewerHeartbeat();
+
+
+    subscribeToViewerCount(
+        streamId
+    );
+
+
+    return true;
+}
+
+
+/* =========================================
+   VIEWER HEARTBEAT
+========================================= */
+
+function startViewerHeartbeat() {
+
+    stopViewerHeartbeat();
+
+
+    viewerHeartbeatTimer =
+        setInterval(
+            sendViewerHeartbeat,
+            10000
+        );
+
+
+    sendViewerHeartbeat();
+}
+
+
+function stopViewerHeartbeat() {
+
+    if (
+        viewerHeartbeatTimer
+    ) {
+
+        clearInterval(
+            viewerHeartbeatTimer
+        );
+
+        viewerHeartbeatTimer =
+            null;
+    }
+}
+
+
+async function sendViewerHeartbeat() {
+
+    if (
+        !currentUser ||
+        !currentStream
+    ) {
+
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("live_viewers")
+        .update(
+            {
+                last_seen_at:
+                    new Date().toISOString()
+            }
+        )
+        .eq(
+            "stream_id",
+            currentStream.id
+        )
+        .eq(
+            "viewer_id",
+            currentUser.id
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Heartbeat error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   LEAVE VIEWER SESSION
+========================================= */
+
+async function leaveViewerSession(
+    streamId = null
+) {
+
+    stopViewerHeartbeat();
+
+
+    if (
+        viewerRealtimeChannel
+    ) {
+
+        try {
+
+            await supabaseClient
+                .removeChannel(
+                    viewerRealtimeChannel
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Viewer realtime cleanup:",
+                error
+            );
+
+        }
+
+        viewerRealtimeChannel =
+            null;
+    }
+
+
+    if (
+        !currentUser ||
+        !streamId
+    ) {
+
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("live_viewers")
+        .delete()
+        .eq(
+            "stream_id",
+            streamId
+        )
+        .eq(
+            "viewer_id",
+            currentUser.id
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Viewer leave error:",
+            error
+        );
+
+        return;
+    }
+
+
+    console.log(
+        "Viewer session left:",
+        streamId
+    );
+}
+
+
+/* =========================================
+   REAL VIEWER COUNT
+========================================= */
+
+async function refreshViewerCount(
+    streamId
+) {
+
+    if (!streamId) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .rpc(
+            "get_live_viewer_count",
+            {
+                target_stream_id:
+                    streamId
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Viewer count error:",
+            error
+        );
+
+        return;
+    }
+
+
+    const count =
+        Number(data || 0);
+
+
+    viewerCountDisplay.textContent =
+        `Viewers: ${count}`;
+
+
+    watchViewerText.textContent =
+        `${count} viewer${count === 1 ? "" : "s"} LIVE`;
+}
+
+
+/* =========================================
+   VIEWER COUNT REALTIME
+========================================= */
+
+function subscribeToViewerCount(
+    streamId
+) {
+
+    if (
+        viewerRealtimeChannel
+    ) {
+
+        return;
+    }
+
+
+    viewerRealtimeChannel =
+        supabaseClient
+            .channel(
+                `viewer-count-${streamId}-${currentUser.id}-${Date.now()}`
+            )
+            .on(
+                "postgres_changes",
                 {
-                    auth: {
-                        persistSession: true,
-                        autoRefreshToken: true,
-                        detectSessionInUrl: true
-                    }
-                }
-            );
-
-
-        /* =========================================
-           GLOBAL STATE
-        ========================================== */
-
-        let currentUser = null;
-
-        let currentStream = null;
-
-        let viewerPeer = null;
-
-        let liveSignalChannel = null;
-
-        let streamCheckTimer = null;
-
-        let liveRefreshTimer = null;
-
-        let pendingIceCandidates = [];
-
-        let isWatching = false;
-
-        let isClosing = false;
-
-
-        /* =========================================
-           DOM ELEMENTS
-        ========================================== */
-
-        const liveGrid =
-            document.getElementById("liveGrid");
-
-        const emptyLive =
-            document.getElementById("emptyLive");
-
-        const liveListSection =
-            document.getElementById("liveListSection");
-
-        const watchPanel =
-            document.getElementById("watchPanel");
-
-        const backLiveBtn =
-            document.getElementById("backLiveBtn");
-
-        const remoteVideo =
-            document.getElementById("remoteVideo");
-
-        const videoLoading =
-            document.getElementById("videoLoading");
-
-        const watchTitle =
-            document.getElementById("watchTitle");
-
-        const watchStreamer =
-            document.getElementById("watchStreamer");
-
-        const connectionStatus =
-            document.getElementById("connectionStatus");
-
-        const watchViewerText =
-            document.getElementById("watchViewerText");
-
-        const liveStatus =
-            document.getElementById("liveStatus");
-
-        const liveStatusText =
-            document.getElementById("liveStatusText");
-
-        const loginRequired =
-            document.getElementById("loginRequired");
-
-        const liveError =
-            document.getElementById("liveError");
-
-
-        /* =========================================
-           HELPERS
-        ========================================== */
-
-        function showError(message) {
-
-            liveError.textContent = message;
-
-            liveError.classList.add("show");
-
-        }
-
-
-        function hideError() {
-
-            liveError.textContent = "";
-
-            liveError.classList.remove("show");
-
-        }
-
-
-        function setConnectionStatus(
-            message,
-            type = ""
-        ) {
-
-            connectionStatus.textContent = message;
-
-            connectionStatus.className =
-                "connection-status";
-
-            if (type) {
-
-                connectionStatus.classList.add(type);
-
-            }
-
-        }
-
-
-        function setLiveStatus(
-            message,
-            active = false
-        ) {
-
-            liveStatusText.textContent = message;
-
-            if (active) {
-
-                liveStatus.classList.add("active");
-
-            } else {
-
-                liveStatus.classList.remove("active");
-
-            }
-
-        }
-
-
-        /* =========================================
-           AUTHENTICATION
-        ========================================== */
-
-        async function checkAuthentication() {
-
-            const {
-                data,
-                error
-            } = await supabaseClient.auth.getSession();
-
-            if (error) {
-
-                console.error(
-                    "Session error:",
-                    error
-                );
-
-                return false;
-
-            }
-
-            if (!data.session) {
-
-                currentUser = null;
-
-                loginRequired.classList.add("show");
-
-                liveListSection.style.display =
-                    "none";
-
-                setLiveStatus(
-                    "Login required"
-                );
-
-                return false;
-
-            }
-
-            currentUser =
-                data.session.user;
-
-            loginRequired.classList.remove(
-                "show"
-            );
-
-            liveListSection.style.display =
-                "block";
-
-            return true;
-        }
-
-
-        /* =========================================
-           LOAD LIVE STREAMS
-        ========================================== */
-
-        async function loadLiveStreams() {
-
-            if (!currentUser) {
-                return;
-            }
-
-            if (isWatching) {
-                return;
-            }
-
-            hideError();
-
-            const {
-                data,
-                error
-            } = await supabaseClient
-                .from("live_streams")
-                .select(`
-                    id,
-                    streamer_id,
-                    title,
-                    room_id,
-                    thumbnail_url,
-                    is_live,
-                    viewer_count,
-                    started_at,
-                    profiles:streamer_id (
-                        id,
-                        full_name,
-                        username,
-                        avatar_url,
-                        account_type,
-                        is_live
-                    )
-                `)
-                .eq("is_live", true)
-                .order(
-                    "started_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-            if (error) {
-
-                console.error(
-                    "Live streams error:",
-                    error
-                );
-
-                showError(
-                    "Unable to load LIVE streams right now."
-                );
-
-                setLiveStatus(
-                    "Unable to load LIVE streams"
-                );
-
-                return;
-
-            }
-
-
-            liveGrid.innerHTML = "";
-
-
-            if (!data || data.length === 0) {
-
-                emptyLive.classList.add("show");
-
-                setLiveStatus(
-                    "Nobody is LIVE",
-                    false
-                );
-
-                return;
-
-            }
-
-
-            emptyLive.classList.remove(
-                "show"
-            );
-
-            setLiveStatus(
-                `${data.length} LIVE stream${data.length === 1 ? "" : "s"}`,
-                true
-            );
-
-
-            data.forEach(
-                stream => {
-
-                    const card =
-                        createLiveCard(
-                            stream
-                        );
-
-                    liveGrid.appendChild(
-                        card
+                    event: "*",
+                    schema: "public",
+                    table: "live_viewers",
+                    filter:
+                        `stream_id=eq.${streamId}`
+                },
+                () => {
+
+                    refreshViewerCount(
+                        streamId
                     );
 
                 }
-            );
-        }
+            )
+            .subscribe();
+}
 
 
-        /* =========================================
-           CREATE LIVE CARD
-        ========================================== */
+/* =========================================
+   WATCH STREAM
+========================================= */
 
-        function createLiveCard(stream) {
+async function watchStream(stream) {
 
-            const card =
-                document.createElement("article");
+    if (!currentUser) {
 
-            card.className =
-                "live-card";
+        window.location.href =
+            "login.html";
 
-
-            const thumbnail =
-                document.createElement("div");
-
-            thumbnail.className =
-                "live-thumbnail";
+        return;
+    }
 
 
-            if (stream.thumbnail_url) {
+    if (
+        !stream ||
+        !stream.id
+    ) {
 
-                const image =
-                    document.createElement("img");
+        showError(
+            "This LIVE stream is unavailable."
+        );
 
-                image.src =
-                    stream.thumbnail_url;
-
-                image.alt =
-                    stream.title ||
-                    "LIVE stream";
-
-                image.loading = "lazy";
-
-                thumbnail.appendChild(
-                    image
-                );
-
-            }
+        return;
+    }
 
 
-            const liveBadge =
-                document.createElement("div");
-
-            liveBadge.className =
-                "live-badge";
-
-            liveBadge.textContent =
-                "LIVE";
+    hideError();
 
 
-            thumbnail.appendChild(
-                liveBadge
-            );
+    isWatching = true;
+
+    isClosing = false;
+
+    currentStream = stream;
 
 
-            const viewerBadge =
-                document.createElement("div");
+    liveListSection.style.display =
+        "none";
 
-            viewerBadge.className =
-                "viewer-badge";
-
-            const viewerCount =
-                Number(
-                    stream.viewer_count || 0
-                );
-
-            viewerBadge.textContent =
-                `${viewerCount} viewer${viewerCount === 1 ? "" : "s"}`;
+    watchPanel.classList.add(
+        "active"
+    );
 
 
-            thumbnail.appendChild(
-                viewerBadge
-            );
+    videoLoading.classList.remove(
+        "hidden"
+    );
 
 
-            const content =
-                document.createElement("div");
-
-            content.className =
-                "live-card-content";
-
-
-            const title =
-                document.createElement("div");
-
-            title.className =
-                "live-card-title";
-
-            title.textContent =
-                stream.title ||
-                "LIVE Stream";
+    videoLoading.innerHTML = `
+        <div class="spinner"></div>
+        <strong>
+            Connecting to LIVE...
+        </strong>
+        <span>
+            Please wait.
+        </span>
+    `;
 
 
-            const streamer =
-                document.createElement("div");
-
-            streamer.className =
-                "live-streamer";
+    watchTitle.textContent =
+        stream.title ||
+        "LIVE Stream";
 
 
-            const profile =
-                stream.profiles;
+    const profile =
+        stream.profiles;
 
 
-            if (profile) {
+    if (profile) {
 
-                const name =
-                    profile.full_name ||
-                    profile.username ||
-                    "Streamer";
+        const name =
+            profile.full_name ||
+            profile.username ||
+            "Streamer";
 
-                const username =
-                    profile.username
-                        ? `@${profile.username}`
-                        : "";
+        const username =
+            profile.username
+                ? `@${profile.username}`
+                : "";
 
-                streamer.textContent =
-                    username
-                        ? `${name} · ${username}`
-                        : name;
+        watchStreamer.textContent =
+            username
+                ? `${name} · ${username}`
+                : name;
+
+    } else {
+
+        watchStreamer.textContent =
+            "LIVE Stream";
+
+    }
+
+
+    viewerCountDisplay.textContent =
+        "Viewers: 0";
+
+
+    watchViewerText.textContent =
+        "Joining LIVE...";
+
+
+    setConnectionStatus(
+        "Joining LIVE..."
+    );
+
+
+    const joined =
+        await joinViewerSession(
+            stream.id
+        );
+
+
+    if (!joined) {
+
+        setConnectionStatus(
+            "Viewer tracking unavailable",
+            "error"
+        );
+
+    }
+
+
+    await createViewerConnection(
+        stream
+    );
+}
+
+
+/* =========================================
+   WEBRTC VIEWER CONNECTION
+========================================= */
+
+async function createViewerConnection(
+    stream
+) {
+
+    await closeViewerConnection(
+        false
+    );
+
+
+    pendingIceCandidates = [];
+
+
+    viewerPeer =
+        new RTCPeerConnection({
+
+            iceServers: [
+
+                {
+                    urls:
+                        "stun:stun.l.google.com:19302"
+                },
+
+                {
+                    urls:
+                        "stun:stun1.l.google.com:19302"
+                }
+
+            ]
+
+        });
+
+
+    viewerPeer.ontrack =
+        event => {
+
+            if (
+                event.streams &&
+                event.streams[0]
+            ) {
+
+                remoteVideo.srcObject =
+                    event.streams[0];
 
             } else {
 
-                streamer.textContent =
-                    "Streamer";
+                if (
+                    !remoteVideo.srcObject
+                ) {
 
-            }
+                    remoteVideo.srcObject =
+                        new MediaStream();
+                }
 
-
-            content.appendChild(
-                title
-            );
-
-            content.appendChild(
-                streamer
-            );
-
-
-            card.appendChild(
-                thumbnail
-            );
-
-            card.appendChild(
-                content
-            );
-
-
-            card.addEventListener(
-                "click",
-                () => watchStream(stream)
-            );
-
-
-            return card;
-        }
-
-
-        /* =========================================
-           WATCH STREAM
-        ========================================== */
-
-        async function watchStream(stream) {
-
-            if (!currentUser) {
-
-                window.location.href =
-                    "login.html";
-
-                return;
-
-            }
-
-
-            if (!stream || !stream.id) {
-
-                showError(
-                    "This LIVE stream is unavailable."
+                remoteVideo.srcObject.addTrack(
+                    event.track
                 );
-
-                return;
-
             }
 
 
-            hideError();
-
-
-            isWatching = true;
-
-            isClosing = false;
-
-            currentStream = stream;
-
-
-            liveListSection.style.display =
-                "none";
-
-            watchPanel.classList.add(
-                "active"
-            );
-
-
-            videoLoading.classList.remove(
+            videoLoading.classList.add(
                 "hidden"
             );
 
 
-            watchTitle.textContent =
-                stream.title ||
-                "LIVE Stream";
+            setConnectionStatus(
+                "Connected to LIVE",
+                "connected"
+            );
 
 
-            const profile =
-                stream.profiles;
+            refreshViewerCount(
+                stream.id
+            );
+        };
 
 
-            if (profile) {
+    viewerPeer.onicecandidate =
+        async event => {
 
-                const name =
-                    profile.full_name ||
-                    profile.username ||
-                    "Streamer";
+            if (
+                !event.candidate ||
+                !currentUser ||
+                !currentStream
+            ) {
 
-                const username =
-                    profile.username
-                        ? `@${profile.username}`
-                        : "";
-
-                watchStreamer.textContent =
-                    username
-                        ? `${name} · ${username}`
-                        : name;
-
-            } else {
-
-                watchStreamer.textContent =
-                    "LIVE Stream";
-
+                return;
             }
 
 
-            watchViewerText.textContent =
-                "Connecting...";
+            const {
+                error
+            } = await supabaseClient
+                .from("live_signals")
+                .insert({
 
+                    stream_id:
+                        currentStream.id,
 
-            setConnectionStatus(
-                "Connecting to LIVE..."
-            );
+                    sender_id:
+                        currentUser.id,
 
+                    receiver_id:
+                        currentStream.streamer_id,
 
-            await createViewerConnection(
-                stream
-            );
-        }
+                    signal_type:
+                        "ice-candidate",
 
-
-        /* =========================================
-           CREATE VIEWER CONNECTION
-        ========================================== */
-
-        async function createViewerConnection(
-            stream
-        ) {
-
-            await closeViewerConnection(
-                false
-            );
-
-
-            pendingIceCandidates = [];
-
-
-            viewerPeer =
-                new RTCPeerConnection({
-
-                    iceServers: [
-
-                        {
-                            urls:
-                                "stun:stun.l.google.com:19302"
-                        },
-
-                        {
-                            urls:
-                                "stun:stun1.l.google.com:19302"
-                        }
-
-                    ]
-
+                    signal_data:
+                        event.candidate.toJSON
+                            ? event.candidate.toJSON()
+                            : event.candidate
                 });
 
 
-            /* =====================================
-               REMOTE TRACK
-            ====================================== */
-
-            viewerPeer.ontrack =
-                event => {
-
-                    if (
-                        event.streams &&
-                        event.streams[0]
-                    ) {
-
-                        remoteVideo.srcObject =
-                            event.streams[0];
-
-                    } else {
-
-                        if (
-                            !remoteVideo.srcObject
-                        ) {
-
-                            remoteVideo.srcObject =
-                                new MediaStream();
-
-                        }
-
-                        remoteVideo.srcObject.addTrack(
-                            event.track
-                        );
-
-                    }
-
-
-                    videoLoading.classList.add(
-                        "hidden"
-                    );
-
-
-                    setConnectionStatus(
-                        "Connected to LIVE",
-                        "connected"
-                    );
-
-
-                    watchViewerText.textContent =
-                        "LIVE";
-
-                };
-
-
-            /* =====================================
-               ICE CANDIDATES
-            ====================================== */
-
-            viewerPeer.onicecandidate =
-                async event => {
-
-                    if (
-                        !event.candidate
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    if (
-                        !currentUser ||
-                        !currentStream
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    try {
-
-                        await supabaseClient
-                            .from("live_signals")
-                            .insert({
-
-                                stream_id:
-                                    currentStream.id,
-
-                                sender_id:
-                                    currentUser.id,
-
-                                receiver_id:
-                                    currentStream.streamer_id,
-
-                                signal_type:
-                                    "ice-candidate",
-
-                                signal_data:
-                                    event.candidate.toJSON
-                                        ? event.candidate.toJSON()
-                                        : event.candidate
-
-                            });
-
-                    } catch (error) {
-
-                        console.error(
-                            "ICE send error:",
-                            error
-                        );
-
-                    }
-
-                };
-
-
-            /* =====================================
-               CONNECTION STATE
-            ====================================== */
-
-            viewerPeer.onconnectionstatechange =
-                () => {
-
-                    if (!viewerPeer) {
-                        return;
-                    }
-
-
-                    const state =
-                        viewerPeer.connectionState;
-
-
-                    console.log(
-                        "WebRTC connection:",
-                        state
-                    );
-
-
-                    if (
-                        state ===
-                        "connected"
-                    ) {
-
-                        setConnectionStatus(
-                            "Connected to LIVE",
-                            "connected"
-                        );
-
-                        videoLoading.classList.add(
-                            "hidden"
-                        );
-
-                        watchViewerText.textContent =
-                            "LIVE";
-
-                    }
-
-
-                    if (
-                        state ===
-                        "connecting"
-                    ) {
-
-                        setConnectionStatus(
-                            "Connecting..."
-                        );
-
-                    }
-
-
-                    if (
-                        state ===
-                        "disconnected"
-                    ) {
-
-                        setConnectionStatus(
-                            "Connection interrupted"
-                        );
-
-                    }
-
-
-                    if (
-                        state ===
-                        "failed"
-                    ) {
-
-                        setConnectionStatus(
-                            "Connection failed",
-                            "error"
-                        );
-
-                        videoLoading.classList.remove(
-                            "hidden"
-                        );
-
-                        videoLoading.innerHTML = `
-                            <strong>
-                                Connection failed
-                            </strong>
-                            <span>
-                                Trying to reconnect...
-                            </span>
-                        `;
-
-                    }
-
-
-                    if (
-                        state ===
-                        "closed"
-                    ) {
-
-                        setConnectionStatus(
-                            "Connection closed"
-                        );
-
-                    }
-
-                };
-
-
-            /* =====================================
-               ICE CONNECTION STATE
-            ====================================== */
-
-            viewerPeer.oniceconnectionstatechange =
-                () => {
-
-                    if (!viewerPeer) {
-                        return;
-                    }
-
-
-                    console.log(
-                        "ICE state:",
-                        viewerPeer
-                            .iceConnectionState
-                    );
-
-                };
-
-
-            /* =====================================
-               REALTIME SIGNALING
-            ====================================== */
-
-            liveSignalChannel =
-                supabaseClient
-                    .channel(
-                        `live-signals-viewer-${stream.id}-${currentUser.id}-${Date.now()}`
-                    )
-                    .on(
-                        "postgres_changes",
-                        {
-                            event: "INSERT",
-                            schema: "public",
-                            table: "live_signals",
-                            filter:
-                                `stream_id=eq.${stream.id}`
-                        },
-                        payload => {
-
-                            handleSignal(
-                                payload.new
-                            );
-
-                        }
-                    )
-                    .subscribe(
-                        async status => {
-
-                            console.log(
-                                "Signal channel:",
-                                status
-                            );
-
-
-                            if (
-                                status ===
-                                "SUBSCRIBED"
-                            ) {
-
-                                await sendViewerReady(
-                                    stream
-                                );
-
-                            }
-
-                        }
-                    );
-
-
-            /* =====================================
-               CHECK STREAM STATUS
-            ====================================== */
-
-            startStreamStatusChecker();
-
-        }
-
-
-        /* =========================================
-           SEND VIEWER READY
-        ========================================== */
-
-        async function sendViewerReady(
-            stream
-        ) {
-
-            if (
-                !currentUser ||
-                !stream
-            ) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from(
-                            "live_signals"
-                        )
-                        .insert({
-
-                            stream_id:
-                                stream.id,
-
-                            sender_id:
-                                currentUser.id,
-
-                            receiver_id:
-                                stream.streamer_id,
-
-                            signal_type:
-                                "viewer-ready",
-
-                            signal_data: {
-                                ready: true
-                            }
-
-                        });
-
-
-                if (error) {
-
-                    console.error(
-                        "Viewer-ready error:",
-                        error
-                    );
-
-                    setConnectionStatus(
-                        "Unable to connect",
-                        "error"
-                    );
-
-                }
-
-            } catch (error) {
+            if (error) {
 
                 console.error(
-                    "Viewer-ready exception:",
+                    "ICE send error:",
                     error
                 );
-
             }
+        };
 
-        }
 
+    viewerPeer.onconnectionstatechange =
+        () => {
 
-        /* =========================================
-           HANDLE SIGNAL
-        ========================================== */
-
-        async function handleSignal(
-            signal
-        ) {
-
-            if (
-                isClosing ||
-                !viewerPeer ||
-                !currentUser ||
-                !currentStream
-            ) {
-
+            if (!viewerPeer) {
                 return;
-
             }
+
+
+            const state =
+                viewerPeer.connectionState;
+
+
+            console.log(
+                "WebRTC connection:",
+                state
+            );
 
 
             if (
-                signal.receiver_id &&
-                signal.receiver_id !==
-                    currentUser.id
+                state === "connected"
             ) {
-
-                return;
-
-            }
-
-
-            if (
-                signal.sender_id !==
-                    currentStream.streamer_id
-            ) {
-
-                return;
-
-            }
-
-
-            try {
-
-                /* =================================
-                   OFFER
-                ================================== */
-
-                if (
-                    signal.signal_type ===
-                    "offer"
-                ) {
-
-                    const offer =
-                        signal.signal_data;
-
-
-                    if (
-                        !offer ||
-                        !offer.type ||
-                        !offer.sdp
-                    ) {
-
-                        console.warn(
-                            "Invalid offer received."
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (
-                        viewerPeer.signalingState !==
-                        "stable"
-                    ) {
-
-                        console.log(
-                            "Ignoring offer because signaling state is:",
-                            viewerPeer.signalingState
-                        );
-
-                        return;
-
-                    }
-
-
-                    await viewerPeer
-                        .setRemoteDescription(
-                            new RTCSessionDescription(
-                                offer
-                            )
-                        );
-
-
-                    await flushPendingIceCandidates();
-
-
-                    const answer =
-                        await viewerPeer
-                            .createAnswer();
-
-
-                    await viewerPeer
-                        .setLocalDescription(
-                            answer
-                        );
-
-
-                    await supabaseClient
-                        .from(
-                            "live_signals"
-                        )
-                        .insert({
-
-                            stream_id:
-                                currentStream.id,
-
-                            sender_id:
-                                currentUser.id,
-
-                            receiver_id:
-                                currentStream.streamer_id,
-
-                            signal_type:
-                                "answer",
-
-                            signal_data: {
-                                type:
-                                    answer.type,
-                                sdp:
-                                    answer.sdp
-                            }
-
-                        });
-
-
-                    setConnectionStatus(
-                        "Answer sent. Connecting..."
-                    );
-
-                }
-
-
-                /* =================================
-                   ICE CANDIDATE
-                ================================== */
-
-                if (
-                    signal.signal_type ===
-                    "ice-candidate"
-                ) {
-
-                    const candidate =
-                        signal.signal_data;
-
-
-                    if (!candidate) {
-                        return;
-                    }
-
-
-                    if (
-                        viewerPeer.remoteDescription
-                    ) {
-
-                        await viewerPeer
-                            .addIceCandidate(
-                                new RTCIceCandidate(
-                                    candidate
-                                )
-                            );
-
-                    } else {
-
-                        pendingIceCandidates
-                            .push(candidate);
-
-                    }
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Signal handling error:",
-                    error
-                );
 
                 setConnectionStatus(
-                    "Connection error",
+                    "Connected to LIVE",
+                    "connected"
+                );
+
+                videoLoading.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            if (
+                state === "connecting"
+            ) {
+
+                setConnectionStatus(
+                    "Connecting..."
+                );
+            }
+
+
+            if (
+                state === "disconnected"
+            ) {
+
+                setConnectionStatus(
+                    "Connection interrupted"
+                );
+            }
+
+
+            if (
+                state === "failed"
+            ) {
+
+                setConnectionStatus(
+                    "Connection failed",
                     "error"
                 );
 
-            }
-
-        }
-
-
-        /* =========================================
-           FLUSH QUEUED ICE
-        ========================================== */
-
-        async function flushPendingIceCandidates() {
-
-            if (
-                !viewerPeer ||
-                !viewerPeer.remoteDescription
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                pendingIceCandidates.length === 0
-            ) {
-
-                return;
-
-            }
-
-
-            const candidates =
-                [
-                    ...pendingIceCandidates
-                ];
-
-
-            pendingIceCandidates = [];
-
-
-            for (
-                const candidate
-                of candidates
-            ) {
-
-                try {
-
-                    await viewerPeer
-                        .addIceCandidate(
-                            new RTCIceCandidate(
-                                candidate
-                            )
-                        );
-
-                } catch (error) {
-
-                    console.error(
-                        "Queued ICE error:",
-                        error
-                    );
-
-                }
-
-            }
-
-        }
-
-
-        /* =========================================
-           CHECK CURRENT STREAM
-        ========================================== */
-
-        function startStreamStatusChecker() {
-
-            stopStreamStatusChecker();
-
-
-            streamCheckTimer =
-                setInterval(
-                    checkCurrentLiveStream,
-                    5000
+                videoLoading.classList.remove(
+                    "hidden"
                 );
 
-        }
-
-
-        function stopStreamStatusChecker() {
-
-            if (
-                streamCheckTimer
-            ) {
-
-                clearInterval(
-                    streamCheckTimer
-                );
-
-                streamCheckTimer = null;
-
+                videoLoading.innerHTML = `
+                    <strong>
+                        Connection failed
+                    </strong>
+                    <span>
+                        Trying to reconnect...
+                    </span>
+                `;
             }
-
-        }
-
-
-        async function checkCurrentLiveStream() {
-
-            if (
-                !isWatching ||
-                !currentStream
-            ) {
-
-                return;
-
-            }
+        };
 
 
-            try {
+    viewerPeer.oniceconnectionstatechange =
+        () => {
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from(
-                            "live_streams"
-                        )
-                        .select(
-                            "id,is_live"
-                        )
-                        .eq(
-                            "id",
-                            currentStream.id
-                        )
-                        .maybeSingle();
-
-
-                if (error) {
-
-                    console.error(
-                        "Stream status error:",
-                        error
-                    );
-
-                    return;
-
-                }
-
-
-                if (
-                    !data ||
-                    data.is_live !== true
-                ) {
-
-                    await handleStreamEnded();
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Stream checker error:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        /* =========================================
-           STREAM ENDED
-        ========================================== */
-
-        async function handleStreamEnded() {
-
-            if (isClosing) {
+            if (!viewerPeer) {
                 return;
             }
 
 
-            isClosing = true;
-
-
-            stopStreamStatusChecker();
-
-
-            setConnectionStatus(
-                "LIVE has ended"
+            console.log(
+                "ICE state:",
+                viewerPeer.iceConnectionState
             );
+        };
 
 
-            videoLoading.classList.remove(
-                "hidden"
-            );
+    /* =====================================
+       SIGNALING CHANNEL
+    ====================================== */
 
-
-            videoLoading.innerHTML = `
-                <strong>
-                    This LIVE has ended
-                </strong>
-                <span>
-                    Returning to LIVE streams...
-                </span>
-            `;
-
-
-            await closeViewerConnection(
-                false
-            );
-
-
-            setTimeout(
-                () => {
-
-                    isClosing = false;
-
-                    currentStream = null;
-
-                    isWatching = false;
-
-                    watchPanel.classList.remove(
-                        "active"
-                    );
-
-                    liveListSection.style.display =
-                        "block";
-
-                    videoLoading.innerHTML = `
-                        <div class="spinner"></div>
-                        <strong>
-                            Connecting to LIVE...
-                        </strong>
-                        <span>
-                            Please wait.
-                        </span>
-                    `;
-
-                    loadLiveStreams();
-
+    liveSignalChannel =
+        supabaseClient
+            .channel(
+                `live-signals-viewer-${stream.id}-${currentUser.id}-${Date.now()}`
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "live_signals",
+                    filter:
+                        `stream_id=eq.${stream.id}`
                 },
-                1500
+                payload => {
+
+                    handleSignal(
+                        payload.new
+                    );
+
+                }
+            )
+            .subscribe(
+                async status => {
+
+                    console.log(
+                        "Signal channel:",
+                        status
+                    );
+
+
+                    if (
+                        status === "SUBSCRIBED"
+                    ) {
+
+                        await sendViewerReady(
+                            stream
+                        );
+                    }
+                }
             );
 
-        }
+
+    startStreamStatusChecker();
+}
 
 
-        /* =========================================
-           CLOSE VIEWER CONNECTION
-        ========================================== */
+/* =========================================
+   SEND VIEWER READY
+========================================= */
 
-        async function closeViewerConnection(
-            resetStream = true
+async function sendViewerReady(
+    stream
+) {
+
+    if (
+        !currentUser ||
+        !stream
+    ) {
+
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("live_signals")
+        .insert({
+
+            stream_id:
+                stream.id,
+
+            sender_id:
+                currentUser.id,
+
+            receiver_id:
+                stream.streamer_id,
+
+            signal_type:
+                "viewer-ready",
+
+            signal_data: {
+                ready: true
+            }
+        });
+
+
+    if (error) {
+
+        console.error(
+            "Viewer-ready error:",
+            error
+        );
+
+        setConnectionStatus(
+            "Unable to connect",
+            "error"
+        );
+    }
+}
+
+
+/* =========================================
+   HANDLE SIGNAL
+========================================= */
+
+async function handleSignal(
+    signal
+) {
+
+    if (
+        isClosing ||
+        !viewerPeer ||
+        !currentUser ||
+        !currentStream
+    ) {
+
+        return;
+    }
+
+
+    if (
+        signal.receiver_id &&
+        signal.receiver_id !==
+            currentUser.id
+    ) {
+
+        return;
+    }
+
+
+    if (
+        signal.sender_id !==
+            currentStream.streamer_id
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        /* =================================
+           OFFER
+        ================================== */
+
+        if (
+            signal.signal_type ===
+            "offer"
         ) {
 
-            stopStreamStatusChecker();
+            const offer =
+                signal.signal_data;
 
 
             if (
-                liveSignalChannel
+                !offer ||
+                !offer.type ||
+                !offer.sdp
             ) {
 
-                try {
-
-                    await supabaseClient
-                        .removeChannel(
-                            liveSignalChannel
-                        );
-
-                } catch (error) {
-
-                    console.error(
-                        "Channel cleanup error:",
-                        error
-                    );
-
-                }
-
-                liveSignalChannel = null;
-
+                return;
             }
 
 
-            if (viewerPeer) {
+            if (
+                viewerPeer.signalingState !==
+                "stable"
+            ) {
 
-                try {
+                console.log(
+                    "Ignoring offer:",
+                    viewerPeer.signalingState
+                );
 
-                    viewerPeer.ontrack = null;
-
-                    viewerPeer.onicecandidate = null;
-
-                    viewerPeer.onconnectionstatechange =
-                        null;
-
-                    viewerPeer.oniceconnectionstatechange =
-                        null;
-
-                    viewerPeer.close();
-
-                } catch (error) {
-
-                    console.error(
-                        "Peer cleanup error:",
-                        error
-                    );
-
-                }
-
-                viewerPeer = null;
-
+                return;
             }
 
 
-            pendingIceCandidates = [];
+            await viewerPeer
+                .setRemoteDescription(
+                    new RTCSessionDescription(
+                        offer
+                    )
+                );
 
 
-            if (remoteVideo) {
+            await flushPendingIceCandidates();
 
-                try {
 
-                    remoteVideo.pause();
+            const answer =
+                await viewerPeer
+                    .createAnswer();
 
-                } catch (error) {}
 
-                remoteVideo.srcObject = null;
+            await viewerPeer
+                .setLocalDescription(
+                    answer
+                );
 
+
+            const {
+                error
+            } = await supabaseClient
+                .from("live_signals")
+                .insert({
+
+                    stream_id:
+                        currentStream.id,
+
+                    sender_id:
+                        currentUser.id,
+
+                    receiver_id:
+                        currentStream.streamer_id,
+
+                    signal_type:
+                        "answer",
+
+                    signal_data: {
+                        type:
+                            answer.type,
+
+                        sdp:
+                            answer.sdp
+                    }
+                });
+
+
+            if (error) {
+
+                console.error(
+                    "Answer send error:",
+                    error
+                );
+
+            } else {
+
+                setConnectionStatus(
+                    "Answer sent. Connecting..."
+                );
             }
-
-
-            if (resetStream) {
-
-                currentStream = null;
-
-            }
-
         }
 
 
-        /* =========================================
-           CLOSE WATCH
-        ========================================== */
+        /* =================================
+           ICE
+        ================================== */
 
-        async function closeWatch() {
+        if (
+            signal.signal_type ===
+            "ice-candidate"
+        ) {
 
-            isClosing = true;
+            const candidate =
+                signal.signal_data;
 
 
-            await closeViewerConnection(
-                true
+            if (!candidate) {
+                return;
+            }
+
+
+            if (
+                viewerPeer.remoteDescription
+            ) {
+
+                await viewerPeer
+                    .addIceCandidate(
+                        new RTCIceCandidate(
+                            candidate
+                        )
+                    );
+
+            } else {
+
+                pendingIceCandidates.push(
+                    candidate
+                );
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Signal handling error:",
+            error
+        );
+
+        setConnectionStatus(
+            "Connection error",
+            "error"
+        );
+    }
+}
+
+
+/* =========================================
+   FLUSH ICE
+========================================= */
+
+async function flushPendingIceCandidates() {
+
+    if (
+        !viewerPeer ||
+        !viewerPeer.remoteDescription
+    ) {
+
+        return;
+    }
+
+
+    const candidates =
+        [
+            ...pendingIceCandidates
+        ];
+
+
+    pendingIceCandidates = [];
+
+
+    for (
+        const candidate
+        of candidates
+    ) {
+
+        try {
+
+            await viewerPeer
+                .addIceCandidate(
+                    new RTCIceCandidate(
+                        candidate
+                    )
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Queued ICE error:",
+                error
             );
+        }
+    }
+}
 
+
+/* =========================================
+   STREAM STATUS CHECKER
+========================================= */
+
+function startStreamStatusChecker() {
+
+    stopStreamStatusChecker();
+
+
+    streamCheckTimer =
+        setInterval(
+            checkCurrentLiveStream,
+            5000
+        );
+}
+
+
+function stopStreamStatusChecker() {
+
+    if (
+        streamCheckTimer
+    ) {
+
+        clearInterval(
+            streamCheckTimer
+        );
+
+        streamCheckTimer =
+            null;
+    }
+}
+
+
+async function checkCurrentLiveStream() {
+
+    if (
+        !isWatching ||
+        !currentStream
+    ) {
+
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .select(
+            "id,is_live"
+        )
+        .eq(
+            "id",
+            currentStream.id
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Stream status error:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.is_live !== true
+    ) {
+
+        await handleStreamEnded();
+    }
+}
+
+
+/* =========================================
+   STREAM ENDED
+========================================= */
+
+async function handleStreamEnded() {
+
+    if (isClosing) {
+        return;
+    }
+
+
+    isClosing = true;
+
+
+    const streamId =
+        currentStream
+            ? currentStream.id
+            : null;
+
+
+    stopStreamStatusChecker();
+
+
+    setConnectionStatus(
+        "LIVE has ended"
+    );
+
+
+    videoLoading.classList.remove(
+        "hidden"
+    );
+
+
+    videoLoading.innerHTML = `
+        <strong>
+            This LIVE has ended
+        </strong>
+        <span>
+            Returning to LIVE streams...
+        </span>
+    `;
+
+
+    await leaveViewerSession(
+        streamId
+    );
+
+
+    await closeViewerConnection(
+        false
+    );
+
+
+    setTimeout(
+        () => {
+
+            currentStream = null;
 
             isWatching = false;
 
+            isClosing = false;
 
             watchPanel.classList.remove(
                 "active"
             );
-
 
             liveListSection.style.display =
                 "block";
@@ -2236,360 +2352,530 @@
             `;
 
 
-            setConnectionStatus(
-                "Disconnected"
+            loadLiveStreams();
+
+        },
+        1500
+    );
+}
+
+
+/* =========================================
+   CLOSE WEBRTC
+========================================= */
+
+async function closeViewerConnection(
+    resetStream = true
+) {
+
+    stopStreamStatusChecker();
+
+
+    if (
+        liveSignalChannel
+    ) {
+
+        try {
+
+            await supabaseClient
+                .removeChannel(
+                    liveSignalChannel
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Signal cleanup error:",
+                error
             );
+        }
 
 
-            watchViewerText.textContent =
-                "Disconnected";
+        liveSignalChannel =
+            null;
+    }
 
 
-            isClosing = false;
+    if (viewerPeer) {
+
+        try {
+
+            viewerPeer.ontrack = null;
+
+            viewerPeer.onicecandidate = null;
+
+            viewerPeer.onconnectionstatechange =
+                null;
+
+            viewerPeer.oniceconnectionstatechange =
+                null;
+
+            viewerPeer.close();
+
+        } catch (error) {
+
+            console.error(
+                "Peer cleanup error:",
+                error
+            );
+        }
+
+
+        viewerPeer =
+            null;
+    }
+
+
+    pendingIceCandidates = [];
+
+
+    if (remoteVideo) {
+
+        try {
+
+            remoteVideo.pause();
+
+        } catch (error) {}
+
+
+        remoteVideo.srcObject =
+            null;
+    }
+
+
+    if (resetStream) {
+
+        currentStream =
+            null;
+    }
+}
+
+
+/* =========================================
+   CLOSE WATCH
+========================================= */
+
+async function closeWatch() {
+
+    if (isClosing) {
+        return;
+    }
+
+
+    isClosing = true;
+
+
+    const streamId =
+        currentStream
+            ? currentStream.id
+            : null;
+
+
+    await leaveViewerSession(
+        streamId
+    );
+
+
+    await closeViewerConnection(
+        true
+    );
+
+
+    isWatching = false;
+
+
+    watchPanel.classList.remove(
+        "active"
+    );
+
+
+    liveListSection.style.display =
+        "block";
+
+
+    videoLoading.innerHTML = `
+        <div class="spinner"></div>
+        <strong>
+            Connecting to LIVE...
+        </strong>
+        <span>
+            Please wait.
+        </span>
+    `;
+
+
+    setConnectionStatus(
+        "Disconnected"
+    );
+
+
+    watchViewerText.textContent =
+        "Disconnected";
+
+
+    viewerCountDisplay.textContent =
+        "Viewers: 0";
+
+
+    isClosing = false;
+
+
+    await loadLiveStreams();
+}
+
+
+/* =========================================
+   AUTOMATIC LIST REFRESH
+========================================= */
+
+function startLiveRefresh() {
+
+    stopLiveRefresh();
+
+
+    liveRefreshTimer =
+        setInterval(
+            () => {
+
+                if (
+                    !isWatching &&
+                    currentUser
+                ) {
+
+                    loadLiveStreams();
+                }
+
+            },
+            5000
+        );
+}
+
+
+function stopLiveRefresh() {
+
+    if (
+        liveRefreshTimer
+    ) {
+
+        clearInterval(
+            liveRefreshTimer
+        );
+
+        liveRefreshTimer =
+            null;
+    }
+}
+
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+backLiveBtn.addEventListener(
+    "click",
+    closeWatch
+);
+
+
+/* =========================================
+   AUTH STATE
+========================================= */
+
+supabaseClient.auth.onAuthStateChange(
+    async (
+        event,
+        session
+    ) => {
+
+        console.log(
+            "Auth event:",
+            event
+        );
+
+
+        if (session) {
+
+            currentUser =
+                session.user;
+
+
+            loginRequired
+                .classList
+                .remove("show");
+
+
+            liveListSection
+                .style
+                .display =
+                "block";
 
 
             await loadLiveStreams();
 
-        }
+            startLiveRefresh();
+
+        } else {
+
+            currentUser = null;
 
 
-        /* =========================================
-           AUTOMATIC LIVE LIST REFRESH
-        ========================================== */
+            if (isWatching) {
 
-        function startLiveRefresh() {
+                const streamId =
+                    currentStream
+                        ? currentStream.id
+                        : null;
+
+
+                await leaveViewerSession(
+                    streamId
+                );
+
+                await closeViewerConnection(
+                    true
+                );
+
+                isWatching = false;
+            }
+
+
+            loginRequired
+                .classList
+                .add("show");
+
+
+            liveListSection
+                .style
+                .display =
+                "none";
+
 
             stopLiveRefresh();
 
 
-            liveRefreshTimer =
-                setInterval(
-                    async () => {
-
-                        if (
-                            !isWatching &&
-                            currentUser
-                        ) {
-
-                            await loadLiveStreams();
-
-                        }
-
-                    },
-                    5000
-                );
-
+            setLiveStatus(
+                "Login required"
+            );
         }
 
+    }
+);
 
-        function stopLiveRefresh() {
+
+/* =========================================
+   PAGE VISIBILITY
+========================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
 
             if (
-                liveRefreshTimer
+                currentUser &&
+                !isWatching
             ) {
 
-                clearInterval(
-                    liveRefreshTimer
-                );
-
-                liveRefreshTimer = null;
+                loadLiveStreams();
 
             }
 
+            if (
+                currentUser &&
+                isWatching
+            ) {
+
+                sendViewerHeartbeat();
+
+                if (currentStream) {
+
+                    refreshViewerCount(
+                        currentStream.id
+                    );
+                }
+            }
+        }
+
+    }
+);
+
+
+/* =========================================
+   BROWSER EXIT
+========================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        stopViewerHeartbeat();
+
+        stopStreamStatusChecker();
+
+        stopLiveRefresh();
+
+
+        if (
+            viewerPeer
+        ) {
+
+            try {
+
+                viewerPeer.close();
+
+            } catch (error) {}
         }
 
 
-        /* =========================================
-           BUTTON
-        ========================================== */
+        if (
+            liveSignalChannel
+        ) {
 
-        backLiveBtn.addEventListener(
-            "click",
-            closeWatch
-        );
+            try {
 
-
-        /* =========================================
-           BROWSER BACK BUTTON
-        ========================================== */
-
-        window.addEventListener(
-            "popstate",
-            async () => {
-
-                if (isWatching) {
-
-                    await closeWatch();
-
-                }
-
-            }
-        );
-
-
-        /* =========================================
-           PAGE VISIBILITY
-        ========================================== */
-
-        document.addEventListener(
-            "visibilitychange",
-            () => {
-
-                if (
-                    document.visibilityState ===
-                    "visible"
-                ) {
-
-                    if (
-                        currentUser &&
-                        !isWatching
-                    ) {
-
-                        loadLiveStreams();
-
-                    }
-
-                }
-
-            }
-        );
-
-
-        /* =========================================
-           AUTH STATE CHANGES
-        ========================================== */
-
-        supabaseClient.auth.onAuthStateChange(
-            async (
-                event,
-                session
-            ) => {
-
-                console.log(
-                    "Auth event:",
-                    event
-                );
-
-
-                if (session) {
-
-                    currentUser =
-                        session.user;
-
-                    loginRequired
-                        .classList
-                        .remove(
-                            "show"
-                        );
-
-                    liveListSection
-                        .style
-                        .display =
-                        "block";
-
-
-                    await loadLiveStreams();
-
-                    startLiveRefresh();
-
-                } else {
-
-                    currentUser = null;
-
-                    await closeViewerConnection(
-                        true
+                supabaseClient
+                    .removeChannel(
+                        liveSignalChannel
                     );
 
-                    isWatching = false;
-
-                    loginRequired
-                        .classList
-                        .add(
-                            "show"
-                        );
-
-                    liveListSection
-                        .style
-                        .display =
-                        "none";
-
-                    stopLiveRefresh();
-
-                    setLiveStatus(
-                        "Login required"
-                    );
-
-                }
-
-            }
-        );
-
-
-        /* =========================================
-           PAGE INITIALIZATION
-        ========================================== */
-
-        async function initializeLivePage() {
-
-            console.log(
-                "TikTok Streamers LIVE page starting..."
-            );
-
-
-            const authenticated =
-                await checkAuthentication();
-
-
-            if (!authenticated) {
-
-                return;
-
-            }
-
-
-            await loadLiveStreams();
-
-
-            startLiveRefresh();
-
-
-            /* =====================================
-               OPEN STREAM FROM URL
-            ====================================== */
-
-            const params =
-                new URLSearchParams(
-                    window.location.search
-                );
-
-
-            const streamId =
-                params.get("stream");
-
-
-            if (streamId) {
-
-                try {
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient
-                            .from(
-                                "live_streams"
-                            )
-                            .select(`
-                                id,
-                                streamer_id,
-                                title,
-                                room_id,
-                                thumbnail_url,
-                                is_live,
-                                viewer_count,
-                                started_at,
-                                profiles:streamer_id (
-                                    id,
-                                    full_name,
-                                    username,
-                                    avatar_url,
-                                    account_type,
-                                    is_live
-                                )
-                            `)
-                            .eq(
-                                "id",
-                                streamId
-                            )
-                            .eq(
-                                "is_live",
-                                true
-                            )
-                            .maybeSingle();
-
-
-                    if (
-                        error
-                    ) {
-
-                        console.error(
-                            "URL stream error:",
-                            error
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (data) {
-
-                        await watchStream(
-                            data
-                        );
-
-                    }
-
-                } catch (error) {
-
-                    console.error(
-                        "URL stream exception:",
-                        error
-                    );
-
-                }
-
-            }
-
+            } catch (error) {}
         }
 
 
-        /* =========================================
-           CLEANUP BEFORE PAGE LEAVES
-        ========================================== */
+        if (
+            viewerRealtimeChannel
+        ) {
 
-        window.addEventListener(
-            "beforeunload",
-            () => {
+            try {
 
-                stopStreamStatusChecker();
+                supabaseClient
+                    .removeChannel(
+                        viewerRealtimeChannel
+                    );
 
-                stopLiveRefresh();
+            } catch (error) {}
+        }
 
-
-                if (
-                    liveSignalChannel
-                ) {
-
-                    supabaseClient
-                        .removeChannel(
-                            liveSignalChannel
-                        );
-
-                }
+    }
+);
 
 
-                if (viewerPeer) {
+/* =========================================
+   INITIALIZE
+========================================= */
 
-                    try {
+async function initializeLivePage() {
 
-                        viewerPeer.close();
+    console.log(
+        "TikTok Streamers LIVE page starting..."
+    );
 
-                    } catch (error) {}
 
-                }
+    const authenticated =
+        await checkAuthentication();
 
-            }
+
+    if (!authenticated) {
+        return;
+    }
+
+
+    await loadLiveStreams();
+
+
+    startLiveRefresh();
+
+
+    /* =====================================
+       OPEN STREAM FROM URL
+    ====================================== */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
         );
 
 
-        /* =========================================
-           START
-        ========================================== */
+    const streamId =
+        params.get("stream");
 
-        initializeLivePage();
 
-    </script>
+    if (!streamId) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("live_streams")
+        .select(`
+            id,
+            streamer_id,
+            title,
+            room_id,
+            thumbnail_url,
+            is_live,
+            viewer_count,
+            started_at,
+            profiles:streamer_id (
+                id,
+                full_name,
+                username,
+                avatar_url,
+                account_type,
+                is_live
+            )
+        `)
+        .eq(
+            "id",
+            streamId
+        )
+        .eq(
+            "is_live",
+            true
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "URL stream error:",
+            error
+        );
+
+        showError(
+            "This LIVE stream could not be opened."
+        );
+
+        return;
+    }
+
+
+    if (data) {
+
+        await watchStream(
+            data
+        );
+
+    } else {
+
+        showError(
+            "This LIVE stream has ended or is unavailable."
+        );
+    }
+}
+
+
+initializeLivePage();
+
+</script>
 
 </body>
 </html>
