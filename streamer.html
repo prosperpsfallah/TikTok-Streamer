@@ -295,14 +295,38 @@
 
         .viewer-box {
             background: #f7f8fa;
-            padding: 15px;
+            padding: 18px;
             border-radius: 12px;
             margin-top: 15px;
         }
 
+        .viewer-label {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
         .viewer-count-number {
-            font-size: 25px;
+            font-size: 30px;
             font-weight: 800;
+        }
+
+        .viewer-live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 8px;
+            color: #b91c1c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .viewer-live-indicator::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fe2c55;
         }
 
         .login-required {
@@ -612,15 +636,19 @@
                 style="display:none;"
             >
 
-                <div>
-                    Current connected viewers
+                <div class="viewer-label">
+                    Current LIVE viewers
                 </div>
 
                 <div
                     class="viewer-count-number"
-                    id="connectedViewers"
+                    id="viewerCount"
                 >
                     0
+                </div>
+
+                <div class="viewer-live-indicator">
+                    Active viewers
                 </div>
 
             </div>
@@ -688,7 +716,7 @@ const SUPABASE_URL =
     "https://malrwexkhekripoaubur.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhraGVrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hbHJ3ZXhra2Vrcmlwb2F1YnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDUwMjksImV4cCI6MjEwNDUyMTAyOX0.pdaTmkyiRXkWjR4J3s11dRo2rfP82lxWjBWU2DM0eEM";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -714,6 +742,19 @@ let cameraEnabled = false;
 let microphoneEnabled = false;
 
 let signalChannel = null;
+
+
+/*
+    REAL VIEWER TRACKING
+*/
+let streamerViewerChannel = null;
+let streamerViewerRefreshTimer = null;
+
+
+/*
+    STALE VIEWER CLEANUP
+*/
+let streamerViewerCleanupTimer = null;
 
 
 /*
@@ -1334,11 +1375,24 @@ async function startCameraAndLive() {
     currentProfile.is_live =
         true;
 
+
     /*
-       Start listening for viewers
-       AFTER the live stream exists.
+       Start WebRTC signaling.
     */
     await subscribeToLiveSignals();
+
+
+    /*
+       Start REAL viewer tracking.
+    */
+    subscribeToStreamerViewerCount();
+
+    startStreamerViewerRefresh();
+
+    startStreamerViewerCleanup();
+
+    await updateStreamerViewerCount();
+
 
     updateStreamerControls();
 
@@ -1385,10 +1439,6 @@ async function subscribeToLiveSignals() {
                     const signal =
                         payload.new;
 
-                    /*
-                       Only process signals
-                       sent to this streamer.
-                    */
                     if (
                         signal.receiver_id !==
                         currentUser.id
@@ -1427,10 +1477,6 @@ async function handleViewerSignal(
         return;
     }
 
-    /*
-       A viewer is asking
-       to establish a connection.
-    */
     if (
         signal.signal_type ===
         "viewer-ready"
@@ -1447,10 +1493,6 @@ async function handleViewerSignal(
     }
 
 
-    /*
-       Viewer sent us an answer
-       to our offer.
-    */
     if (
         signal.signal_type ===
         "answer"
@@ -1489,9 +1531,6 @@ async function handleViewerSignal(
     }
 
 
-    /*
-       Viewer sent ICE candidate.
-    */
     if (
         signal.signal_type ===
         "ice-candidate"
@@ -1565,10 +1604,6 @@ async function createViewerPeer(
         });
 
 
-    /*
-       Add camera and microphone
-       to this viewer's connection.
-    */
     mediaStream
         .getTracks()
         .forEach(track => {
@@ -1581,10 +1616,6 @@ async function createViewerPeer(
         });
 
 
-    /*
-       Send ICE candidates
-       to the viewer.
-    */
     peerConnection.onicecandidate =
         async event => {
 
@@ -1600,9 +1631,6 @@ async function createViewerPeer(
         };
 
 
-    /*
-       Connection state.
-    */
     peerConnection
         .onconnectionstatechange =
         async () => {
@@ -1620,14 +1648,15 @@ async function createViewerPeer(
 
             if (
                 state === "failed" ||
-                state === "closed"
+                state === "closed" ||
+                state === "disconnected"
             ) {
 
                 viewerConnections.delete(
                     viewerId
                 );
 
-                updateViewerCount();
+                updateViewerConnectionDebugCount();
 
             }
 
@@ -1639,12 +1668,9 @@ async function createViewerPeer(
         peerConnection
     );
 
-    updateViewerCount();
+    updateViewerConnectionDebugCount();
 
 
-    /*
-       Create the WebRTC offer.
-    */
     try {
 
         const offer =
@@ -1669,11 +1695,13 @@ async function createViewerPeer(
             error
         );
 
+        peerConnection.close();
+
         viewerConnections.delete(
             viewerId
         );
 
-        updateViewerCount();
+        updateViewerConnectionDebugCount();
     }
 }
 
@@ -1729,25 +1757,283 @@ async function sendSignalToViewer(
 
 
 /* =========================
-   VIEWER COUNT
+   REAL VIEWER COUNT
 ========================= */
 
-function updateViewerCount() {
+async function updateStreamerViewerCount() {
+
+    if (!currentStream) {
+
+        const viewerCount =
+            document.getElementById(
+                "viewerCount"
+            );
+
+        if (viewerCount) {
+            viewerCount.textContent = "0";
+        }
+
+        return;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .rpc(
+                "get_live_viewer_count",
+                {
+                    target_stream_id:
+                        currentStream.id
+                }
+            );
+
+    if (error) {
+
+        console.error(
+            "Streamer viewer count error:",
+            error
+        );
+
+        return;
+    }
 
     const count =
-        viewerConnections.size;
+        Number(data || 0);
 
-    document.getElementById(
-        "connectedViewers"
-    ).textContent =
-        count;
+    const viewerCount =
+        document.getElementById(
+            "viewerCount"
+        );
 
-    document.getElementById(
-        "viewerBox"
-    ).style.display =
-        currentStream
-            ? "block"
-            : "none";
+    if (viewerCount) {
+
+        viewerCount.textContent =
+            count;
+    }
+
+    console.log(
+        "REAL viewer count:",
+        count
+    );
+}
+
+
+/* =========================
+   REAL VIEWER REALTIME
+========================= */
+
+function subscribeToStreamerViewerCount() {
+
+    if (
+        !currentStream ||
+        !currentUser
+    ) {
+
+        return;
+    }
+
+    if (streamerViewerChannel) {
+
+        return;
+    }
+
+    const streamId =
+        currentStream.id;
+
+    streamerViewerChannel =
+        supabaseClient
+            .channel(
+                "streamer-viewers-" +
+                streamId +
+                "-" +
+                Date.now()
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "live_viewers",
+                    filter:
+                        "stream_id=eq." +
+                        streamId
+                },
+                async () => {
+
+                    await updateStreamerViewerCount();
+
+                }
+            )
+            .subscribe(
+                status => {
+
+                    console.log(
+                        "Viewer tracking channel:",
+                        status
+                    );
+
+                }
+            );
+
+    updateStreamerViewerCount();
+}
+
+
+/* =========================
+   VIEWER COUNT REFRESH
+========================= */
+
+function startStreamerViewerRefresh() {
+
+    stopStreamerViewerRefresh();
+
+    streamerViewerRefreshTimer =
+        setInterval(
+            updateStreamerViewerCount,
+            10000
+        );
+}
+
+
+function stopStreamerViewerRefresh() {
+
+    if (
+        streamerViewerRefreshTimer
+    ) {
+
+        clearInterval(
+            streamerViewerRefreshTimer
+        );
+
+        streamerViewerRefreshTimer =
+            null;
+    }
+}
+
+
+/* =========================
+   STALE VIEWER CLEANUP
+========================= */
+
+async function cleanupStaleStreamerViewers() {
+
+    if (!currentStream) {
+        return;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .rpc(
+                "cleanup_stale_live_viewers",
+                {
+                    target_stream_id:
+                        currentStream.id
+                }
+            );
+
+    if (error) {
+
+        console.error(
+            "Stale viewer cleanup error:",
+            error
+        );
+
+        return;
+    }
+
+    if (Number(data || 0) > 0) {
+
+        console.log(
+            "Removed stale viewers:",
+            data
+        );
+
+        await updateStreamerViewerCount();
+    }
+}
+
+
+function startStreamerViewerCleanup() {
+
+    stopStreamerViewerCleanup();
+
+    streamerViewerCleanupTimer =
+        setInterval(
+            async () => {
+
+                await cleanupStaleStreamerViewers();
+
+            },
+            10000
+        );
+}
+
+
+function stopStreamerViewerCleanup() {
+
+    if (
+        streamerViewerCleanupTimer
+    ) {
+
+        clearInterval(
+            streamerViewerCleanupTimer
+        );
+
+        streamerViewerCleanupTimer =
+            null;
+    }
+}
+
+
+/* =========================
+   REMOVE VIEWER CHANNEL
+========================= */
+
+async function removeStreamerViewerChannel() {
+
+    if (streamerViewerChannel) {
+
+        await supabaseClient
+            .removeChannel(
+                streamerViewerChannel
+            );
+
+        streamerViewerChannel =
+            null;
+    }
+
+    stopStreamerViewerRefresh();
+
+    stopStreamerViewerCleanup();
+
+    const viewerCount =
+        document.getElementById(
+            "viewerCount"
+        );
+
+    if (viewerCount) {
+
+        viewerCount.textContent =
+            "0";
+    }
+}
+
+
+/* =========================
+   WEBRTC CONNECTION DEBUG
+========================= */
+
+function updateViewerConnectionDebugCount() {
+
+    console.log(
+        "WebRTC connected viewer connections:",
+        viewerConnections.size
+    );
 }
 
 
@@ -1797,21 +2083,34 @@ async function loadCurrentLiveStream() {
             true;
 
         /*
-           Reconnect signaling if
-           the page was refreshed while
-           the database still says LIVE.
+           Reconnect WebRTC signaling.
         */
         await subscribeToLiveSignals();
+
+        /*
+           Reconnect REAL viewer tracking.
+        */
+        subscribeToStreamerViewerCount();
+
+        startStreamerViewerRefresh();
+
+        startStreamerViewerCleanup();
+
+        await cleanupStaleStreamerViewers();
+
+        await updateStreamerViewerCount();
 
     } else {
 
         currentProfile.is_live =
             false;
+
+        await removeStreamerViewerChannel();
     }
 
     updateLiveStatus();
 
-    updateViewerCount();
+    updateViewerConnectionDebugCount();
 }
 
 
@@ -1858,7 +2157,6 @@ function updateLiveStatus() {
             "none";
     }
 
-    updateViewerCount();
 }
 
 
@@ -1877,6 +2175,9 @@ async function endLive() {
         return;
     }
 
+    const streamToEnd =
+        currentStream;
+
     const {
         error
     } =
@@ -1891,7 +2192,7 @@ async function endLive() {
             })
             .eq(
                 "id",
-                currentStream.id
+                streamToEnd.id
             )
             .eq(
                 "streamer_id",
@@ -1909,6 +2210,7 @@ async function endLive() {
 
         return;
     }
+
 
     await supabaseClient
         .from("profiles")
@@ -1941,7 +2243,7 @@ async function endLive() {
 
 
     /*
-       Remove realtime channel.
+       Remove signaling channel.
     */
     if (signalChannel) {
 
@@ -1954,7 +2256,19 @@ async function endLive() {
     }
 
 
-    currentStream = null;
+    /*
+       Remove REAL viewer channel
+       and stop cleanup/refresh.
+    */
+    await removeStreamerViewerChannel();
+
+
+    /*
+       Clear the active stream.
+    */
+    currentStream =
+        null;
+
 
     updateStreamerControls();
 
@@ -2069,6 +2383,18 @@ window.addEventListener(
                     signalChannel
                 );
         }
+
+        if (streamerViewerChannel) {
+
+            supabaseClient
+                .removeChannel(
+                    streamerViewerChannel
+                );
+        }
+
+        stopStreamerViewerRefresh();
+
+        stopStreamerViewerCleanup();
 
         if (mediaStream) {
 
