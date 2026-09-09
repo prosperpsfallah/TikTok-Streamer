@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Leaderboard — TikTok Streamers</title>
+
+    <meta
+        name="description"
+        content="See the top TikTok Streamers on the platform."
+    >
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#111111">
+
+    <style>
+        /* =========================================
+           LEADERBOARD PAGE
+        ========================================= */
+
+        .leaderboard-page {
+            min-height: 100vh;
+            background: #f7f8fa;
+        }
+
+        .leaderboard-hero {
+            background:
+                radial-gradient(circle at 15% 20%, rgba(254, 44, 85, 0.35), transparent 35%),
+                radial-gradient(circle at 85% 30%, rgba(37, 244, 238, 0.25), transparent 35%),
+                #111111;
+            color: #ffffff;
+            padding: 90px 20px 80px;
+            text-align: center;
+        }
+
+        .leaderboard-hero-content {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .leaderboard-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-hero h1 {
+            font-size: clamp(38px, 7vw, 70px);
+            line-height: 1;
+            margin: 0 0 20px;
+            font-weight: 900;
+        }
+
+        .leaderboard-hero h1 span {
+            background: linear-gradient(
+                90deg,
+                #fe2c55,
+                #ffffff,
+                #25f4ee
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .leaderboard-hero p {
+            max-width: 650px;
+            margin: auto;
+            color: rgba(255,255,255,0.75);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           FILTERS
+        ========================================= */
+
+        .leaderboard-container {
+            width: min(1100px, calc(100% - 40px));
+            margin: -35px auto 70px;
+            position: relative;
+        }
+
+        .leaderboard-panel {
+            background: #ffffff;
+            border-radius: 22px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .leaderboard-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px;
+            border-bottom: 1px solid #eeeeee;
+            flex-wrap: wrap;
+        }
+
+        .leaderboard-tab {
+            border: 0;
+            background: #f3f4f6;
+            color: #555555;
+            padding: 11px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .leaderboard-tab:hover {
+            transform: translateY(-1px);
+        }
+
+        .leaderboard-tab.active {
+            background: #111111;
+            color: #ffffff;
+        }
+
+        /* =========================================
+           EMPTY RANKING
+        ========================================= */
+
+        .ranking-empty {
+            text-align: center;
+            padding: 80px 25px;
+        }
+
+        .ranking-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f2f4;
+            font-size: 38px;
+        }
+
+        .ranking-empty h2 {
+            margin: 0 0 10px;
+            font-size: 27px;
+            color: #111111;
+        }
+
+        .ranking-empty p {
+            max-width: 520px;
+            margin: 0 auto;
+            color: #777777;
+            line-height: 1.7;
+        }
+
+        .ranking-status {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 9px 15px;
+            border-radius: 999px;
+            background: #fff0f3;
+            color: #fe2c55;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           INFO CARDS
+        ========================================= */
+
+        .leaderboard-info {
+            margin-top: 35px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 25px;
+            border: 1px solid #eeeeee;
+        }
+
+        .info-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111111;
+            color: #ffffff;
+            font-size: 22px;
+            margin-bottom: 17px;
+        }
+
+        .info-card h3 {
+            margin: 0 0 9px;
+            color: #111111;
+            font-size: 18px;
+        }
+
+        .info-card p {
+            margin: 0;
+            color: #777777;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           CTA
+        ========================================= */
+
+        .leaderboard-cta {
+            margin-top: 35px;
+            background: #111111;
+            color: #ffffff;
+            border-radius: 22px;
+            padding: 45px 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaderboard-cta::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: #fe2c55;
+            opacity: 0.12;
+            border-radius: 50%;
+            top: -90px;
+            left: -50px;
+        }
+
+        .leaderboard-cta::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: #25f4ee;
+            opacity: 0.12;
+            border-radius: 50%;
+            bottom: -100px;
+            right: -40px;
+        }
+
+        .leaderboard-cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .leaderboard-cta h2 {
+            margin: 0 0 12px;
+            font-size: 30px;
+        }
+
+        .leaderboard-cta p {
+            margin: 0 auto 25px;
+            max-width: 600px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        .leaderboard-cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 24px;
+            border-radius: 999px;
+            background: #fe2c55;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 800;
+            transition: 0.2s ease;
+        }
+
+        .leaderboard-cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .leaderboard-info {
+                grid-template-columns: 1fr;
+            }
+
+            .leaderboard-container {
+                width: min(100% - 25px, 1100px);
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .leaderboard-hero {
+                padding: 70px 18px 65px;
+            }
+
+            .leaderboard-hero p {
+                font-size: 15px;
+            }
+
+            .leaderboard-tabs {
+                padding: 15px;
+            }
+
+            .leaderboard-tab {
+                flex: 1;
+                min-width: 90px;
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .ranking-empty {
+                padding: 60px 18px;
+            }
+
+            .ranking-empty h2 {
+                font-size: 23px;
+            }
+
+            .leaderboard-cta {
+                padding: 35px 20px;
+            }
+
+            .leaderboard-cta h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="leaderboard-page">
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <header class="site-header">
+
+            <div class="header-inner">
+
+                <a href="index.html" class="brand">
+                    <span class="brand-mark">T</span>
+                    <span>TikTok Streamers</span>
+                </a>
+
+                <nav class="desktop-nav">
+                    <a href="index.html">Home</a>
+                    <a href="live.html">Live</a>
+                    <a href="index.html#streamers">Streamers</a>
+                    <a href="leaderboard.html" class="active">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+
+                    <a href="login.html" class="btn btn-secondary">
+                        Login
+                    </a>
+
+                    <a href="register.html" class="btn btn-primary">
+                        Join
+                    </a>
+
+                    <button
+                        class="mobile-menu-button"
+                        type="button"
+                        onclick="toggleMobileMenu()"
+                        aria-label="Open menu"
+                    >
+                        ☰
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div id="mobileMenu" class="mobile-menu">
+
+                <a href="index.html">Home</a>
+                <a href="live.html">Live</a>
+                <a href="index.html#streamers">Streamers</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="login.html">Login</a>
+                <a href="register.html">Join</a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================
+             HERO
+        ====================================== -->
+
+        <section class="leaderboard-hero">
+
+            <div class="leaderboard-hero-content">
+
+                <div class="leaderboard-badge">
+                    🏆 <span>COMMUNITY LEADERBOARD</span>
+                </div>
+
+                <h1>
+                    Top <span>Streamers</span>
+                </h1>
+
+                <p>
+                    Discover the creators making an impact across the
+                    TikTok Streamers community. Rankings will appear as
+                    real users join and start streaming.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             MAIN
+        ====================================== -->
+
+        <main class="leaderboard-container">
+
+            <div class="leaderboard-panel">
+
+                <!-- FILTER TABS -->
+
+                <div class="leaderboard-tabs">
+
+                    <button
+                        class="leaderboard-tab active"
+                        data-period="weekly"
+                        type="button"
+                    >
+                        Weekly
+                    </button>
+
+                    <button
+                        class="leaderboard-tab"
+                        data-period="monthly"
+                        type="button"
+                    >
+                        Monthly
+                    </button>
+
+                    <button
+                        class="leaderboard-tab"
+                        data-period="all-time"
+                        type="button"
+                    >
+                        All Time
+                    </button>
+
+                </div>
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="ranking-empty">
+
+                    <div class="ranking-icon">
+                        🏆
+                    </div>
+
+                    <h2 id="rankingTitle">
+                        No rankings yet
+                    </h2>
+
+                    <p id="rankingMessage">
+                        There are no streamers on the leaderboard yet.
+                        Once real streamers join the platform and start
+                        earning activity, the rankings will appear here.
+                    </p>
+
+                    <span class="ranking-status" id="rankingStatus">
+                        Waiting for real streamers
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 HOW RANKINGS WORK
+            ================================== -->
+
+            <section class="leaderboard-info">
+
+                <article class="info-card">
+
+                    <div class="info-card-icon">
+                        🎁
+                    </div>
+
+                    <h3>Gift Points</h3>
+
+                    <p>
+                        Real gift activity can contribute to streamer
+                        rankings once the platform's gifting system is
+                        connected.
+                    </p>
+
+                </article>
+
+
+                <article class="info-card">
+
+                    <div class="info-card-icon">
+                        👥
+                    </div>
+
+                    <h3>Followers</h3>
+
+                    <p>
+                        Community growth can help determine rankings
+                        when real follower data becomes available.
+                    </p>
+
+                </article>
+
+
+                <article class="info-card">
+
+                    <div class="info-card-icon">
+                        🔴
+                    </div>
+
+                    <h3>LIVE Activity</h3>
+
+                    <p>
+                        Real streaming activity and battles can become
+                        part of the leaderboard after the platform is
+                        connected to the backend.
+                    </p>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================
+                 CTA
+            ================================== -->
+
+            <section class="leaderboard-cta">
+
+                <div class="leaderboard-cta-content">
+
+                    <h2>
+                        Want to appear here?
+                    </h2>
+
+                    <p>
+                        Create your account and become part of the
+                        TikTok Streamers community. Your real activity
+                        can eventually contribute to the rankings.
+                    </p>
+
+                    <a
+                        href="register.html"
+                        class="leaderboard-cta-button"
+                    >
+                        Become a Streamer
+                    </a>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =====================================
+             FOOTER
+        ====================================== -->
+
+        <footer class="site-footer">
+
+            <div class="footer-inner">
+
+                <div>
+                    <strong>TikTok Streamers</strong>
+                    <p>
+                        A community platform for discovering and
+                        connecting with streamers.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="index.html">Home</a>
+                    <a href="live.html">Live</a>
+                    <a href="leaderboard.html">Leaderboard</a>
+                    <a href="login.html">Login</a>
+
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                © <span id="currentYear"></span> TikTok Streamers.
+                All rights reserved.
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+        /* Mobile menu */
+
+        function toggleMobileMenu() {
+
+            const menu = document.getElementById("mobileMenu");
+
+            if (!menu) return;
+
+            menu.classList.toggle("open");
+
+        }
+
+
+        /* Leaderboard tabs */
+
+        const tabs =
+            document.querySelectorAll(".leaderboard-tab");
+
+        const rankingTitle =
+            document.getElementById("rankingTitle");
+
+        const rankingMessage =
+            document.getElementById("rankingMessage");
+
+        const rankingStatus =
+            document.getElementById("rankingStatus");
+
+
+        tabs.forEach(function(tab) {
+
+            tab.addEventListener("click", function() {
+
+                tabs.forEach(function(item) {
+                    item.classList.remove("active");
+                });
+
+                tab.classList.add("active");
+
+                const period =
+                    tab.dataset.period;
+
+                if (period === "weekly") {
+
+                    rankingTitle.textContent =
+                        "No weekly rankings yet";
+
+                    rankingMessage.textContent =
+                        "There are no streamers in the weekly leaderboard yet. Real rankings will appear when users begin creating activity on the platform.";
+
+                    rankingStatus.textContent =
+                        "Waiting for weekly activity";
+
+                }
+
+                if (period === "monthly") {
+
+                    rankingTitle.textContent =
+                        "No monthly rankings yet";
+
+                    rankingMessage.textContent =
+                        "There are no streamers in the monthly leaderboard yet. Rankings will be generated from real platform activity.";
+
+                    rankingStatus.textContent =
+                        "Waiting for monthly activity";
+
+                }
+
+                if (period === "all-time") {
+
+                    rankingTitle.textContent =
+                        "No all-time rankings yet";
+
+                    rankingMessage.textContent =
+                        "There are no all-time rankings yet. As real streamers join and build their communities, the leaderboard will grow.";
+
+                    rankingStatus.textContent =
+                        "Waiting for real streamers";
+
+                }
+
+            });
+
+        });
+
+
+        /* Current year */
+
+        const yearElement =
+            document.getElementById("currentYear");
+
+        if (yearElement) {
+
+            yearElement.textContent =
+                new Date().getFullYear();
+
+        }
+
+    </script>
+
+</body>
+</html>
